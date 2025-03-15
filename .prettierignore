@@ -1,0 +1,4 @@
+# Ignore artifacts:
+coverage
+.husky
+node_modules
