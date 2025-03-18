@@ -17,15 +17,20 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
+    "@eslint/eslintrc": "^3.3.0",
+    "@eslint/js": "^9.22.0",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.2.3",
+    "@angular-eslint/eslint-plugin": "^19.2.1",
     "@angular/cli": "^19.2.3",
     "@angular/compiler-cli": "^19.2.0",
     "@types/jasmine": "~5.1.0",
+    "eslint": "^9.22.0",
     "husky": "^9.1.7",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
@@ -43,7 +48,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{ts,js,json,html,css,scss,md,yml}": "prettier --write",
-    ".prettierrc": "prettier --write"
+    "**/*.{ts,js,json,html,css,scss,md,yml,prettierrc,prettierignore,mjs}": "prettier --write",
+    "**/*.{ts,js}": "eslint --fix"
   }
 }
