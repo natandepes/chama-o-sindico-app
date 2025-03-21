@@ -3,8 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { ViewCondominalServiceComponent } from './features/condominal-services/components/view-condominal-services/view-condominal-services.component';
 import { CreateCondominalServiceComponent } from './features/condominal-services/components/create-condominal-services/create-condominal-services.component';
 import { LoginComponent } from './features/authentication/components/login/login.component';
+import { CriarDenunciaComponent } from './features/Denuncia/criar-denuncia/criar-denuncia.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/', pathMatch: 'full' },
+  { path: 'criar-denuncia', component: CriarDenunciaComponent }, 
   { path: 'service/create', component: CreateCondominalServiceComponent },
   { path: 'service/:id', component: ViewCondominalServiceComponent },
   { path: 'login', component: LoginComponent },
