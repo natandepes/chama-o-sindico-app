@@ -12,7 +12,9 @@ import { SharedModule } from './features/shared/shared.module';
 import { ContactInfoModule } from './features/contact-info/contact-info.module';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
   imports: [
     CommonModule,
     BrowserModule,
