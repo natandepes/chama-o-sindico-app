@@ -30,6 +30,7 @@ main {
 }
 
 .create-reservation-button{
+    cursor: pointer;
     width: 80%;
     padding: 0.25rem;
     border-radius: 5px;
