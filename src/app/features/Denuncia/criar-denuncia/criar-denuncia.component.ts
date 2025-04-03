@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { denunciaMock, StatusDenuncia } from '../models/denuncia.models';
+import { complaintMock, StatusDenuncia } from '../models/denuncia.models';
 
 @Component({
   selector: 'app-criar-denuncia',
@@ -8,6 +8,7 @@ import { denunciaMock, StatusDenuncia } from '../models/denuncia.models';
   standalone: false
 })
 export class CriarDenunciaComponent {
+  id: number | undefined;
   assunto: string = '';
   dataOcorrido: string = '';
   descricao: string = '';
@@ -17,7 +18,8 @@ export class CriarDenunciaComponent {
 
 
   salvarDenuncia() {
-    const denuncia: denunciaMock = {
+    const denuncia: complaintMock = {
+      Id: this.id,
       Assunto: this.assunto,
       DataOcorrido: new Date(this.dataOcorrido),
       DataResolvido: undefined,

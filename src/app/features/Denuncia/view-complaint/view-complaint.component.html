@@ -1,0 +1,21 @@
+<div class="headerProvisorio">
+  <p>Provisório</p>
+</div>
+<div class="container">
+  <div class="complaint-container">
+      <h2>Listagem de Denúncias</h2>
+      
+      <div *ngFor="let complaint of complaints" class="complaint-card">
+        <h3>{{ complaint.Assunto }}</h3>
+        <p><strong>Status:</strong> 
+          {{ complaint.Status }}
+          <span class="status-badge status-{{ complaint.Status | lowercase }}">
+            {{ complaint.Status }}
+          </span>
+        </p>
+        <p><strong>Data:</strong> {{ complaint.DataOcorrido | date:'dd/MM/yyyy' }}</p>
+        <p><strong>Categoria:</strong> {{ complaint.Categoria }}</p>
+        <!-- <button class="details-button" (click)="verDetalhes(complaint)">Ver detalhes</button> -->
+      </div>
+    </div>
+</div>

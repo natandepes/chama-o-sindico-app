@@ -4,20 +4,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CondominialServicesModule } from './features/condominal-services/condominal-services.module';
-import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { LoginModule } from './features/authentication/login.module';
 import { CriarDenunciaComponent } from './features/Denuncia/criar-denuncia/criar-denuncia.component';
+import { ViewComplaintComponent } from './features/Denuncia/view-complaint/view-complaint.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CriarDenunciaComponent
+    CriarDenunciaComponent,
+    ViewComplaintComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule,
     CondominialServicesModule,
     LoginModule
   ],
