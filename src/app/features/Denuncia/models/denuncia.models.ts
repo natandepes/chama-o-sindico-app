@@ -4,7 +4,8 @@ export enum StatusDenuncia {
     Resolvido = 'Resolvido'
   }
   
-  export interface denunciaMock {
+  export interface complaintMock {
+    Id: number | undefined ;
     Assunto: string;
     DataOcorrido: Date;
     DataResolvido: Date | undefined;
