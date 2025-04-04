@@ -3,27 +3,27 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div class="container">
     <header>
-        <div class="icons">
-            <button class="menu-icon">☰</button>
-        </div>
+      <div class="icons">
+          <button class="menu-icon">☰</button>
+      </div>
       <h1>Crie um Serviço</h1>
       <div class="icons">
         <button class="settings-icon">⚙</button>
       </div>
     </header>
   
-    <form [formGroup]="formularioServico" (ngSubmit)="onSubmit()">
-      <label for="nomeServico">Nome do Serviço:</label>
-      <input id="nomeServico" type="text" formControlName="nomeServico" required />
+    <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+      <label for="serviceName">Nome do Serviço:</label>
+      <input id="serviceName" type="text" formControlName="serviceName" required />
   
-      <label for="nomePrestador">Nome Completo do Prestador:</label>
-      <input id="nomePrestador" type="text" formControlName="nomePrestador" required />
+      <label for="serviceProvider">Nome Completo do Prestador:</label>
+      <input id="serviceProvider" type="text" formControlName="serviceProvider" required />
   
-      <label for="telefoneContato">Telefone de contato:</label>
-      <input id="telefoneContato" type="text" formControlName="telefoneContato" required />
+      <label for="phone">Telefone de contato:</label>
+      <input id="phone" type="text" formControlName="phone" required />
   
-      <label for="descricaoServico">Descrição detalhada do serviço:</label>
-      <textarea id="descricaoServico" rows="4" formControlName="descricaoServico"></textarea>
+      <label for="serviceDescription">Descrição detalhada do serviço:</label>
+      <textarea id="serviceDescription" rows="4" formControlName="serviceDescription"></textarea>
   
       <label>Sua foto:</label>
         <div
@@ -42,23 +42,23 @@
         />
 
         <!-- Se NÃO tiver imagem preview -->
-        <ng-container *ngIf="!imagemPreview">
-            <button type="button" class="add-img" (click)="abrirSeletorDeImagem(fileInput)">
+        <ng-container *ngIf="!previewImg">
+            <button type="button" class="add-img" (click)="openImgSelector(fileInput)">
             Buscar imagem
             </button>
             <p>Ou arraste a imagem aqui</p>
         </ng-container>
 
         <!-- Se TIVER imagem preview -->
-        <ng-container *ngIf="imagemPreview">
+        <ng-container *ngIf="previewImg">
             <!-- Botão com ícone de lixeira -->
-            <button type="button" class="remove-img" (click)="removerImagem()" aria-label="Remover imagem">
+            <button type="button" class="remove-img" (click)="removeImg()" aria-label="Remover imagem">
             <span class="material-icons" style="color: red; font-size: 24px;">delete</span>
             </button>
 
             <!-- Imagem -->
             <img
-            [src]="imagemPreview"
+            [src]="previewImg"
             alt="Preview"
             style="margin-top: 10px; max-width: 100%; border-radius: 6px;"
             />
@@ -69,4 +69,4 @@
       <button type="submit">Enviar</button>
     </form>
   </div>
-  
+  <!-- src/app/features/condominial-services/create-service/components/create-service.component.html -->

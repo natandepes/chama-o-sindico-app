@@ -1,30 +1,23 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule, Routes } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CriarServicoComponent } from './criar-servico/criar-servico.component';
-
-const routes: Routes = [
-  { path: '', component: CriarServicoComponent },
-];
-
-
+import { CondominialServicesModule } from './features/condominal-services/condominal-services.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './features/authentication/components/login/login.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
-    // CriarServicoComponent
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes)
+    CondominialServicesModule,
   ],
-  exports: [RouterModule],
-  providers: [],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
