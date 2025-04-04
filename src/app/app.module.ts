@@ -8,12 +8,14 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { LoginModule } from './features/authentication/login.module';
 import { CriarDenunciaComponent } from './features/Denuncia/criar-denuncia/criar-denuncia.component';
 import { ViewComplaintComponent } from './features/Denuncia/view-complaint/view-complaint.component';
+import { SidebarComponent } from './core/components/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CriarDenunciaComponent,
-    ViewComplaintComponent
+    ViewComplaintComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
