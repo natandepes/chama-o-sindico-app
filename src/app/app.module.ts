@@ -9,7 +9,7 @@ import { CondominialServicesModule } from './features/condominal-services/condom
 import { AuthenticationModule } from './features/authentication/authentication.module';
 import { ComplaintModule } from './features/complaint/complaint.module';
 import { SharedModule } from './features/shared/shared.module';
-import { CondominalManagerContactInfoModule } from './features/condominal-manager-contact-info/condominal-manager-contact-info.module';
+import { ContactInfoModule } from './features/contact-info/contact-info.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +20,7 @@ import { CondominalManagerContactInfoModule } from './features/condominal-manage
     CondominialServicesModule,
     AuthenticationModule,
     SharedModule,
-    CondominalManagerContactInfoModule,
+    ContactInfoModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],

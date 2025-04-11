@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
-import { CondominalManagerInfo } from "./models/condominal-manager-contact-info.model";
+import { ContactInfo } from "../models/contact-info";
 
 @Injectable({
   providedIn: 'root'
 })
-export class CondominalManagerInfoService {
+export class ContactInfoService {
   private readonly API_URL = "https://localhost:7020/api";
 
-  private mockCondominalManagerInfo: CondominalManagerInfo = {
+  private mockCondominalManagerInfo: ContactInfo = {
     name: "João Silva da Costa",
     email: "joaocostasindico@gmail.com",
     phone: "+55 11 91234-5678"
@@ -15,7 +15,7 @@ export class CondominalManagerInfoService {
 
   constructor() { }
 
-  public getCondominalManagerInfo(): CondominalManagerInfo {
+  public getCondominalManagerInfo(): ContactInfo {
     return this.mockCondominalManagerInfo;
   }
 
