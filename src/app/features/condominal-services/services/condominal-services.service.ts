@@ -8,7 +8,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 
 export class CondominalServicesService {
-  // private servicos: { [id: string]: any } = {}; // Objeto para armazenar os serviços
 
   saveService(id: string, dados: any): void {
     dados.imagemUrl = '../../images/bon-clay.jpg';
