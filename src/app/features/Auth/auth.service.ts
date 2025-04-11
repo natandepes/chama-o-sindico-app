@@ -1,21 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private readonly API_URL = "http://localhost:5158/api";
+  private readonly API_URL = "https://localhost:7020/api";
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  public login(email: string, password: string) {
+  public login(email: string, password: string) : Observable<any> {
     return this.http.post(`${this.API_URL}/Auth/LoginUser`, { email, password });
   }
 
-  public register(email: string, password: string, role: string) {
+  public register(email: string, password: string, role: string) : Observable<any> {
     return this.http.post(`${this.API_URL}/Auth/RegisterUser`, { email, password, role });
   }
 
@@ -31,7 +32,7 @@ export class AuthService {
     return !!this.getToken();
   }
 
-  public logout() {
+  public logout() : void {
     const token = localStorage.getItem('token');
     if (!token) {
       this.router.navigate(['/login']);
@@ -44,13 +45,13 @@ export class AuthService {
     .subscribe({
       next: () => {
         localStorage.removeItem('token');
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
       },
       error: (err) => {
         console.error('Logout error:', err);
         // even if server fails, clear token client-side
         localStorage.removeItem('token');
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
       }
     });
   }

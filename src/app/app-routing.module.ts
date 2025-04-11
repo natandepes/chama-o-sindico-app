@@ -7,9 +7,9 @@ import { RegisterComponent } from './features/Auth/register/register.component';
 import { AuthGuard } from './features/Auth/auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'create-complaint', component: CriarDenunciaComponent, canActivate: [AuthGuard] }, 
-  { path: 'view-complaint', component: ViewComplaintComponent, canActivate: [AuthGuard] }, 
+  { path: 'view-complaint', component: ViewComplaintComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent}
 ];

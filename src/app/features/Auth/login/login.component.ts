@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { ApiResponse } from '../../../core/shared/api-response.model';
 
 @Component({
   selector: 'app-login',
@@ -21,14 +22,19 @@ export class LoginComponent {
   protected login() {
     this.authService.login(this.email, this.password)
       .subscribe({
-        next: (response: any) => {
-          console.log("JWT Token:", response.token);
-          this.authService.setToken(response.token);
-          this.router.navigate(['/create-complaint']);
+        next: (response: ApiResponse<string>) => {
+          if (response.success === false) {
+            this.errorMessage = response.message!;
+            return;
+          }
+
+          this.authService.setToken(response.data!);
+          this.router.navigate(['/']);
         },
-        error: (error: any) => {
+        error: (error) => {
           console.error('Login error:', error);
-        },
+          this.errorMessage = 'An error occurred during login. Please try again.';
+        }
       });
   }
 
