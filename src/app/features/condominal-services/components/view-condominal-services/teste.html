@@ -1,0 +1,33 @@
+<div class="conteudo" *ngIf="service">
+    <div class="service-image">
+      <img [src]="service.img" alt="Imagem do serviço" class="preview-image" />
+    </div>
+  
+    <div class="field">
+      <label>Nome do Serviço:</label>
+      <div *ngIf="!isEditing">{{ service.serviceName }}</div>
+      <input *ngIf="isEditing" [(ngModel)]="service.serviceName" />
+    </div>
+  
+    <div class="field">
+      <label>Nome:</label>
+      <div *ngIf="!isEditing">{{ service.serviceProvider }}</div>
+      <input *ngIf="isEditing" [(ngModel)]="service.serviceProvider" />
+    </div>
+  
+    <div class="field">
+      <label>Contato:</label>
+      <div *ngIf="!isEditing">{{ service.phone }}</div>
+      <input *ngIf="isEditing" [(ngModel)]="service.phone" />
+    </div>
+  
+    <div class="field">
+      <label>Descrição:</label>
+      <div *ngIf="!isEditing">{{ service.serviceDescription }}</div>
+      <textarea *ngIf="isEditing" rows="4" [(ngModel)]="service.serviceDescription"></textarea>
+    </div>
+  
+    <div *ngIf="isEditing">
+      <button (click)="saveChanges()">Salvar</button>
+    </div>
+  </div>

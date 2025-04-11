@@ -1,0 +1,145 @@
+/* 
+Font: inter
+Cores do projeto:
+Preto: 
+    #42a5f5 principal
+    #42a5f5 secundario
+    #42a5f5 disabilitado
+Azul:
+    #1976d2 principal 
+    #1565c0 escuro
+    #42a5f5 claro
+    #42a5f5 hover
+    #42a5f5 selected
+    #42a5f5 focus
+    #42a5f5 focus visible
+    #42a5f5 outline border
+Roxo:
+   #42a5f5 principal
+   #42a5f5 escuro
+   #42a5f5 claro
+Vermelho: 
+    #42a5f5 
+Laranja: 
+    #42a5f5
+*/
+
+/* Fonte padrão Inter */
+* {
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* criar-servico.component.css */
+  .login-container {
+      width: 360px;
+      height: 800px;
+      margin: 0 auto;
+      
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    header {
+      background-color: #1565c0;
+      color: white;
+      display: block;
+      align-items: center;
+
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 16px;
+      height: 60px;
+      /* flex-shrink: 0; */
+    }
+  
+    header h1 {
+      font-size: 18px;
+      font-weight: bold;
+
+    }
+
+    .login-header{
+      text-align: center;
+    }
+    
+    .icons button {
+      border: none;
+      background: none;
+      font-size: 18px;
+      color: white;
+    }
+    
+    form {
+      padding: 20px;
+      margin-top: 20px;
+    }
+    
+    a{
+      text-align: center;
+      display: block;
+      padding: 8px 8px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    
+    #userName {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    
+    
+    
+    button[type="submit"] {
+      width: 100%;
+      padding: 10px ;
+      background-color: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Input senha */
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+    
+    .input-wrapper input {
+      flex: 1;
+      border: none;
+      padding: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+    
+    .input-addon {
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      border-left: 1px solid #ccc; /* a barrinha de divisão */
+      cursor: pointer;
+      background-color: white;
+    }
+    
+    .input-addon .material-icons {
+      font-size: 20px;
+      color: #555;
+    }
+    
