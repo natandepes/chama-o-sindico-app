@@ -1,0 +1,28 @@
+<div class="container">
+  <h1>Contato do síndico:</h1>
+  <div class="contact-info">
+    <div class="contact-info-item">
+      <p class="contact-info-item-label">Nome do síndico:</p>
+      <span class="contact-info-item-value">
+        {{condominalManagerInfo.name}}
+      </span>
+    </div>
+    <div class="contact-info-item">
+      <p class="contact-info-item-label">Número de contato:</p>
+      <input
+        type="tel"
+        [value]="condominalManagerInfo.phone"
+        class="contact-input-readonly"
+        readonly
+      />
+    </div>
+    <div class="contact-info-item">
+      <p class="contact-info-item-label">E-mail:</p>
+      <input
+        type="email"
+        [value]="condominalManagerInfo.email"
+        class="contact-input-readonly"
+        readonly
+      />
+    </div>
+</div>
