@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CondominalManagerContactInfoModule } from './features/condominal-manager-contact-info/condominal-manager-contact-info.module';
+import { ContactInfoModule } from './features/contact-info/contact-info.module';
 
 @NgModule({
   declarations: [
@@ -12,7 +12,7 @@ import { CondominalManagerContactInfoModule } from './features/condominal-manage
   imports: [
     BrowserModule,
     AppRoutingModule,
-    CondominalManagerContactInfoModule
+    ContactInfoModule
   ],
   providers: [],
   bootstrap: [AppComponent]
