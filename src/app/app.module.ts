@@ -1,29 +1,27 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
+import { appRoutes } from './app.routes';
+import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { CondominialServicesModule } from './features/condominal-services/condominal-services.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { CondominialServicesModule } from './features/condominal-services/condominal-services.module';
 import { LoginModule } from './features/authentication/login.module';
-import { CriarDenunciaComponent } from './features/Denuncia/criar-denuncia/criar-denuncia.component';
-import { ViewComplaintComponent } from './features/Denuncia/view-complaint/view-complaint.component';
-import { SidebarComponent } from './core/components/sidebar/sidebar.component';
+import { ComplaintModule } from './features/complaint/complaint.module';
+import { SharedModule } from './features/shared/shared.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CriarDenunciaComponent,
-    ViewComplaintComponent,
-    SidebarComponent
-  ],
+  declarations: [AppComponent],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
+    CommonModule, 
+    BrowserModule, 
+    ComplaintModule, 
     CondominialServicesModule,
-    LoginModule
+    LoginModule, 
+    SharedModule, 
+    RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' })
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
