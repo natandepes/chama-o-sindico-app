@@ -1,24 +1,27 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
+import { appRoutes } from './app.routes';
+import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { CondominialServicesModule } from './features/condominal-services/condominal-services.module';
-import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { LoginModule } from './features/authentication/login.module';
+import { CommonModule } from '@angular/common';
+import { CondominialServicesModule } from './features/condominal-services/condominal-services.module';
+import { AuthenticationModule } from './features/authentication/authentication.module';
+import { ComplaintModule } from './features/complaint/complaint.module';
+import { SharedModule } from './features/shared/shared.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
+    CommonModule,
     BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
+    ComplaintModule,
     CondominialServicesModule,
-    LoginModule
+    AuthenticationModule,
+    SharedModule,
+    RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

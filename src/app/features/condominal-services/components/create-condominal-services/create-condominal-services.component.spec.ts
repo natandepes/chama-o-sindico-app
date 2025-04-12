@@ -3,14 +3,13 @@ import { CreateCondominalServiceComponent } from './create-condominal-services.c
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CondominalServicesService } from '../../services/condominal-services.service';
-import { of } from 'rxjs';
 
 describe('CreateCondominalServiceComponent', () => {
   let component: CreateCondominalServiceComponent;
   let fixture: ComponentFixture<CreateCondominalServiceComponent>;
   let mockRouter = { navigate: jasmine.createSpy('navigate') };
   let mockService = {
-    saveService: jasmine.createSpy('saveService')
+    saveService: jasmine.createSpy('saveService'),
   };
 
   beforeEach(async () => {
@@ -19,8 +18,8 @@ describe('CreateCondominalServiceComponent', () => {
       imports: [ReactiveFormsModule], // Importa os módulos necessários para formulários reativos
       providers: [
         { provide: Router, useValue: mockRouter }, // Simula o Router
-        { provide: CondominalServicesService, useValue: mockService } // Simula o serviço
-      ]
+        { provide: CondominalServicesService, useValue: mockService }, // Simula o serviço
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CreateCondominalServiceComponent);
@@ -37,7 +36,7 @@ describe('CreateCondominalServiceComponent', () => {
       serviceName: '',
       serviceProvider: '',
       phone: '',
-      serviceDescription: ''
+      serviceDescription: '',
     });
   });
 
@@ -46,7 +45,7 @@ describe('CreateCondominalServiceComponent', () => {
       serviceName: 'Teste',
       serviceProvider: 'Empresa X',
       phone: '123456789',
-      serviceDescription: 'Descrição do serviço'
+      serviceDescription: 'Descrição do serviço',
     });
 
     component.onSubmit();

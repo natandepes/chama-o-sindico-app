@@ -2,30 +2,30 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CondominalServicesService } from '../../services/condominal-services.service';
+import { ROUTE_PATHS } from '../../../../app.paths';
 
 @Component({
   selector: 'app-create-service',
   templateUrl: './create-condominal-services.component.html',
-  styleUrls: ['./create-condominal-services.component.css'],
-  standalone: false
+  styleUrl: './create-condominal-services.component.scss',
+  standalone: false,
 })
 export class CreateCondominalServiceComponent {
-
   serviceForm: FormGroup;
   selectedImg: File | null = null;
   previewImg: string | null = null;
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private router: Router,
-    private condominalServicesService: CondominalServicesService
+    private condominalServicesService: CondominalServicesService,
   ) {
     this.serviceForm = this.fb.group({
       serviceName: ['', Validators.required],
       serviceProvider: ['', Validators.required],
       phone: ['', Validators.required],
       serviceDescription: [''],
-      img:['']
+      img: [''],
     });
   }
 
@@ -36,16 +36,15 @@ export class CreateCondominalServiceComponent {
       const reader = new FileReader();
       reader.onload = () => {
         this.previewImg = reader.result as string;
-  
+
         // Se quiser manter no form:
         this.serviceForm.patchValue({
-          img: this.previewImg
+          img: this.previewImg,
         });
       };
       reader.readAsDataURL(file);
     }
   }
-
 
   onDragOver(event: DragEvent): void {
     event.preventDefault();
@@ -82,7 +81,7 @@ export class CreateCondominalServiceComponent {
     if (this.serviceForm.valid) {
       const idServico = new Date().getTime().toString(); // Gera um ID único baseado no timestamp
       this.condominalServicesService.saveService(idServico, this.serviceForm.value);
-      this.router.navigate(['/service', idServico]);
+      this.router.navigate([ROUTE_PATHS.viewCondominalService.replace(':id', idServico)]);
     }
   }
 }
