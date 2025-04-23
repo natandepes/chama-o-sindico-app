@@ -3,12 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { appRoutes } from './app.routes';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { CondominialServicesModule } from './features/condominal-services/condominal-services.module';
 import { AuthenticationModule } from './features/authentication/authentication.module';
 import { ComplaintModule } from './features/complaint/complaint.module';
 import { SharedModule } from './features/shared/shared.module';
+import { AuthInterceptor } from './core/interceptors/auth/auth.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +22,9 @@ import { SharedModule } from './features/shared/shared.module';
     SharedModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
   ],
-  providers: [provideHttpClient(withInterceptorsFromDi())],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
