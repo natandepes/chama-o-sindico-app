@@ -11,8 +11,43 @@ import { ViewReservationComponent } from './features/reservations/components/vie
 import { ReservationFormComponent } from './features/reservations/components/reservation-form/reservation-form.component';
 import { ViewAreaComponent } from './features/reservations/components/view-area/view-area.component';
 import { AreaFormComponent } from './features/reservations/components/area-form/area-form.component';
+import { AuthGuard } from './core/guard/auth/auth.guard';
 
 export const appRoutes: Route[] = [
+  { 
+    path: ROUTE_PATHS.login, 
+    component: LoginComponent 
+  },
+  { 
+    path: ROUTE_PATHS.home, 
+    component: CreateComplaintComponent, 
+    canActivate: [AuthGuard]
+  }, // Vai mudar, é só pra deixar padronizado já
+  { 
+    path: ROUTE_PATHS.createCondominalService, 
+    component: CreateCondominalServiceComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: ROUTE_PATHS.viewCondominalService, 
+    component: ViewCondominalServiceComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: ROUTE_PATHS.createComplaint, 
+    component: CreateComplaintComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: ROUTE_PATHS.viewComplaint, 
+    component: ViewComplaintComponent,
+    canActivate: [AuthGuard] 
+  },
+  { 
+    path: ROUTE_PATHS.wildcard, 
+    redirectTo: ROUTE_PATHS.home, 
+    pathMatch: 'full' 
+  },
   { path: ROUTE_PATHS.login, component: LoginComponent },
   { path: ROUTE_PATHS.home, component: HomeComponent },
   { path: ROUTE_PATHS.createCondominalService, component: CreateCondominalServiceComponent },
