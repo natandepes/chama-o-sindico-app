@@ -5,12 +5,11 @@ export enum ComplaintStatus {
 }
 
 export interface ComplaintMock {
-  id: number;
-  subject: string;
-  occurredDate: Date;
-  resolvedDate: Date | null;
-  status: ComplaintStatus;
-  category: string;
+  id: string;
   description: string;
-  photo: string;
+  imageUrl: string;
+  status: ComplaintStatus;
+  createdAt: Date;
+  closedAt: Date | null;
+  createdByUserId: string;
 }

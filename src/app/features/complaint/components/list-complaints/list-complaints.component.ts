@@ -3,12 +3,12 @@ import { ComplaintService } from '../../services/complaint.service';
 import { ComplaintMock } from '../../models/complaint.models';
 
 @Component({
-  selector: 'app-view-complaint',
-  templateUrl: './view-complaint.component.html',
-  styleUrl: './view-complaint.component.scss',
+  selector: 'app-list-complaints',
+  templateUrl: './list-complaints.component.html',
+  styleUrl: './list-complaints.component.scss',
   standalone: false,
 })
-export class ViewComplaintComponent implements OnInit {
+export class ListComplaintsComponent implements OnInit {
   complaints: ComplaintMock[] = [];
   constructor(private complaintService: ComplaintService) {}
 
