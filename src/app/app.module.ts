@@ -9,6 +9,7 @@ import { CondominialServicesModule } from './features/condominal-services/condom
 import { AuthenticationModule } from './features/authentication/authentication.module';
 import { ComplaintModule } from './features/complaint/complaint.module';
 import { SharedModule } from './features/shared/shared.module';
+import { AreaReservationModule } from './features/reservas/area-reservation.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { SharedModule } from './features/shared/shared.module';
     BrowserModule,
     ComplaintModule,
     CondominialServicesModule,
+    AreaReservationModule,
     AuthenticationModule,
     SharedModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
