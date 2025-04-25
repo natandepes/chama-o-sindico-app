@@ -1,0 +1,34 @@
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+<div class="container">
+  <header class="header">
+    <div class="icons">
+      <button class="menu-icon">☰</button>
+    </div>
+    <h1 class="title">Serviço</h1>
+    <button class="icon-button" (click)="toEdit()">
+      <span class="material-icons">edit</span>
+    </button>
+  </header>
+
+  <div class="conteudo" *ngIf="service; else carregando">
+    <div class="service-image">
+      <img [src]="service['img']" alt="Imagem do serviço" class="preview-image" />
+    </div>
+
+    <h2 class="service-name">{{ service['serviceName'] }}</h2>
+
+    <label>Nome: </label>
+    <p>{{ service['serviceProvider'] }}</p>
+
+    <label>Contato:</label>
+    <p>{{ service['phone'] }}</p>
+
+    <label>Descrição:</label>
+    <p>{{ service['serviceDescription'] }}</p>
+  </div>
+  <ng-template #carregando>
+    <p>Carregando serviço...</p>
+  </ng-template>
+</div>

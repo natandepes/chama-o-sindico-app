@@ -1,0 +1,54 @@
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div class="login-container">
+  <div class="login-card">
+    <header class="login-header">
+      <h1>Login</h1>
+    </header>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="userName">Nome de Usuário</label>
+        <div class="input-container">
+          <input 
+            id="userName" 
+            type="text" 
+            formControlName="userName" 
+            placeholder="Digite seu nome de usuário" 
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="userPassword">Senha</label>
+        <div class="input-wrapper">
+          <input 
+            id="userPassword" 
+            [type]="hidePassword ? 'password' : 'text'" 
+            formControlName="userPassword" 
+            placeholder="Digite sua senha" 
+            required
+          />
+          <div class="input-addon" (click)="togglePasswordVisibility()">
+            <span class="material-icons">
+              {{ hidePassword ? 'visibility_off' : 'visibility' }}
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <button type="submit" class="login-button" [disabled]="!loginForm.valid">
+        Entrar
+      </button>
+
+      <div class="login-footer">
+        <a href="/forgot-password">Esqueceu sua senha?</a>
+
+        <a href="/register">Criar uma conta</a>
+      </div>
+    </form>
+  </div>
+</div>
