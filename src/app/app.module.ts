@@ -9,6 +9,7 @@ import { CondominialServicesModule } from './features/condominal-services/condom
 import { AuthenticationModule } from './features/authentication/authentication.module';
 import { ComplaintModule } from './features/complaint/complaint.module';
 import { SharedModule } from './features/shared/shared.module';
+import { ContactInfoModule } from './features/contact-info/contact-info.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +20,7 @@ import { SharedModule } from './features/shared/shared.module';
     CondominialServicesModule,
     AuthenticationModule,
     SharedModule,
+    ContactInfoModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],

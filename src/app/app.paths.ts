@@ -5,6 +5,7 @@ export interface RoutePaths {
   viewComplaint: string;
   createCondominalService: string;
   viewCondominalService: string;
+  contactInfo: string;
   wildcard: string;
 }
 
@@ -15,5 +16,6 @@ export const ROUTE_PATHS: RoutePaths = {
   viewComplaint: 'complaints/view',
   createCondominalService: 'condominal-service/create',
   viewCondominalService: 'condominal-service/view/:id',
+  contactInfo: 'contact-info',
   wildcard: '**',
 };
