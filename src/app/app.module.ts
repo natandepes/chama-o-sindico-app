@@ -10,6 +10,7 @@ import { AuthenticationModule } from './features/authentication/authentication.m
 import { ComplaintModule } from './features/complaint/complaint.module';
 import { SharedModule } from './features/shared/shared.module';
 import { AuthInterceptor } from './core/interceptors/auth/auth.interceptor';
+import { ResidentInfoModule } from './features/resident-info/resident-info.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +20,7 @@ import { AuthInterceptor } from './core/interceptors/auth/auth.interceptor';
     ComplaintModule,
     CondominialServicesModule,
     AuthenticationModule,
+    ResidentInfoModule,
     SharedModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
   ],

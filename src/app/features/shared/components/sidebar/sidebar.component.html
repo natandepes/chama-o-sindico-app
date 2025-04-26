@@ -1,10 +1,17 @@
 <div class="sidebar" [class.open]="isOpen">
-  <!-- TODO Posicionar botão no componente correto -->
   <button class="sidebar-toggle" (click)="toggleSidebar()">☰</button>
 
   <div class="menu-content">
     <h2>Serviços</h2>
     <h2>Denuncias</h2>
     <h2>Outro</h2>
+  </div>
+
+  <div class="user-info">
+    <p class="greeting">Olá, {{ userName }}!</p>
+    <div class="action-buttons">
+      <button class="profile-button" (click)="goToProfile()">Ver Perfil</button>
+      <button class="logout-button" (click)="logout()">Sair</button>
+    </div>
   </div>
 </div>

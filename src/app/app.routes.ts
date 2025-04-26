@@ -6,11 +6,17 @@ import { CreateComplaintComponent } from './features/complaint/components/create
 import { ViewComplaintComponent } from './features/complaint/components/view-complaint/view-complaint.component';
 import { LoginComponent } from './features/authentication/components/login/login.component';
 import { AuthGuard } from './core/guard/auth/auth.guard';
+import { ResidentRegistrationComponent } from './features/authentication/components/resident-registration/resident-registration.component';
+import { PersonalInfoComponent } from './features/resident-info/components/personal-info/personal-info.component';
 
 export const appRoutes: Route[] = [
   { 
     path: ROUTE_PATHS.login, 
     component: LoginComponent 
+  },
+  {
+    path: ROUTE_PATHS.register,
+    component: ResidentRegistrationComponent
   },
   { 
     path: ROUTE_PATHS.home, 
@@ -36,6 +42,11 @@ export const appRoutes: Route[] = [
     path: ROUTE_PATHS.viewComplaint, 
     component: ViewComplaintComponent,
     canActivate: [AuthGuard] 
+  },
+  {
+    path: ROUTE_PATHS.personalInfo,
+    component: PersonalInfoComponent,
+    canActivate: [AuthGuard]
   },
   { 
     path: ROUTE_PATHS.wildcard, 

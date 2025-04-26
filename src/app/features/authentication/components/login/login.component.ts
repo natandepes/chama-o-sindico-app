@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms'; 
 import { AuthService } from '../../services/auth.service';
+import { LoginModel } from '../../models/login.model';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +13,7 @@ import { AuthService } from '../../services/auth.service';
 export class LoginComponent {
   loginForm: FormGroup;
   hidePassword = true;
+  private loginModel!: LoginModel;
 
   constructor(
     private fb: FormBuilder,
@@ -20,25 +21,53 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      userName: ['', [Validators.required, Validators.minLength(3)]],
-      userPassword: ['', [Validators.required, Validators.minLength(6)]]
+      email: ['', [Validators.required, Validators.minLength(3)]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
-  onSubmit() {
+  protected onSubmit() {
     if (this.loginForm.valid) {
-      const { userName, userPassword } = this.loginForm.value;
-      this.authService.login(userName, userPassword).subscribe({
+      this.loginModel = this.transformToLoginModel();
+      
+      this.authService.login(this.loginModel).subscribe({
         next: (response) => {
-          // Redirecionar para a página principal após login bem-sucedido
-          this.router.navigate(['/dashboard']);
+          if (response.success && response.data) {
+            this.authService.setToken(response.data.token);
+            this.authService.setUserInfo(response.data.name, response.data.userId);
+
+            this.loginForm.reset();
+
+            this.router.navigate(['/complaints/create']);
+
+            alert('Login realizado com sucesso!');
+
+            return;
+          }
+
+          if (response.success == false) {
+            alert(response.message);
+            this.loginForm.reset();
+          }
         },
-        error: (error) => {
-          console.error('Erro no login:', error);
-          // Aqui você pode adicionar tratamento de erros (ex: mostrar mensagem para o usuário)
+        error: () => {
+          alert('Ocorreu um erro ao registrar o usuário. Tente novamente mais tarde.');
         }
       });
+    } else {
+      alert('Por favor, preencha todos os campos obrigatórios corretamente.');
     }
+  }
+
+  private transformToLoginModel(): LoginModel {
+    let model: LoginModel;
+
+    model = {
+      email: this.loginForm.get('email')?.value,
+      password: this.loginForm.get('password')?.value
+    };
+
+    return model;
   }
 
   togglePasswordVisibility() {

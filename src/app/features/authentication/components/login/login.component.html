@@ -9,13 +9,13 @@
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
       <div class="form-group">
-        <label for="userName">Nome de Usuário</label>
+        <label for="userName">E-mail:</label>
         <div class="input-container">
           <input 
-            id="userName" 
+            id="email" 
             type="text" 
-            formControlName="userName" 
-            placeholder="Digite seu nome de usuário" 
+            formControlName="email" 
+            placeholder="Digite seu e-mail" 
             required
           />
         </div>
@@ -25,9 +25,9 @@
         <label for="userPassword">Senha</label>
         <div class="input-wrapper">
           <input 
-            id="userPassword" 
+            id="password" 
             [type]="hidePassword ? 'password' : 'text'" 
-            formControlName="userPassword" 
+            formControlName="password" 
             placeholder="Digite sua senha" 
             required
           />
@@ -45,8 +45,6 @@
       </button>
 
       <div class="login-footer">
-        <a href="/forgot-password">Esqueceu sua senha?</a>
-
         <a href="/register">Criar uma conta</a>
       </div>
     </form>
