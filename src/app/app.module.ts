@@ -11,6 +11,7 @@ import { AuthenticationModule } from './features/authentication/authentication.m
 import { ComplaintModule } from './features/complaint/complaint.module';
 import { SharedModule } from './features/shared/shared.module';
 import { ContactInfoModule } from './features/contact-info/contact-info.module';
+import { AreaReservationModule } from './features/reservations/area-reservation.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +21,7 @@ import { ContactInfoModule } from './features/contact-info/contact-info.module';
     HomeModule,
     ComplaintModule,
     CondominialServicesModule,
+    AreaReservationModule,
     AuthenticationModule,
     SharedModule,
     ContactInfoModule,
