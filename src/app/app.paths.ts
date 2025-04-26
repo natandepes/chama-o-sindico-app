@@ -28,5 +28,6 @@ export const ROUTE_PATHS: RoutePaths = {
   createCondominalService: 'condominal-service/create',
   viewCondominalService: 'condominal-service/view/:id',
   contactInfo: 'contact-info',
+  personalInfo: 'personal-info',
   wildcard: '**',
 };

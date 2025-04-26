@@ -26,7 +26,7 @@ export const appRoutes: Route[] = [
   },
   { 
     path: ROUTE_PATHS.home, 
-    component: CreateComplaintComponent, 
+    component: HomeComponent, 
     canActivate: [AuthGuard]
   }, // Vai mudar, é só pra deixar padronizado já
   { 
@@ -55,20 +55,33 @@ export const appRoutes: Route[] = [
     canActivate: [AuthGuard]
   },
   { 
+    path: ROUTE_PATHS.contactInfo, 
+    component: ContactInfoComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: ROUTE_PATHS.viewReservation, 
+    component: ViewReservationComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: ROUTE_PATHS.viewArea, 
+    component: ViewAreaComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: ROUTE_PATHS.formArea, 
+    component: AreaFormComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: ROUTE_PATHS.formReservation, 
+    component: ReservationFormComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
     path: ROUTE_PATHS.wildcard, 
     redirectTo: ROUTE_PATHS.home, 
     pathMatch: 'full' 
-  },
-  { path: ROUTE_PATHS.login, component: LoginComponent },
-  { path: ROUTE_PATHS.home, component: HomeComponent },
-  { path: ROUTE_PATHS.createCondominalService, component: CreateCondominalServiceComponent },
-  { path: ROUTE_PATHS.viewCondominalService, component: ViewCondominalServiceComponent },
-  { path: ROUTE_PATHS.createComplaint, component: CreateComplaintComponent },
-  { path: ROUTE_PATHS.viewComplaint, component: ViewComplaintComponent },
-  { path: ROUTE_PATHS.contactInfo, component: ContactInfoComponent },
-  { path: ROUTE_PATHS.viewReservation, component: ViewReservationComponent },
-  { path: ROUTE_PATHS.viewArea, component: ViewAreaComponent },
-  { path: ROUTE_PATHS.formArea, component: AreaFormComponent },
-  { path: ROUTE_PATHS.formReservation, component: ReservationFormComponent },
-  { path: ROUTE_PATHS.wildcard, redirectTo: ROUTE_PATHS.home, pathMatch: 'full' },
+  }
 ];
