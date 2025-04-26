@@ -63,7 +63,7 @@ export class ResidentRegistrationComponent {
     }
   }
 
-  private tranformToResidentRegistrationModel(): ResidentRegistrationModel {
+  private transformToResidentRegistrationModel(): ResidentRegistrationModel {
     let model: ResidentRegistrationModel;
 
     model = {
