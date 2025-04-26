@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { AreaReservationService } from '../../services/area-reservation.service';
+import { ReservationService } from '../../services/reservation.service';
 
 @Component({
-  selector: 'app-area-reservation',
+  selector: 'app-view-reservation',
   standalone: false,
-  templateUrl: './area-reservation.component.html',
-  styleUrls: ['./area-reservation.component.css']
+  templateUrl: './view-reservation.component.html',
+  styleUrl: './view-reservation.component.css',
 })
-export class AreaReservationComponent implements OnInit {
-
+export class ViewReservationComponent implements OnInit {
   areaReservations: object[] = [];
 
-  constructor(private areaReservationService: AreaReservationService) {}
+  constructor(private areaReservationService: ReservationService) {}
 
   ngOnInit() {
     this.getAreaReservations();

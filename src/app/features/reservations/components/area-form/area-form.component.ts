@@ -1,28 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { AreaReservationService } from '../../services/area-reservation.service';
+import { ReservationService } from '../../services/reservation.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-form-area',
+  selector: 'app-area-form',
   standalone: false,
-  templateUrl: './form-area.component.html',
-  styleUrl: './form-area.component.css'
+  templateUrl: './area-form.component.html',
+  styleUrl: './area-form.component.css',
 })
-export class FormAreaComponent implements OnInit {
-  
-
-  constructor(private areaReservationService: AreaReservationService, private route: ActivatedRoute) { }
+export class AreaFormComponent implements OnInit {
+  constructor(
+    private areaReservationService: ReservationService,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
 
     if (id) {
       this.getArea(id);
-    } 
+    }
   }
 
   getArea(id: number) {
-    this.areaReservationService.getArea(id).subscribe((data) => {
+    this.areaReservationService.getArea(id).subscribe(data => {
       console.log('Area details:', data);
     });
   }
@@ -35,10 +36,10 @@ export class FormAreaComponent implements OnInit {
       location: 'Location of Area 1',
       capacity: 10,
       price: 100,
-      status: 'Available'
+      status: 'Available',
     };
 
-    this.areaReservationService.SaveArea(area).subscribe((data) => {
+    this.areaReservationService.SaveArea(area).subscribe(data => {
       console.log('Area created:', data);
     });
   }

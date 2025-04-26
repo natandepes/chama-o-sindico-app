@@ -1,20 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { AreaReservationService } from '../../services/area-reservation.service';
+import { ReservationService } from '../../services/reservation.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-reservation-form',
   standalone: false,
   templateUrl: './reservation-form.component.html',
-  styleUrl: './reservation-form.component.css'
+  styleUrl: './reservation-form.component.css',
 })
 export class ReservationFormComponent implements OnInit {
-
-  constructor(private areaReservationService: AreaReservationService, private route: ActivatedRoute) { }
+  constructor(
+    private areaReservationService: ReservationService,
+    private route: ActivatedRoute,
+  ) {}
   // Define any properties or methods needed for the component here
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    
+
     if (id) {
       this.getAreaReservation(Number(id));
     }
@@ -35,11 +37,13 @@ export class ReservationFormComponent implements OnInit {
       endDate: new Date(), // Example end date
     };
 
-    this.areaReservationService.saveAreaReservation(reservationData).subscribe(response => {
-      console.log('Reservation created successfully:', response);
-    }, error => {
-      console.error('Error creating reservation:', error);
-    });
+    this.areaReservationService.saveAreaReservation(reservationData).subscribe(
+      response => {
+        console.log('Reservation created successfully:', response);
+      },
+      error => {
+        console.error('Error creating reservation:', error);
+      },
+    );
   }
-
 }
