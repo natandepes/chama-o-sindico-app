@@ -13,6 +13,7 @@ import { SharedModule } from './features/shared/shared.module';
 import { ContactInfoModule } from './features/contact-info/contact-info.module';
 import { AreaReservationModule } from './features/reservations/area-reservation.module';
 import { AuthInterceptor } from './core/interceptors/auth/auth.interceptor';
+import { ResidentInfoModule } from './features/resident-info/resident-info.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { AuthInterceptor } from './core/interceptors/auth/auth.interceptor';
     CondominialServicesModule,
     AreaReservationModule,
     AuthenticationModule,
+    ResidentInfoModule,
     SharedModule,
     ContactInfoModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
