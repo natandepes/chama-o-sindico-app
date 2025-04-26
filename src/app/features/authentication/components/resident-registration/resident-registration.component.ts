@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class ResidentRegistrationComponent {
   protected registrationForm: FormGroup;
-  private residentRegistrationModel!: ResidentRegistrationModel;;
+  private residentRegistrationModel!: ResidentRegistrationModel;
 
   constructor(
     private fb: FormBuilder,
@@ -34,7 +34,7 @@ export class ResidentRegistrationComponent {
 
   protected onSubmit(): void {
     if (this.registrationForm.valid) {
-      this.residentRegistrationModel = this.tranformToResidentRegistrationModel();
+      this.residentRegistrationModel = this.transformToResidentRegistrationModel();
       
       this.authService.register(this.residentRegistrationModel).subscribe({
         next: (response) => {
