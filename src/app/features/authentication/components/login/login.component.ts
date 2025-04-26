@@ -51,7 +51,7 @@ export class LoginComponent {
           }
         },
         error: () => {
-          alert('Ocorreu um erro ao registrar o usuário. Tente novamente mais tarde.');
+          alert('Ocorreu um erro ao realizar o login. Tente novamente mais tarde.');
         }
       });
     } else {
