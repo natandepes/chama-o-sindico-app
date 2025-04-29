@@ -6,6 +6,7 @@
     <h2>Listagem de Denúncias</h2>
 
     <div *ngFor="let complaint of complaints" class="complaint-card">
+      <p>{{complaint.title}}</p>
       <h3>{{ complaint.description | slice:0:30 }}{{ complaint.description.length > 30 ? '...' : '' }}</h3>
       <p>
         <strong>Status:</strong>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ComplaintMock, ComplaintStatus } from '../../models/complaint.models';
+import { ComplaintService } from '../../services/complaint.service';
 
 @Component({
   selector: 'app-create-complaint',
@@ -7,39 +8,43 @@ import { ComplaintMock, ComplaintStatus } from '../../models/complaint.models';
   styleUrl: './create-complaint.component.scss',
   standalone: false,
 })
+
+
 export class CreateComplaintComponent {
-  id: number | null = null;
-  subject: string = '';
-  occurredDate: string = '';
+  id: string = '';
+  title: string = '';
   description: string = '';
-  category: string = 'Others';
   imageUrl: string | ArrayBuffer | null = null;
+  status!: ComplaintStatus;
+  createdAt!: Date;
+  closedAt!: Date;
+  createdByUserId: string = '';
+  closedByUserId: string = '';
   isMobile: boolean = false;
 
-  saveComplaint(): void {
-    const denuncia: ComplaintMock = {
-      id: this.id!,
-      subject: this.subject,
-      occurredDate: new Date(this.occurredDate),
-      resolvedDate: null,
+  constructor(private complaintService: ComplaintService) {}
+
+  createComplaint(): void {
+    const complaint: ComplaintMock = {
+      title: this.title,
+      id: '',
+      createdAt: new Date(this.createdAt),
+      closedAt: null,
       status: ComplaintStatus.Pending,
-      category: this.category,
       description: this.description,
-      photo: this.imageUrl ? (this.imageUrl as string) : '',
+      imageUrl: this.imageUrl ? (this.imageUrl as string) : '',
+      createdByUserId: this.createdByUserId,
+      closedByUserId: this.closedByUserId ? null: ''
     };
 
-    const json: string = JSON.stringify(denuncia, null, 2);
-    this.salvarArquivo(json, 'denuncia.json');
-  }
-
-  salvarArquivo(json: string, fileName: string): void {
-    console.log('Saving file:', fileName);
-    const blob = new Blob([json], { type: 'application/json' });
-    const link: HTMLAnchorElement = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
-    URL.revokeObjectURL(link.href);
+    this.complaintService.createComplaint(complaint).subscribe({
+      next: (response) => {
+        console.log('Complaint created successfully')
+      },
+      error:(err) => {
+        console.log('Error', err)
+      }
+    })
   }
 
   openImagePicker(): void {
