@@ -54,12 +54,14 @@ main {
 
 .list-title {
     padding: 1rem;
+    font-weight: bold;
 }
 
 .reservations-list{
     width: 100%;
     display: flex;
     flex-direction: column;
+    padding: 0 1rem;
     align-items: center;
     gap: 1rem;
 }

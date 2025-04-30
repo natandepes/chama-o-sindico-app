@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AreaReservationService } from '../../services/area-reservation.service';
 import { ActivatedRoute } from '@angular/router';
+import { AreaReservation } from '../../models/areaReservation.models';
 
 @Component({
   selector: 'app-reservation-form',
@@ -21,7 +22,7 @@ export class ReservationFormComponent implements OnInit {
   }
 
   getAreaReservation(id: number) {
-    this.areaReservationService.getAreaReservation(id).subscribe((data: object[]) => {
+    this.areaReservationService.getAreaReservation(id).subscribe((data: AreaReservation) => {
       console.log(data);
     });
   }
