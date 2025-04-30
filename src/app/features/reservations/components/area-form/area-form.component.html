@@ -1,0 +1,19 @@
+<main>
+    <div class="content-container">
+        <form>
+            <div class="form-group">
+                <label>Nome</label>
+                <input type="text" placeholder="Nome da Área">
+            </div>
+            <div class="form-group">
+                <label>Descrição</label>
+                <input type="text" placeholder="Descrição da Área">
+            </div>
+            <div class="form-group">
+                <label>Capacidade Total</label>
+                <input type="number" placeholder="Capacidade Total" min="1" max="500">
+            </div>
+        </form>
+        <button class="create-reservation-button" (click)="createArea()">Criar Reserva</button>
+    </div>
+</main>
