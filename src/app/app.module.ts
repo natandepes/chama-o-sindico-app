@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { appRoutes } from './app.routes';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { HomeModule } from './features/home/home.module';
 import { CondominialServicesModule } from './features/condominal-services/condominal-services.module';
@@ -12,6 +12,8 @@ import { ComplaintModule } from './features/complaint/complaint.module';
 import { SharedModule } from './features/shared/shared.module';
 import { ContactInfoModule } from './features/contact-info/contact-info.module';
 import { AreaReservationModule } from './features/reservations/area-reservation.module';
+import { AuthInterceptor } from './core/interceptors/auth/auth.interceptor';
+import { ResidentInfoModule } from './features/resident-info/resident-info.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,11 +25,14 @@ import { AreaReservationModule } from './features/reservations/area-reservation.
     CondominialServicesModule,
     AreaReservationModule,
     AuthenticationModule,
+    ResidentInfoModule,
     SharedModule,
     ContactInfoModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
   ],
-  providers: [provideHttpClient(withInterceptorsFromDi())],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

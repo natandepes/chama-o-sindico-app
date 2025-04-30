@@ -1,32 +1,87 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { ResidentRegistrationModel } from '../models/resident-registration.model';
+import { ApiResponse } from '../../../core/shared/api-response.model';
+import { AuthResultModel } from '../models/auth-result.model';
+import { LoginModel } from '../models/login.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://sua-api.com/auth'; // Substitua pela sua URL de API
+  private readonly API_URL = "https://localhost:7020/api";
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient, 
+    private router: Router
+  ) { }
 
-  login(userName: string, userPassword: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { userName, userPassword }).pipe(
-      tap((response: any) => {
-        // Armazene o token JWT ou outras informações de sessão
-        if (response.token) {
-          localStorage.setItem('authToken', response.token);
-        }
-      })
-    );
+  public login(loginDto: LoginModel) : Observable<ApiResponse<AuthResultModel>> {
+    return this.http.post<ApiResponse<AuthResultModel>>(`${this.API_URL}/Auth/LoginUser`, loginDto);
   }
 
-  logout() {
-    localStorage.removeItem('authToken');
+  public register(registerDto: ResidentRegistrationModel) : Observable<ApiResponse<AuthResultModel>> {
+    return this.http.post<ApiResponse<AuthResultModel>>(`${this.API_URL}/Auth/RegisterUser`, registerDto );
   }
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('authToken');
+  public deleteUser(userId: string): Observable<ApiResponse<string>> {
+    return this.http.delete<ApiResponse<string>>(`${this.API_URL}/Auth/DeleteUser/${userId}`);
+  }
+
+  public setToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  public getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  public isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+
+  public setUserInfo(name: string, userId: string): void {
+    localStorage.setItem('userName', name);
+    localStorage.setItem('userId', userId);
+  }
+  
+  public getUserName(): string | null {
+    return localStorage.getItem('userName');
+  }
+
+  public getUserId(): string | null {
+    return localStorage.getItem('userId');
+  }
+
+  private clearStorage(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userId');
+  }
+
+  public logout() : void {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.http.post(`${this.API_URL}/Auth/LogoutUser`, {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .subscribe({
+      next: () => {
+        this.clearStorage();
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('Logout error:', err);
+        // even if server fails, clear token client-side
+        this.clearStorage();
+        this.router.navigate(['/']);
+      }
+    });
   }
 }

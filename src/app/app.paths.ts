@@ -1,5 +1,6 @@
 export interface RoutePaths {
   login: string;
+  register: string;
   home: string;
   createComplaint: string;
   viewComplaint: string;
@@ -10,11 +11,13 @@ export interface RoutePaths {
   formArea: string;
   viewReservation: string;
   formReservation: string;
+  personalInfo: string;
   wildcard: string;
 }
 
 export const ROUTE_PATHS: RoutePaths = {
   login: 'login',
+  register: 'register',
   home: 'home',
   createComplaint: 'complaints/create',
   viewComplaint: 'complaints/view',
@@ -25,5 +28,6 @@ export const ROUTE_PATHS: RoutePaths = {
   createCondominalService: 'condominal-service/create',
   viewCondominalService: 'condominal-service/view/:id',
   contactInfo: 'contact-info',
+  personalInfo: 'personal-info',
   wildcard: '**',
 };
