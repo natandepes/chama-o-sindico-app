@@ -6,6 +6,8 @@ import { ResidentRegistrationModel } from '../models/resident-registration.model
 import { ApiResponse } from '../../../core/shared/api-response.model';
 import { AuthResultModel } from '../models/auth-result.model';
 import { LoginModel } from '../models/login.model';
+import { UserRole } from '../models/user-roles.model';
+import { jwtDecode } from "jwt-decode";
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +63,31 @@ export class AuthService {
     localStorage.removeItem('userId');
   }
 
+  public getUserRole(): UserRole | null {
+    const token = this.getToken();
+
+    if (!token) {
+      return null;
+    }
+
+    try {
+      const decoded: any = jwtDecode(token);
+      const roleStr = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
+      switch (roleStr) {
+        case 'Resident':
+          return UserRole.Resident;
+        case 'CondominalManager':
+          return UserRole.CondominalManager;
+        default:
+          return null;
+      }
+    } catch (e) {
+      return null;
+    }
+
+  }
+
   public logout() : void {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -74,13 +101,13 @@ export class AuthService {
     .subscribe({
       next: () => {
         this.clearStorage();
-        this.router.navigate(['/']);
+        this.router.navigate(['/login']);
       },
       error: (err) => {
         console.error('Logout error:', err);
         // even if server fails, clear token client-side
         this.clearStorage();
-        this.router.navigate(['/']);
+        this.router.navigate(['/login']);
       }
     });
   }
