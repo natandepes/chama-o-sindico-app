@@ -7,10 +7,6 @@ export interface RoutePaths {
   createCondominalService: string;
   viewCondominalService: string;
   contactInfo: string;
-  viewArea: string;
-  formArea: string;
-  viewReservation: string;
-  formReservation: string;
   personalInfo: string;
   viewArea: string;
   formArea: string;

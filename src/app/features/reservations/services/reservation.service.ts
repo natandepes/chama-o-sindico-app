@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class ReservationService {
   constructor(private http: HttpClient) {}
 
-  private readonly baseUrl = 'https://localhost:7020';
+  private readonly baseUrl = 'https://localhost:7020/api';
 
   public getAreas(): Observable<object[]> {
     return this.http.get<object[]>(`${this.baseUrl}/Area/GetAllAreas`);

@@ -1,17 +1,30 @@
 <main>
     <div class="content-container">
-        <form>
+        <form [formGroup]="formulario">
             <div class="form-group">
                 <label>Nome</label>
-                <input type="text" placeholder="Nome da Área">
+                <input type="text" formControlName="name" placeholder="Nome da Área">
             </div>
             <div class="form-group">
                 <label>Descrição</label>
-                <input type="text" placeholder="Descrição da Área">
+                <input type="text" formControlName="description" placeholder="Descrição da Área">
             </div>
             <div class="form-group">
                 <label>Capacidade Total</label>
-                <input type="number" placeholder="Capacidade Total" min="1" max="500">
+                <input type="number" formControlName="capacity" placeholder="Capacidade Total" min="1" max="500">
+            </div>
+            <div class="form-group">
+                <label>Informe o Horário Disponível para reserva</label>
+                <div class="form-group">
+                    <div class="input">
+                        <label>Hora Início:</label>
+                        <input type="time" formControlName="openTime" placeholder="Hora Início">
+                    </div>
+                    <div class="input">
+                        <label>Hora Fim:</label>
+                        <input type="time" formControlName="closeTime" placeholder="Hora Fim">
+                    </div>
+                </div>
             </div>
         </form>
         <button class="create-reservation-button" (click)="createArea()">Criar Reserva</button>
