@@ -10,8 +10,10 @@ export interface RoutePaths {
   personalInfo: string;
   viewArea: string;
   formArea: string;
+  formAreaEdit: string;
   viewReservation: string;
   formReservation: string;
+  formReservationEdit: string;
   wildcard: string;
 }
 
@@ -24,7 +26,9 @@ export const ROUTE_PATHS: RoutePaths = {
   viewReservation: 'reservations/view',
   viewArea: 'areas/view',
   formArea: 'areas/form',
+  formAreaEdit: 'areas/form/:id',
   formReservation: 'reservations/form',
+  formReservationEdit: 'reservations/form/:id',
   createCondominalService: 'condominal-service/create',
   viewCondominalService: 'condominal-service/view/:id',
   contactInfo: 'contact-info',

@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Area } from '../models/area.model';
+import { ApiResponse } from '../../../core/shared/api-response.model';
+import { AreaReservation } from '../models/area-reservation.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,35 +13,35 @@ export class ReservationService {
 
   private readonly baseUrl = 'https://localhost:7020/api';
 
-  public getAreas(): Observable<object[]> {
-    return this.http.get<object[]>(`${this.baseUrl}/Area/GetAllAreas`);
+  public getAreas(): Observable<ApiResponse<Area[]>> {
+    return this.http.get<ApiResponse<Area[]>>(`${this.baseUrl}/Area/GetAllAreas`);
   }
 
-  public getArea(id: number): Observable<object[]> {
-    return this.http.get<object[]>(`${this.baseUrl}/Area/GetAreaById/${id}`);
+  public getArea(id: string): Observable<ApiResponse<Area>> {
+    return this.http.get<ApiResponse<Area>>(`${this.baseUrl}/Area/GetAreaById/${id}`);
   }
 
-  public SaveArea(area: object): Observable<object[]> {
-    return this.http.post<object[]>(`${this.baseUrl}/Area/SaveArea`, area);
+  public saveArea(area: Area): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(`${this.baseUrl}/Area/SaveArea`, area);
   }
 
-  public DeleteArea(id: number): Observable<object[]> {
-    return this.http.delete<object[]>(`${this.baseUrl}/Area/DeleteArea/${id}`);
+  public deleteArea(id: string): Observable<ApiResponse<string>> {
+    return this.http.delete<ApiResponse<string>>(`${this.baseUrl}/Area/DeleteArea/${id}`);
   }
 
-  public getAreaReservations(id: number): Observable<object[]> {
-    return this.http.get<object[]>(`${this.baseUrl}/Area/GetAllAreaReservations/${id}`);
+  public getAreaReservations(): Observable<ApiResponse<AreaReservation[]>> {
+    return this.http.get<ApiResponse<AreaReservation[]>>(`${this.baseUrl}/Area/GetAllAreaReservations`);
   }
 
-  public getAreaReservation(id: number): Observable<object[]> {
-    return this.http.get<object[]>(`${this.baseUrl}/Area/GetAreaReservationById/${id}`);
+  public getAreaReservation(id: string): Observable<ApiResponse<AreaReservation>> {
+    return this.http.get<ApiResponse<AreaReservation>>(`${this.baseUrl}/Area/GetAreaReservationById/${id}`);
   }
 
-  public saveAreaReservation(areaReservation: object): Observable<object[]> {
-    return this.http.post<object[]>(`${this.baseUrl}/Area/SaveAreaReservation`, areaReservation);
+  public saveAreaReservation(areaReservation: AreaReservation): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(`${this.baseUrl}/Area/SaveAreaReservation`, areaReservation);
   }
 
-  public deleteAreaReservation(id: number): Observable<object[]> {
-    return this.http.delete<object[]>(`${this.baseUrl}/Area/DeleteAreaReservation/${id}`);
+  public deleteAreaReservation(id: string): Observable<ApiResponse<string>> {
+    return this.http.delete<ApiResponse<string>>(`${this.baseUrl}/Area/DeleteAreaReservation/${id}`);
   }
 }

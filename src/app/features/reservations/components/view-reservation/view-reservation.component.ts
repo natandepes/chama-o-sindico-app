@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReservationService } from '../../services/reservation.service';
+import { AreaReservation } from '../../models/area-reservation.model';
 
 @Component({
   selector: 'app-view-reservation',
@@ -8,7 +9,7 @@ import { ReservationService } from '../../services/reservation.service';
   styleUrl: './view-reservation.component.css',
 })
 export class ViewReservationComponent implements OnInit {
-  areaReservations: object[] = [];
+  areaReservations: AreaReservation[] = [];
 
   constructor(private areaReservationService: ReservationService) {}
 
@@ -17,13 +18,13 @@ export class ViewReservationComponent implements OnInit {
   }
 
   getAreaReservations() {
-    this.areaReservationService.getAreaReservations(1).subscribe((data: object[]) => {
-      this.areaReservations = data;
+    this.areaReservationService.getAreaReservations().subscribe((data) => {
+      this.areaReservations = data.data ?? [] as AreaReservation[];
     });
   }
 
-  getAreaReservation(id: number) {
-    this.areaReservationService.getAreaReservation(id).subscribe((data: object[]) => {
+  getAreaReservation(id: string) {
+    this.areaReservationService.getAreaReservation(id).subscribe((data) => {
       console.log(data);
     });
   }

@@ -75,7 +75,17 @@ export const appRoutes: Route[] = [
     canActivate: [AuthGuard]
   },
   { 
+    path: ROUTE_PATHS.formAreaEdit, 
+    component: AreaFormComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
     path: ROUTE_PATHS.formReservation, 
+    component: ReservationFormComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: ROUTE_PATHS.formReservationEdit, 
     component: ReservationFormComponent,
     canActivate: [AuthGuard]
   },

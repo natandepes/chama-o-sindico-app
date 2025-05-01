@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ReservationService } from '../../services/reservation.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Area } from '../../models/area.model';
 
 @Component({
   selector: 'app-area-form',
@@ -12,12 +13,27 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class AreaFormComponent implements OnInit {
 
   formulario!: FormGroup;
-  areaId!: number;
+  area!: Area;
+  areaId!: string;
 
   constructor(
     private areaReservationService: ReservationService,
     private route: ActivatedRoute,
+    private router: Router
   ) {
+    this.initForm();
+  }
+
+  ngOnInit() {
+    const id = this.route.snapshot.params['id'] as string;
+
+    if (id) {
+      this.areaId = id;
+      this.getArea(id);
+    }
+  }
+
+  initForm(){
     this.formulario = new FormGroup({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
@@ -28,44 +44,59 @@ export class AreaFormComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    const id = this.route.snapshot.params['id'];
-
-    if (id) {
-      this.areaId = id;
-      this.getArea(id);
-    }
-  }
-
-  getArea(id: number) {
+  getArea(id: string) {
     this.areaReservationService.getArea(id).subscribe(data => {
-      console.log('Area details:', data);
+      this.area = data.data!;
+      this.setFormValues();
     });
   }
 
-  formatTimeToDate(time: string): Date {
-    const [hours, minutes] = time.split(':').map(Number);
-    const date = new Date();
-    date.setHours(hours, minutes, 0, 0); // Set hours and minutes
-    return date;
+  setFormValues() {
+    this.formulario.patchValue({
+      name: this.area.name,
+      description: this.area.description,
+      capacity: this.area.capacity,
+      status: this.area.status,
+      openTime: this.area.openTime,
+      closeTime: this.area.closeTime,
+    });
   }
 
-  createArea() {
+  formatTime(time: string): string {
+    const parts = time.split(':');
+
+    if(parts.length < 2){
+      return time + ':00'; 
+    }
+    
+    return time;
+  }
+
+  saveArea() {
     const area = this.areaId ? 
       {
         id: this.areaId, 
         ...this.formulario.value!,
-        openTime: this.formatTimeToDate(this.formulario.get('openTime')?.value), 
-        closeTime: this.formatTimeToDate(this.formulario.get('closeTime')?.value),
+        openTime: this.formatTime(this.formulario.get('openTime')?.value), 
+        closeTime: this.formatTime(this.formulario.get('closeTime')?.value),
       } : 
       {
         ...this.formulario.value!,
-        openTime: this.formatTimeToDate(this.formulario.get('openTime')?.value), 
-        closeTime: this.formatTimeToDate(this.formulario.get('closeTime')?.value),
+        openTime: this.formatTime(this.formulario.get('openTime')?.value), 
+        closeTime: this.formatTime(this.formulario.get('closeTime')?.value),
       }
 
-    this.areaReservationService.SaveArea(area).subscribe(() => {
-      alert('Area created:' + area.name);
+    this.areaReservationService.saveArea(area).subscribe({
+      next: (data) => {
+        if (data.success) {
+          this.router.navigate(['/areas/view']);
+        } else {
+          console.error(data.message);
+        }
+      },
+      error: (error) => {
+        console.error(error);
+      },
     });
   }
 }
