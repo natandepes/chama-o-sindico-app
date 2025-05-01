@@ -14,6 +14,8 @@ import { AreaFormComponent } from './features/reservations/components/area-form/
 import { AuthGuard } from './core/guard/auth/auth.guard';
 import { ResidentRegistrationComponent } from './features/authentication/components/resident-registration/resident-registration.component';
 import { PersonalInfoComponent } from './features/resident-info/components/personal-info/personal-info.component';
+import { UserRole } from './features/authentication/models/user-roles.model';
+import { RoleGuard } from './core/guard/auth/role.guard';
 
 export const appRoutes: Route[] = [
   { 
@@ -27,7 +29,10 @@ export const appRoutes: Route[] = [
   { 
     path: ROUTE_PATHS.home, 
     component: HomeComponent, 
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard],
+    data: {
+      roles: [UserRole.CondominalManager]
+    }
   }, // Vai mudar, é só pra deixar padronizado já
   { 
     path: ROUTE_PATHS.createCondominalService, 
