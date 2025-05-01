@@ -36,6 +36,10 @@ export class ReservationService {
   public getAreaReservation(id: string): Observable<ApiResponse<AreaReservation>> {
     return this.http.get<ApiResponse<AreaReservation>>(`${this.baseUrl}/Area/GetAreaReservationById/${id}`);
   }
+  
+  public getUserAreaReservations(id: string): Observable<ApiResponse<AreaReservation[]>> {
+    return this.http.get<ApiResponse<AreaReservation[]>>(`${this.baseUrl}/Area/GetAllAreaReservationsByUser/${id}`);
+  }
 
   public saveAreaReservation(areaReservation: AreaReservation): Observable<ApiResponse<string>> {
     return this.http.post<ApiResponse<string>>(`${this.baseUrl}/Area/SaveAreaReservation`, areaReservation);

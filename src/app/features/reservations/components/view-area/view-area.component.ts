@@ -11,12 +11,23 @@ import { Area } from '../../models/area.model';
 export class ViewAreaComponent implements OnInit{
 
   areas: Area[] = [];
+  searchText: string = '';
 
   constructor(private areaReservationService: ReservationService) {}
   
 
   ngOnInit() {
     this.getAreas();
+  }
+
+  filterAreas() {
+    if (this.searchText) {
+      return this.areas.filter(area =>
+        area.name.toUpperCase().includes(this.searchText.toUpperCase())
+        || area.description.toUpperCase().includes(this.searchText.toUpperCase())
+      );
+    }
+    return this.areas;
   }
 
   getAreas() {

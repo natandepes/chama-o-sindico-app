@@ -69,7 +69,7 @@ export class AreaFormComponent implements OnInit {
       return time + ':00'; 
     }
     
-    return time;
+    return time.padEnd(5, ':00');
   }
 
   saveArea() {

@@ -5,13 +5,14 @@ import { ReservationFormComponent } from './components/reservation-form/reservat
 import { RouterModule } from '@angular/router';
 import { ViewAreaComponent } from './components/view-area/view-area.component';
 import { AreaFormComponent } from './components/area-form/area-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ViewReservationComponent, ReservationFormComponent, ViewAreaComponent, AreaFormComponent],
   imports: [
     CommonModule, 
     RouterModule,
+    FormsModule,
     ReactiveFormsModule
   ],
   exports: [ViewReservationComponent, ReservationFormComponent, ViewAreaComponent, AreaFormComponent],

@@ -70,9 +70,18 @@ main {
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     padding: 0.5rem;
-    flex-direction: column;
+    justify-content: space-between;
     padding: 0.5rem 1rem;
-    align-items: flex-start;
 }
 
+.info{
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+}
 
+.buttons{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
