@@ -12,13 +12,13 @@ export enum ComplaintStatus {
 }
 
 export interface ComplaintMock {
-  id: string;
+  id?: string;
   title: string;
   description: string;
-  imageUrl: string;
-  status: ComplaintStatus;
+  imageUrl: string | ArrayBuffer | null;
+  status?: ComplaintStatus;
   createdAt: Date;
-  closedAt: Date | null;
-  createdByUserId: string;
-  closedByUserId: string | null;
+  closedAt?: Date | null;
+  createdByUserId: string | null;
+  closedByUserId?: string | null;
 }

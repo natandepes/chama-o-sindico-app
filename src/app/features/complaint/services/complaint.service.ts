@@ -20,6 +20,10 @@ export class ComplaintService {
     return this.http.get<ComplaintMock[]>(`${this.apiUrl}/api/Complaint/GetAllComplaints`);
   }
 
+  getAllComplaintsByUserId(): Observable<ComplaintMock[]> {
+    return this.http.get<ComplaintMock[]>(`${this.apiUrl}/api/Complaint/GetAllComplaintsAsyncByUserId`);
+  }
+
   createComplaint(complaintData: ComplaintMock): Observable<ApiResponse<string>> {
     return this.http.post<ApiResponse<string>>(
       `${this.apiUrl}/api/Complaint/CreateComplaint`,
