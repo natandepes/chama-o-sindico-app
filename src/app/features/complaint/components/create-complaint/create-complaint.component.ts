@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ComplaintMock, ComplaintStatus } from '../../models/complaint.models';
 import { ComplaintService } from '../../services/complaint.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-create-complaint',
@@ -11,40 +12,54 @@ import { ComplaintService } from '../../services/complaint.service';
 
 
 export class CreateComplaintComponent {
-  id: string = '';
-  title: string = '';
-  description: string = '';
-  imageUrl: string | ArrayBuffer | null = null;
-  status!: ComplaintStatus;
-  createdAt!: Date;
-  closedAt!: Date;
-  createdByUserId: string = '';
-  closedByUserId: string = '';
-  isMobile: boolean = false;
+  protected complaintForm: FormGroup;
+  private complaintModel!: ComplaintMock
 
-  constructor(private complaintService: ComplaintService) {}
+  closedAt!: Date;
+  userId: string | null = '';
+  closedByUserId: string = '';
+  urlImagem: string | ArrayBuffer | null = '';
+  isMobile: boolean = false;
+  
+
+  constructor(
+    private complaintService: ComplaintService,
+    private formBuilder: FormBuilder,
+
+  ) {
+    this.complaintForm = this.formBuilder.group(
+      {
+        title: ['', Validators.required],
+        description:['', Validators.required],
+        createdAt: ['', Validators.required],
+      })
+  }
+
+
+  ngOnInit()
+  {
+    this.userId = localStorage.getItem('userId');
+  }
 
   createComplaint(): void {
-    const complaint: ComplaintMock = {
-      title: this.title,
-      id: '',
-      createdAt: new Date(this.createdAt),
-      closedAt: null,
-      status: ComplaintStatus.Pending,
-      description: this.description,
-      imageUrl: this.imageUrl ? (this.imageUrl as string) : '',
-      createdByUserId: this.createdByUserId,
-      closedByUserId: this.closedByUserId ? null: ''
-    };
+    console.log('clicou')
+    if(this.complaintForm.valid)
+    {
+      console.log('Entrou')
+      this.complaintModel = this.transformToComplaintModel();
 
-    this.complaintService.createComplaint(complaint).subscribe({
-      next: (response) => {
-        console.log('Complaint created successfully')
-      },
-      error:(err) => {
-        console.log('Error', err)
-      }
-    })
+      this.complaintService.createComplaint(this.complaintModel).subscribe({
+        next: (response) => {
+          console.log('Complaint created successfully')
+        },
+        error:(err) => {
+          console.log('Error', err)
+        }
+      })
+    }
+    else{
+      alert('Preencha os campos obrigatórios corretamente')
+    }
   }
 
   openImagePicker(): void {
@@ -76,11 +91,28 @@ export class CreateComplaintComponent {
     if (file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = e => {
-        this.imageUrl = e.target?.result || null;
+        this.urlImagem = e.target?.result || null;
       };
       reader.readAsDataURL(file);
     } else {
       alert('Please, select a valid image.');
     }
+  }
+
+  private transformToComplaintModel(): ComplaintMock 
+  {
+    let model: ComplaintMock;
+    
+    model = 
+    {
+      title: this.complaintForm.get('title')?.value,
+      description: this.complaintForm.get('description')?.value,
+      imageUrl: this.urlImagem,
+      createdAt: this.complaintForm.get('createdAt')?.value,
+      createdByUserId : this.userId
+
+    }
+    
+    return model;
   }
 }
