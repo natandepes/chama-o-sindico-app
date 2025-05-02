@@ -1,0 +1,71 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif;
+  padding: 1rem;
+  background-color: #f0f0f0;
+}
+
+.container {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+.container h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-info-item-label {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.contact-input-readonly {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .container h1 {
+    font-size: 1.5rem;
+  }
+
+  .contact-info-item-label {
+    font-size: 1rem;
+  }
+
+  .contact-input-readonly {
+    font-size: 0.95rem;
+  }
+}
