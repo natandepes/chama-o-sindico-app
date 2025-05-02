@@ -36,6 +36,11 @@ export class ComplaintService {
     );
   }
 
+  deleteComplaint(idComplaint: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/Complaint/DeleteComplaint`, idComplaint);
+  }
+
+
   // getComplaintById(id: number): Observable<ComplaintMock> {
   //   const complaint = this.complaints.find(d => d.id === id);
   //   if (!complaint) {
