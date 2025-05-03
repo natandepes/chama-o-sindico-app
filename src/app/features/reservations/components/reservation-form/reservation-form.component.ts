@@ -50,11 +50,18 @@ export class ReservationFormComponent implements OnInit {
     });
   }
 
+  calculateLengthTime(type: string): string {
+    if(type === 'start'){
+      return this.areas.filter(area => area.id === this.formulario.value.areaId)[0].openTime;
+    }
+    
+    return this.areas.filter(area => area.id === this.formulario.value.areaId)[0].closeTime;
+  }
+
   initForm() {
     this.formulario = new FormGroup({
       areaId: new FormControl('', Validators.required),
       createdByUserId: new FormControl('', Validators.required),
-      status: new FormControl('', Validators.required),
       date: new FormControl(new Date(), Validators.required),
       startTime: new FormControl('', Validators.required),
       endTime: new FormControl('', Validators.required),
@@ -90,26 +97,31 @@ export class ReservationFormComponent implements OnInit {
   }
 
   saveAreaReservation() {
-    const reservationData: AreaReservation = {
-      areaId: this.formulario.value.areaId,
-      areaName: this.areas.find(area => area.id === this.formulario.value.areaId)?.name ?? '',
-      createdByUserId: this.userId,
-      startDate: this.combineDateAndTime(this.formulario.value.date, this.formulario.value.startTime),
-      endDate: this.combineDateAndTime(this.formulario.value.date, this.formulario.value.endTime),
-      status: "Approved",
-    };
-
-    if (this.areaReservationId) {
-      reservationData.id = this.areaReservationId;
+    if(this.formulario.valid){
+      const reservationData: AreaReservation = {
+        areaId: this.formulario.value.areaId,
+        areaName: this.areas.find(area => area.id === this.formulario.value.areaId)?.name ?? '',
+        createdByUserId: this.userId,
+        startDate: this.combineDateAndTime(this.formulario.value.date, this.formulario.value.startTime),
+        endDate: this.combineDateAndTime(this.formulario.value.date, this.formulario.value.endTime),
+        status: "WaitingApproval",
+      };
+  
+      if (this.areaReservationId) {
+        reservationData.id = this.areaReservationId;
+      }
+  
+      this.areaReservationService.saveAreaReservation(reservationData).subscribe(
+        () => {
+          this.router.navigate(['/reservations/view']);
+        },
+        error => {
+          console.error('Error creating reservation:', error);
+        },
+      );
     }
-
-    this.areaReservationService.saveAreaReservation(reservationData).subscribe(
-      () => {
-        this.router.navigate(['/reservations/view']);
-      },
-      error => {
-        console.error('Error creating reservation:', error);
-      },
-    );
+    else {
+      alert('Preencha todos os campos obrigatórios !');
+    }
   }
 }

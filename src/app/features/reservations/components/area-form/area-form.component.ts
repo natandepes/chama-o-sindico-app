@@ -73,30 +73,35 @@ export class AreaFormComponent implements OnInit {
   }
 
   saveArea() {
-    const area = this.areaId ? 
-      {
-        id: this.areaId, 
-        ...this.formulario.value!,
-        openTime: this.formatTime(this.formulario.get('openTime')?.value), 
-        closeTime: this.formatTime(this.formulario.get('closeTime')?.value),
-      } : 
-      {
-        ...this.formulario.value!,
-        openTime: this.formatTime(this.formulario.get('openTime')?.value), 
-        closeTime: this.formatTime(this.formulario.get('closeTime')?.value),
-      }
-
-    this.areaReservationService.saveArea(area).subscribe({
-      next: (data) => {
-        if (data.success) {
-          this.router.navigate(['/areas/view']);
-        } else {
-          console.error(data.message);
+    if(this.formulario.valid){
+      const area = this.areaId ? 
+        {
+          id: this.areaId, 
+          ...this.formulario.value!,
+          openTime: this.formatTime(this.formulario.get('openTime')?.value), 
+          closeTime: this.formatTime(this.formulario.get('closeTime')?.value),
+        } : 
+        {
+          ...this.formulario.value!,
+          openTime: this.formatTime(this.formulario.get('openTime')?.value), 
+          closeTime: this.formatTime(this.formulario.get('closeTime')?.value),
         }
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+
+      this.areaReservationService.saveArea(area).subscribe({
+        next: (data) => {
+          if (data.success) {
+            this.router.navigate(['/areas/view']);
+          } else {
+            console.error(data.message);
+          }
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+    }
+    else{
+      alert("Preencha todos os campos obrigatórios !")
+    }
   }
 }
