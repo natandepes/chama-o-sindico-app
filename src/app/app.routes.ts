@@ -14,6 +14,8 @@ import { AreaFormComponent } from './features/reservations/components/area-form/
 import { AuthGuard } from './core/guard/auth/auth.guard';
 import { ResidentRegistrationComponent } from './features/authentication/components/resident-registration/resident-registration.component';
 import { PersonalInfoComponent } from './features/resident-info/components/personal-info/personal-info.component';
+import { ViewVehiclesComponent } from './features/vehicles/components/view-vehicles/view-vehicles.component';
+import { FormVehiclesComponent } from './features/vehicles/components/form-vehicles/form-vehicles.component';
 
 export const appRoutes: Route[] = [
   { 
@@ -88,6 +90,21 @@ export const appRoutes: Route[] = [
   { 
     path: ROUTE_PATHS.formReservation, 
     component: ReservationFormComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: ROUTE_PATHS.viewVehicle,
+    component: ViewVehiclesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: ROUTE_PATHS.formVehicle,
+    component: FormVehiclesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: ROUTE_PATHS.editVehicle,
+    component: FormVehiclesComponent,
     canActivate: [AuthGuard]
   },
   { 
