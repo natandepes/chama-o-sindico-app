@@ -54,12 +54,14 @@ main {
 
 .list-title {
     padding: 1rem;
+    font-weight: bold;
 }
 
 .reservations-list{
     width: 100%;
     display: flex;
     flex-direction: column;
+    padding: 0 1rem;
     align-items: center;
     gap: 1rem;
 }
@@ -70,18 +72,9 @@ main {
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     padding: 0.5rem;
-    justify-content: space-between;
-    padding: 0.5rem 1rem;
-}
-
-.info{
-    display: flex;
-    gap: 0.5rem;
     flex-direction: column;
+    padding: 0.5rem 1rem;
+    align-items: flex-start;
 }
 
-.buttons{
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
+

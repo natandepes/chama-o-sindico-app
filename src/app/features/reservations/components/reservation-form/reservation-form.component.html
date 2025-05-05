@@ -1,31 +1,36 @@
 <main>
     <div class="content-container">
-        <form>
+        <form [formGroup]="formulario">
             <div class="form-group">
-                <label>Selecione a Área</label>
-                <select>
-                    <option>Piscina</option>
-                    <option>Churrasqueira</option>
+                <label>Selecione a Área <span style="color: red;">*</span></label>
+                <select formControlName="areaId" class="form-control">
+                    <option value="" disabled hidden>Selecione a área</option>
+                    @for (item of areas; track $index) {
+                        <option [value]="item.id">{{item.name}}</option>
+                    }
+                    @empty {
+                        <option value="">Nenhuma área disponível</option>
+                    }
                 </select>
             </div>
             <div class="form-group">
-                <label>Selecione a Data</label>
-                <input type="date">
+                <label>Selecione a Data <span style="color: red;">*</span></label>
+                <input formControlName="date" type="date">
             </div>
             <div class="form-group">
-                <label>Informe o Intervalo de duração da reserva:</label>
+                <label>Informe o Intervalo de duração da reserva: <span style="color: red;">*</span></label>
                 <div class="form-group">
                     <div class="input">
                         <label>Hora Início:</label>
-                        <input type="time">
+                        <input formControlName="startTime" [min]="calculateLengthTime('start')" [max]="calculateLengthTime('end')" type="time">
                     </div>
                     <div class="input">
                         <label>Hora Fim:</label>
-                        <input type="time">
+                        <input formControlName="endTime" [min]="calculateLengthTime('start')" [max]="calculateLengthTime('end')" type="time">
                     </div>
                 </div>
             </div>
         </form>
-        <button class="create-reservation-button" (click)="createAreaReservation()">Criar Reserva</button>
+        <button class="create-reservation-button" (click)="saveAreaReservation()">Criar Reserva</button>
     </div>
 </main>
