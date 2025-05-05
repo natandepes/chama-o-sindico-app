@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ComplaintMock, ComplaintStatus } from '../../models/complaint.models';
+import { ComplaintService } from '../../services/complaint.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-create-complaint',
@@ -7,39 +9,57 @@ import { ComplaintMock, ComplaintStatus } from '../../models/complaint.models';
   styleUrl: './create-complaint.component.scss',
   standalone: false,
 })
+
+
 export class CreateComplaintComponent {
-  id: number | null = null;
-  subject: string = '';
-  occurredDate: string = '';
-  description: string = '';
-  category: string = 'Others';
-  imageUrl: string | ArrayBuffer | null = null;
+  protected complaintForm: FormGroup;
+  private complaintModel!: ComplaintMock
+
+  closedAt!: Date;
+  userId: string | null = '';
+  closedByUserId: string = '';
+  urlImagem: string | ArrayBuffer | null = '';
   isMobile: boolean = false;
+  
 
-  saveComplaint(): void {
-    const denuncia: ComplaintMock = {
-      id: this.id!,
-      subject: this.subject,
-      occurredDate: new Date(this.occurredDate),
-      resolvedDate: null,
-      status: ComplaintStatus.Pending,
-      category: this.category,
-      description: this.description,
-      photo: this.imageUrl ? (this.imageUrl as string) : '',
-    };
+  constructor(
+    private complaintService: ComplaintService,
+    private formBuilder: FormBuilder,
 
-    const json: string = JSON.stringify(denuncia, null, 2);
-    this.salvarArquivo(json, 'denuncia.json');
+  ) {
+    this.complaintForm = this.formBuilder.group(
+      {
+        title: ['', Validators.required],
+        description:['', Validators.required],
+        createdAt: ['', Validators.required],
+      })
   }
 
-  salvarArquivo(json: string, fileName: string): void {
-    console.log('Saving file:', fileName);
-    const blob = new Blob([json], { type: 'application/json' });
-    const link: HTMLAnchorElement = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
-    URL.revokeObjectURL(link.href);
+
+  ngOnInit()
+  {
+    this.userId = localStorage.getItem('userId');
+  }
+
+  createComplaint(): void {
+    console.log('clicou')
+    if(this.complaintForm.valid)
+    {
+      console.log('Entrou')
+      this.complaintModel = this.transformToComplaintModel();
+
+      this.complaintService.createComplaint(this.complaintModel).subscribe({
+        next: (response) => {
+          console.log('Complaint created successfully')
+        },
+        error:(err) => {
+          console.log('Error', err)
+        }
+      })
+    }
+    else{
+      alert('Preencha os campos obrigatórios corretamente')
+    }
   }
 
   openImagePicker(): void {
@@ -71,11 +91,28 @@ export class CreateComplaintComponent {
     if (file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = e => {
-        this.imageUrl = e.target?.result || null;
+        this.urlImagem = e.target?.result || null;
       };
       reader.readAsDataURL(file);
     } else {
       alert('Please, select a valid image.');
     }
+  }
+
+  private transformToComplaintModel(): ComplaintMock 
+  {
+    let model: ComplaintMock;
+    
+    model = 
+    {
+      title: this.complaintForm.get('title')?.value,
+      description: this.complaintForm.get('description')?.value,
+      imageUrl: this.urlImagem,
+      createdAt: this.complaintForm.get('createdAt')?.value,
+      createdByUserId : this.userId
+
+    }
+    
+    return model;
   }
 }

@@ -6,6 +6,7 @@ export interface RoutePaths {
   viewComplaint: string;
   createCondominalService: string;
   viewCondominalService: string;
+  listComplaints: string;
   contactInfo: string;
   personalInfo: string;
   viewArea: string;
@@ -23,6 +24,7 @@ export const ROUTE_PATHS: RoutePaths = {
   home: 'home',
   createComplaint: 'complaints/create',
   viewComplaint: 'complaints/view',
+  listComplaints: 'complaints/list',
   viewReservation: 'reservations/view',
   viewArea: 'areas/view',
   formArea: 'areas/form',

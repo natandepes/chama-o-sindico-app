@@ -3,8 +3,8 @@ import { ROUTE_PATHS } from './app.paths';
 import { CreateCondominalServiceComponent } from './features/condominal-services/components/create-condominal-services/create-condominal-services.component';
 import { ViewCondominalServiceComponent } from './features/condominal-services/components/view-condominal-services/view-condominal-services.component';
 import { CreateComplaintComponent } from './features/complaint/components/create-complaint/create-complaint.component';
-import { ViewComplaintComponent } from './features/complaint/components/view-complaint/view-complaint.component';
 import { LoginComponent } from './features/authentication/components/login/login.component';
+import { ListComplaintsComponent } from './features/complaint/components/list-complaints/list-complaints.component';
 import { ContactInfoComponent } from './features/contact-info/components/contact-info/contact-info.component';
 import { HomeComponent } from './features/home/components/home.component';
 import { ViewReservationComponent } from './features/reservations/components/view-reservation/view-reservation.component';
@@ -46,9 +46,15 @@ export const appRoutes: Route[] = [
   },
   { 
     path: ROUTE_PATHS.viewComplaint, 
-    component: ViewComplaintComponent,
+    component: ListComplaintsComponent,
     canActivate: [AuthGuard] 
   },
+  { 
+    path: ROUTE_PATHS.listComplaints,
+    component: ListComplaintsComponent, 
+    canActivate: [AuthGuard]  
+  },
+
   {
     path: ROUTE_PATHS.personalInfo,
     component: PersonalInfoComponent,
