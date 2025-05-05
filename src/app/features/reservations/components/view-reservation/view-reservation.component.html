@@ -1,7 +1,7 @@
 <main>
     <div class="content-container">
         <div class="top-content">
-            <input class="search-input" type="text" placeholder="Buscar">
+            <input [(ngModel)]="searchText" class="search-input" type="text" placeholder="Buscar">
             <button class="create-reservation-button" routerLink="/reservations/form">
                 Criar Reserva
             </button>
@@ -10,31 +10,38 @@
             <div class="list-container">
                 <h2 class="list-title">Próximas Reservas</h2>
                 <ul class="reservations-list">
-                    <li class="reservation-item">
-                        <h3>Reserva 4</h3>
-                        <p>Data: 10/04/2025</p>
-                        <p>Hora: 14:00 - 20:00</p>
-                    </li>
-                    <li class="reservation-item">
-                        <h3>Reserva 3</h3>
-                        <p>Data: 08/04/2025</p>
-                        <p>Hora: 10:00 - 16:00</p>
-                    </li>
+                    @for (item of filterNextReservations(); track $index) {
+                        <li class="reservation-item">
+                            <div class="info">
+                                <h3>{{item.areaName}}</h3>
+                                <p>Data: {{extractDate(item.endDate)}}</p>
+                                <p>Hora: {{ extractTime(item.startDate) + ' - ' + extractTime(item.endDate)}}</p>
+
+                            </div>
+                            <div class="buttons">
+                                <button [routerLink]="'/reservations/form/' + item.id">Editar</button>
+                                <button (click)="deleteAreaReservation(item.id!)">Deletar</button>
+                            </div>
+                        </li>
+                    }
                 </ul>
             </div>
             <div class="list-container">
                 <h2 class="list-title">Reservas Anteriores</h2>
                 <ul class="reservations-list">
-                    <li class="reservation-item">
-                        <h3>Reserva 1</h3>
-                        <p>Data: 10/03/2025</p>
-                        <p>Hora: 14:00 - 20:00</p>
-                    </li>
-                    <li class="reservation-item">
-                        <h3>Reserva 2</h3>
-                        <p>Data: 20/03/2025</p>
-                        <p>Hora: 12:00 - 18:00</p>
-                    </li>
+                    @for (item of filterPreviousReservations(); track $index) {
+                        <li class="reservation-item">
+                            <div class="info">
+                                <h3>{{item.areaName}}</h3>
+                                <p>Data: {{extractDate(item.endDate)}}</p>
+                                <p>Hora: {{ extractTime(item.startDate) + ' - ' + extractTime(item.endDate)}}</p>
+                            </div>
+                            <div class="buttons">
+                                <button [routerLink]="'/reservations/form/' + item.id">Editar</button>
+                                <button (click)="deleteAreaReservation(item.id!)">Deletar</button>
+                            </div>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>

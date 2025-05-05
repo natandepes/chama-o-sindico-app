@@ -1,0 +1,35 @@
+<main>
+    <div class="content-container">
+        <div class="top-content">
+            <input class="search-input" [(ngModel)]="searchText" type="text" placeholder="Buscar">
+            <button class="add-vehicle-button" routerLink="/vehicles/form">
+                Adicionar Veículo
+            </button>
+        </div>
+        <div class="body-container">
+            <div class="list-container">
+                <ul class="vehicles-list">
+                    @for (item of filterVehicles(); track $index) {
+                        <li class="vehicle-item">
+                            <div class="vehicle">
+                                <img class="vehicle-image" [src]="item.vehicleImage" alt="Vehicle Image" class="vehicle-image">
+                                <div class="info">
+                                    <h3>{{item.model}}</h3>
+                                    <p>Vaga: {{item.carSpace}}</p>
+                                    <p>Placa: {{item.licensePlate}}</p>
+                                </div>
+                            </div>
+                            <div class="buttons">
+                                <button [routerLink]="'/vehicles/form/' + item.id">Editar</button>
+                                <button (click)="deleteVehicle(item.id!)">Deletar</button>
+                            </div>
+                        </li>
+                    }
+                    @empty {
+                        <li class="no-vehicles">Nenhum veículo encontrado.</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</main>
