@@ -26,7 +26,7 @@ export const ROUTE_PATHS: RoutePaths = {
   register: 'register',
   home: 'home',
   createComplaint: 'complaints/create',
-  editComplaint: 'complaints/edit',
+  editComplaint: 'complaints/edit:id',
   listComplaints: 'complaints/list',
   viewReservation: 'reservations/view',
   viewArea: 'areas/view',
