@@ -17,7 +17,6 @@ export interface RoutePaths {
   viewVehicle: string;
   formVehicle: string;
   editVehicle: string;
-  personalInfo: string;
   formReservationEdit: string;
   wildcard: string;
 }

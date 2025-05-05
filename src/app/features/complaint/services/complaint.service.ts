@@ -37,7 +37,13 @@ export class ComplaintService {
   }
 
   deleteComplaint(idComplaint: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/Complaint/DeleteComplaint`, idComplaint);
+    return this.http.post(
+      `${this.apiUrl}/api/Complaint/DeleteComplaint`, 
+      JSON.stringify(idComplaint),
+      {
+        headers: {'Content-Type': 'application/json'}
+      }
+    );
   }
 
 

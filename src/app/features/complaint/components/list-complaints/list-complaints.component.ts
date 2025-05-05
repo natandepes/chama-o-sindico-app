@@ -101,7 +101,7 @@ export class ListComplaintsComponent implements OnInit {
   {
     this.router.navigate(['/complaints/create/'])
   }
-  
+
   deleteComplaint(id: string) {
     if (confirm('Tem certeza que deseja deletar esta denúncia?')) {
       this.complaintService.deleteComplaint(id).subscribe({
@@ -116,6 +116,5 @@ export class ListComplaintsComponent implements OnInit {
       });
     }
   }
-  
-  
+
 }
