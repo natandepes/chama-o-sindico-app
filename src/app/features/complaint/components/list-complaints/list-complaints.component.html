@@ -16,7 +16,8 @@
         </span>
       </p>
       <p><strong>Data:</strong> {{ complaint.createdAt | date: 'dd/MM/yyyy' }}</p>
-      <button *ngIf="complaint.id" (click)="deleteComplaint(complaint.id)">Delete</button>
+      <button *ngIf="complaint.id" (click)="deleteComplaint(complaint.id, complaint.createdByUserId)">Delete</button>
+      <button *ngIf="complaint.id" (click)="goToEditComplaint(complaint.id, complaint.createdByUserId)">Edit</button>
     </div>
   </div>
 </div>

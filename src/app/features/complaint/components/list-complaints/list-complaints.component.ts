@@ -78,9 +78,6 @@ export class ListComplaintsComponent implements OnInit {
         }
       });
     }
-    
-
-
   }
 
   mapStatus(statusNumber: number): ComplaintStatus {

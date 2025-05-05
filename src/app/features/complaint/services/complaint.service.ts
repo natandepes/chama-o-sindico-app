@@ -46,12 +46,16 @@ export class ComplaintService {
     );
   }
 
+  updateComplaint(complaint: ComplaintMock): Observable<any> {
+    return this.http.put(`${this.apiUrl}/api/Complaint/EditComplaint`, complaint);
+  }
+  
 
-  // getComplaintById(id: number): Observable<ComplaintMock> {
-  //   const complaint = this.complaints.find(d => d.id === id);
-  //   if (!complaint) {
-  //     return throwError(() => new Error('Denúncia não encontrada'));
-  //   }
-  //   return of(complaint);
-  // }
+  getComplaintById(id: string): Observable<ComplaintMock> {
+    return this.http.post<ComplaintMock>(`${this.apiUrl}/api/Complaint/GetComplaintById`, id, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+  
+
 }
