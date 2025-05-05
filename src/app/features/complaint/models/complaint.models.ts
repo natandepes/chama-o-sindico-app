@@ -12,7 +12,7 @@ export enum ComplaintStatus {
 }
 
 export interface ComplaintMock {
-  id?: string;
+  id?: string | null;
   title: string;
   description: string;
   imageUrl: string | ArrayBuffer | null;

@@ -101,6 +101,20 @@ export class ListComplaintsComponent implements OnInit {
   {
     this.router.navigate(['/complaints/create/'])
   }
-  
-  
+
+  deleteComplaint(id: string) {
+    if (confirm('Tem certeza que deseja deletar esta denúncia?')) {
+      this.complaintService.deleteComplaint(id).subscribe({
+        next: () => {
+          this.complaints = this.complaints.filter(c => c.id !== id);
+          alert('Denúncia removida com sucesso');
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Erro ao remover a denúncia');
+        }
+      });
+    }
+  }
+
 }
