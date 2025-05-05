@@ -5,6 +5,7 @@ import { ViewCondominalServiceComponent } from './features/condominal-services/c
 import { CreateComplaintComponent } from './features/complaint/components/create-complaint/create-complaint.component';
 import { LoginComponent } from './features/authentication/components/login/login.component';
 import { ListComplaintsComponent } from './features/complaint/components/list-complaints/list-complaints.component';
+import { EditComplaintComponent } from './features/complaint/components/edit-complaint/edit-complaint.component';
 import { ContactInfoComponent } from './features/contact-info/components/contact-info/contact-info.component';
 import { HomeComponent } from './features/home/components/home.component';
 import { ViewReservationComponent } from './features/reservations/components/view-reservation/view-reservation.component';
@@ -51,8 +52,8 @@ export const appRoutes: Route[] = [
     canActivate: [AuthGuard]
   },
   { 
-    path: ROUTE_PATHS.viewComplaint, 
-    component: ListComplaintsComponent,
+    path: ROUTE_PATHS.editComplaint, 
+    component: EditComplaintComponent,
     canActivate: [AuthGuard] 
   },
   { 
