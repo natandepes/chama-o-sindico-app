@@ -1,3 +1,10 @@
+
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string | null;
+  data: T;
+  statusCode: number;
+}
 export enum ComplaintStatus {
   Pending = 'Pending',
   InProgress = 'In Progress',
@@ -5,12 +12,13 @@ export enum ComplaintStatus {
 }
 
 export interface ComplaintMock {
-  id: number;
-  subject: string;
-  occurredDate: Date;
-  resolvedDate: Date | null;
-  status: ComplaintStatus;
-  category: string;
+  id?: string;
+  title: string;
   description: string;
-  photo: string;
+  imageUrl: string | ArrayBuffer | null;
+  status?: ComplaintStatus;
+  createdAt: Date;
+  closedAt?: Date | null;
+  createdByUserId: string | null;
+  closedByUserId?: string | null;
 }

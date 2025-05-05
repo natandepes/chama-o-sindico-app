@@ -3,20 +3,19 @@
 </div>
 <div class="container">
   <div class="complaint-container">
+    <button (click)="goToCreateComplaint()">Criar</button>
     <h2>Listagem de Denúncias</h2>
 
     <div *ngFor="let complaint of complaints" class="complaint-card">
-      <h3>{{ complaint.subject }}</h3>
+      <p>{{complaint.title}}</p>
+      <h3>{{ complaint.description | slice:0:30 }}{{ complaint.description.length > 30 ? '...' : '' }}</h3>
       <p>
         <strong>Status:</strong>
-        {{ complaint.status }}
         <span class="status-badge status-{{ complaint.status | lowercase }}">
           {{ complaint.status }}
         </span>
       </p>
-      <p><strong>Data:</strong> {{ complaint.occurredDate | date: 'dd/MM/yyyy' }}</p>
-      <p><strong>Categoria:</strong> {{ complaint.category }}</p>
-      <!-- <button class="details-button" (click)="verDetalhes(complaint)">Ver detalhes</button> -->
+      <p><strong>Data:</strong> {{ complaint.createdAt | date: 'dd/MM/yyyy' }}</p>
     </div>
   </div>
 </div>
