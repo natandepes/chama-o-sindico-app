@@ -13,11 +13,12 @@ import { ViewAreaComponent } from './features/reservations/components/view-area/
 import { AreaFormComponent } from './features/reservations/components/area-form/area-form.component';
 import { AuthGuard } from './core/guard/auth/auth.guard';
 import { ResidentRegistrationComponent } from './features/authentication/components/resident-registration/resident-registration.component';
-import { PersonalInfoComponent } from './features/resident-info/components/personal-info/personal-info.component';
+
 import { ViewVehiclesComponent } from './features/vehicles/components/view-vehicles/view-vehicles.component';
 import { FormVehiclesComponent } from './features/vehicles/components/form-vehicles/form-vehicles.component';
 import { UserRole } from './features/authentication/models/user-roles.model';
 import { RoleGuard } from './core/guard/auth/role.guard';
+import { PersonalInfoComponent } from './features/personal-info/components/personal-info/personal-info.component';
 
 export const appRoutes: Route[] = [
   { 
@@ -31,11 +32,9 @@ export const appRoutes: Route[] = [
   { 
     path: ROUTE_PATHS.home, 
     component: HomeComponent, 
-    canActivate: [AuthGuard, RoleGuard],
-    data: {
-      roles: [UserRole.CondominalManager]
-    }
-  }, // Vai mudar, é só pra deixar padronizado já
+    canActivate: [AuthGuard],
+
+  },
   { 
     path: ROUTE_PATHS.createCondominalService, 
     component: CreateCondominalServiceComponent,

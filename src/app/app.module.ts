@@ -13,8 +13,8 @@ import { SharedModule } from './features/shared/shared.module';
 import { ContactInfoModule } from './features/contact-info/contact-info.module';
 import { AreaReservationModule } from './features/reservations/area-reservation.module';
 import { AuthInterceptor } from './core/interceptors/auth/auth.interceptor';
-import { ResidentInfoModule } from './features/resident-info/resident-info.module';
 import { VehiclesModule } from './features/vehicles/vehicles.module';
+import { PersonalInfoModule } from './features/personal-info/personal-info.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +26,7 @@ import { VehiclesModule } from './features/vehicles/vehicles.module';
     CondominialServicesModule,
     AreaReservationModule,
     AuthenticationModule,
-    ResidentInfoModule,
+    PersonalInfoModule,
     VehiclesModule,
     SharedModule,
     ContactInfoModule,

@@ -38,7 +38,7 @@ export class LoginComponent {
 
             this.loginForm.reset();
 
-            this.router.navigate(['/complaints/create']);
+            this.router.navigate(['/home']);
 
             alert('Login realizado com sucesso!');
 

@@ -15,4 +15,4 @@ import { ReactiveFormsModule } from "@angular/forms";
     PersonalInfoComponent
   ]
 })
-export class ResidentInfoModule {}
+export class PersonalInfoModule {}

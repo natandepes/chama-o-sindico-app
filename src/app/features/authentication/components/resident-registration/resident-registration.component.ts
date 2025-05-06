@@ -46,7 +46,7 @@ export class ResidentRegistrationComponent {
             
             alert('Usuário registrado com sucesso!');
 
-            this.router.navigate(['/complaints/create']);
+            this.router.navigate(['/home']);
             
             return;
           }
