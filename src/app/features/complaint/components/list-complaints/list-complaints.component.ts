@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ComplaintService } from '../../services/complaint.service';
 import { ComplaintMock, ComplaintStatus } from '../../models/complaint.models';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../authentication/services/auth.service';
+import { UserRole } from '../../../authentication/models/user-roles.model';
 
 @Component({
   selector: 'app-list-complaints',
@@ -13,22 +15,24 @@ export class ListComplaintsComponent implements OnInit {
   complaints: ComplaintMock[] = [];
   rawComplaints: ComplaintMock[] = [];
   userId: string | null = "";
+  protected userRole: UserRole | null = null;
+  protected readonly UserRoleEnum = UserRole;
+  
   constructor(
     private complaintService: ComplaintService,
-    private router: Router) 
-  {
-    
-  }
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
-    this.userId = localStorage.getItem('userId')
+    this.userRole = this.authService.getUserRole();
 
     this.loadComplaints();
   }
 
   loadComplaints() {
 
-    if(this.userId == '680c0a04085c7259a0221e5aZ') // Trocar para futura validação de síndico
+    if(this.userRole == this.UserRoleEnum.CondominalManager)
     {
 
       this.complaintService.getAllComplaints().subscribe({
@@ -51,7 +55,7 @@ export class ListComplaintsComponent implements OnInit {
         },
         error: err => 
         {
-          console.error('Erro loading complaints:', err);
+          console.error("Erro ao carregar as denúncias. Por favor, tente novamente mais tarde.");
           this.complaints = []; 
         },
       });
@@ -78,7 +82,7 @@ export class ListComplaintsComponent implements OnInit {
         },
         error: err => 
         {
-          console.error('Erro loading complaints:', err);
+          console.error("Erro ao carregar as denúncias. Por favor, tente novamente mais tarde.");
           this.complaints = []; 
         },
       });

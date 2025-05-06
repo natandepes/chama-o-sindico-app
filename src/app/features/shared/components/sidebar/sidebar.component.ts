@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SidebarService } from '../../services/sidebar.service';
 import { AuthService } from '../../../authentication/services/auth.service';
 import { Router } from '@angular/router';
+import { UserRole } from '../../../authentication/models/user-roles.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,6 +13,8 @@ import { Router } from '@angular/router';
 export class SidebarComponent {
   isOpen = false;
   protected userName: string | null = null;
+  protected userRole: UserRole | null = null;
+  protected readonly UserRoleEnum = UserRole;
 
   constructor(
     private readonly sidebarService: SidebarService,
@@ -23,6 +26,7 @@ export class SidebarComponent {
     });
 
     this.userName = this.authService.getUserName();
+    this.userRole = this.authService.getUserRole();
   }
 
   toggleSidebar() {

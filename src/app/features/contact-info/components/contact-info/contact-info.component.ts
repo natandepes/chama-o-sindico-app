@@ -18,7 +18,18 @@ export class ContactInfoComponent {
   }
 
   private getCondominalManagerInfo(): void {
-    this.condominalManagerInfo = this.contactInfoService.getCondominalManagerInfo();
+    this.contactInfoService.getCondominalManagerInfo().subscribe(
+      (response) => {
+        if (response.success) {
+          this.condominalManagerInfo = response.data;
+        } else {
+          console.error("Um erro ocorreu ao buscar as informações do síndico. Tente novamente mais tarde.");
+        }
+      },
+      (error) => {
+        console.error("Um erro ocorreu ao buscar as informações do síndico. Tente novamente mais tarde.");
+      }
+    );
   }
 
 }

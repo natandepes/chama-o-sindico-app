@@ -38,17 +38,22 @@ export class FormVehiclesComponent implements OnInit {
         this.formulario.value.id = this.vehicleId;
       }
 
-      console.log(this.formulario.value);
-
       if(this.formulario.valid){
         this.vehiclesService.saveVehicle(this.formulario.value).subscribe((response) => {
           if (response.success) {
+            if (this.vehicleId) {
+              alert('Veículo atualizado com sucesso!');
+            }
+            else {
+              alert('Veículo criado com sucesso!');
+            }
+            this.formulario.reset();
             this.router.navigate(['/vehicles/view']);
           } else {
-            alert('Erro ao Salvar o Veículo: ' + response.message);
+            alert('Erro ao criar veículo. Por favor, tente novamente mais tarde.');
           }
         }, (error) => {
-          console.error('Error saving vehicle:', error);
+          console.error('Erro ao criar veículo. Por favor, tente novamente mais tarde.');
         });
       }
       else {
@@ -75,10 +80,10 @@ export class FormVehiclesComponent implements OnInit {
           vehicle.vehicleType = vehicle.vehicleType.toLowerCase();
           this.formulario.patchValue(vehicle);
         } else {
-          console.error('Error fetching vehicle data:', response.message);
+          alert("Erro ao carregar os dados do veículo. Por favor, tente novamente mais tarde.");
         }
       }, (error) => {
-        console.error('Error fetching vehicle data:', error);
+        alert("Erro ao carregar os dados do veículo. Por favor, tente novamente mais tarde.");
       });
     }
 }

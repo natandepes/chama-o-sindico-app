@@ -62,14 +62,9 @@ export class AreaFormComponent implements OnInit {
     });
   }
 
-  formatTime(time: string): string {
-    const parts = time.split(':');
-
-    if(parts.length < 2){
-      return time + ':00'; 
-    }
-    
-    return time.padEnd(5, ':00');
+  private formatTime(time: string): string {
+    const date = new Date(`1970-01-01T${time}`);
+    return date.toTimeString().split(' ')[0]; // returns "HH:mm:ss"
   }
 
   saveArea() {
@@ -87,16 +82,19 @@ export class AreaFormComponent implements OnInit {
           closeTime: this.formatTime(this.formulario.get('closeTime')?.value),
         }
 
-      this.areaReservationService.saveArea(area).subscribe({
+        console.log(area);
+
+      this.areaReservationService.createArea(area).subscribe({
         next: (data) => {
           if (data.success) {
+            alert('Área salva com sucesso!');
             this.router.navigate(['/areas/view']);
           } else {
-            console.error(data.message);
+            alert("Erro ao salvar a área, por favor, tente novamente mais tarde.");
           }
         },
         error: (error) => {
-          console.error(error);
+          console.error("Erro ao salvar a área, por favor, tente novamente mais tarde.");
         },
       });
     }
