@@ -3,11 +3,11 @@
 
   <div class="menu-content">
     <h2>Serviços</h2>
-    <h2 routerLink="/complaints/list/">Denúncias</h2>
-    <h2 routerLink="/reservations/view/">Reservas</h2>
-    <h2 routerLink="/areas/view/" *ngIf="this.userRole == UserRoleEnum.CondominalManager">Áreas</h2>
-    <h2 routerLink="/vehicles/view/">Veículos</h2>
-    <h2 routerLink="/contact-info" *ngIf="this.userRole == UserRoleEnum.Resident">Contato do síndico</h2>
+    <h2 (click)="goToComplaints()">Denúncias</h2>
+    <h2 (click)="goToReservations()">Reservas</h2>
+    <h2 (click)="goToAreas()" *ngIf="this.userRole == UserRoleEnum.CondominalManager">Áreas</h2>
+    <h2 (click)="goToVehicles()">Veículos</h2>
+    <h2 (click)="goToContactInfo()" routerLink="/contact-info" *ngIf="this.userRole == UserRoleEnum.Resident">Contato do síndico</h2>
   </div>
 
   <div class="user-info">

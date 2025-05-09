@@ -3,6 +3,7 @@ import { SidebarService } from '../../services/sidebar.service';
 import { AuthService } from '../../../authentication/services/auth.service';
 import { Router } from '@angular/router';
 import { UserRole } from '../../../authentication/models/user-roles.model';
+import { ROUTE_PATHS } from '../../../../app.paths';
 
 @Component({
   selector: 'app-sidebar',
@@ -40,6 +41,26 @@ export class SidebarComponent {
   }
 
   protected goToProfile() {
-    this.router.navigate(['/personal-info']);
+    this.router.navigate([ROUTE_PATHS.personalInfo]);
+  }
+  
+  protected goToComplaints() {
+    this.router.navigate([ROUTE_PATHS.listComplaints]);
+  }
+
+  protected goToReservations() {
+    this.router.navigate([ROUTE_PATHS.viewReservation]);
+  }
+
+  protected goToAreas() {
+    this.router.navigate([ROUTE_PATHS.viewArea]);
+  }
+
+  protected goToVehicles() {
+    this.router.navigate([ROUTE_PATHS.viewVehicle]);
+  }
+
+  protected goToContactInfo() {
+    this.router.navigate([ROUTE_PATHS.contactInfo]);
   }
 }

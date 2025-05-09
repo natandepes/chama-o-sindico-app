@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AreaReservation } from '../../models/area-reservation.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Area } from '../../models/area.model';
+import { ROUTE_PATHS } from '../../../../app.paths';
 
 @Component({
   selector: 'app-reservation-form',
@@ -113,11 +114,8 @@ export class ReservationFormComponent implements OnInit {
   
       this.areaReservationService.saveAreaReservation(reservationData).subscribe(
         () => {
-          this.router.navigate(['/reservations/view']);
-        },
-        error => {
-          console.error('Error creating reservation:', error);
-        },
+          this.router.navigate([ROUTE_PATHS.viewReservation]);
+        }
       );
     }
     else {

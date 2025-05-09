@@ -77,9 +77,6 @@ export class PersonalInfoComponent implements OnInit {
               } else {
                 alert('Ocorreu um erro ao atualizar as informações pessoais. Tente novamente mais tarde.');
               }
-            },
-            error: () => {
-              alert('Ocorreu um erro ao atualizar as informações pessoais. Tente novamente mais tarde.');
             }
           });
         } else {
@@ -92,9 +89,6 @@ export class PersonalInfoComponent implements OnInit {
               } else {
                 alert('Ocorreu um erro ao atualizar as informações pessoais. Tente novamente mais tarde.');
               }
-            },
-            error: () => {
-              alert('Ocorreu um erro ao atualizar as informações pessoais. Tente novamente mais tarde.');
             }
           });
         }

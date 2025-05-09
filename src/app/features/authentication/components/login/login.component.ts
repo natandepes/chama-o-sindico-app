@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoginModel } from '../../models/login.model';
+import { ROUTE_PATHS } from '../../../../app.paths';
 
 @Component({
   selector: 'app-login',
@@ -38,7 +39,7 @@ export class LoginComponent {
 
             this.loginForm.reset();
 
-            this.router.navigate(['/home']);
+            this.router.navigate([ROUTE_PATHS.home]);
 
             alert('Login realizado com sucesso!');
 
@@ -49,9 +50,6 @@ export class LoginComponent {
             alert(response.message);
             this.loginForm.reset();
           }
-        },
-        error: () => {
-          alert('Ocorreu um erro ao realizar o login. Tente novamente mais tarde.');
         }
       });
     } else {

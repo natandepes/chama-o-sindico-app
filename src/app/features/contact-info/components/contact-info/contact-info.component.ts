@@ -25,9 +25,6 @@ export class ContactInfoComponent {
         } else {
           console.error("Um erro ocorreu ao buscar as informações do síndico. Tente novamente mais tarde.");
         }
-      },
-      (error) => {
-        console.error("Um erro ocorreu ao buscar as informações do síndico. Tente novamente mais tarde.");
       }
     );
   }

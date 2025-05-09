@@ -4,6 +4,7 @@ import { ComplaintMock, ComplaintStatus } from '../../models/complaint.models';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../authentication/services/auth.service';
 import { UserRole } from '../../../authentication/models/user-roles.model';
+import { ROUTE_PATHS } from '../../../../app.paths';
 
 @Component({
   selector: 'app-list-complaints',
@@ -52,12 +53,7 @@ export class ListComplaintsComponent implements OnInit {
             createdByUserId: c.createdByUserId,
             closedByUserId: c.closedByUserId ? null: ''
           }))
-        },
-        error: err => 
-        {
-          console.error("Erro ao carregar as denúncias. Por favor, tente novamente mais tarde.");
-          this.complaints = []; 
-        },
+        }
       });
     }
     else
@@ -79,12 +75,7 @@ export class ListComplaintsComponent implements OnInit {
             createdByUserId: c.createdByUserId,
             closedByUserId: c.closedByUserId ? null: ''
           }))
-        },
-        error: err => 
-        {
-          console.error("Erro ao carregar as denúncias. Por favor, tente novamente mais tarde.");
-          this.complaints = []; 
-        },
+        }
       });
     }
     
@@ -103,7 +94,7 @@ export class ListComplaintsComponent implements OnInit {
   
   protected goToCreateComplaint()
   {
-    this.router.navigate(['/complaints/create/'])
+    this.router.navigate([ROUTE_PATHS.createComplaint])
   }
 
   deleteComplaint(id: string) {
@@ -112,10 +103,6 @@ export class ListComplaintsComponent implements OnInit {
         next: () => {
           this.complaints = this.complaints.filter(c => c.id !== id);
           alert('Denúncia removida com sucesso');
-        },
-        error: (err) => {
-          console.error(err);
-          alert('Erro ao remover a denúncia');
         }
       });
     }

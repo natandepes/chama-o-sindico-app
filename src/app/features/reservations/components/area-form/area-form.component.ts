@@ -82,8 +82,6 @@ export class AreaFormComponent implements OnInit {
           closeTime: this.formatTime(this.formulario.get('closeTime')?.value),
         }
 
-        console.log(area);
-
       this.areaReservationService.createArea(area).subscribe({
         next: (data) => {
           if (data.success) {
@@ -92,10 +90,7 @@ export class AreaFormComponent implements OnInit {
           } else {
             alert("Erro ao salvar a área, por favor, tente novamente mais tarde.");
           }
-        },
-        error: (error) => {
-          console.error("Erro ao salvar a área, por favor, tente novamente mais tarde.");
-        },
+        }
       });
     }
     else{

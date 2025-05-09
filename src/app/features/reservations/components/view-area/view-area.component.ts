@@ -46,9 +46,6 @@ export class ViewAreaComponent implements OnInit{
         else {
           alert('Erro ao excluir a área. Por favor, tente novamente mais tarde.');
         }
-      },
-      error: () => {
-        alert('Erro ao excluir a área. Por favor, tente novamente mais tarde.');
       }
     })
   }
