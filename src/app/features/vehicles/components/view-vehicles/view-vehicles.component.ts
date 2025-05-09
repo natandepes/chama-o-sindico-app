@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { VehiclesService } from '../../services/vehicles.service';
 import { Vehicle } from '../../models/vehicles.model';
+import { UserRole } from '../../../authentication/models/user-roles.model';
+import { AuthService } from '../../../authentication/services/auth.service';
 
 @Component({
   selector: 'app-view-vehicles',
@@ -9,21 +11,21 @@ import { Vehicle } from '../../models/vehicles.model';
   styleUrl: './view-vehicles.component.css'
 })
 export class ViewVehiclesComponent implements OnInit {
-
-  constructor(private vehiclesService: VehiclesService) { }
-
   vehicles: Vehicle[] = [];
   searchText: string = '';
+  protected userRole: UserRole | null = null;
+  protected readonly UserRoleEnum = UserRole;
+  
+  constructor(
+    private vehiclesService: VehiclesService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
-    this.getUserVehicles();
+    this.userRole = this.authService.getUserRole();
+    this.getVehicles();
   }
 
-  getAllVehicles() {
-    this.vehiclesService.getAllVehicles().subscribe((response) => {
-      console.log(response.data);
-    })
-  }
 
   filterVehicles() {
     if(this.searchText){
@@ -38,22 +40,28 @@ export class ViewVehiclesComponent implements OnInit {
     return this.vehicles;
   }
 
-  getUserVehicles() {
-    this.vehiclesService.getUserVehicles().subscribe((response) => {
-      this.vehicles = response.data!;
-    })
+  private getVehicles() {
+    if (this.userRole == this.UserRoleEnum.CondominalManager) {
+      this.vehiclesService.getAllVehicles().subscribe((response) => {
+        this.vehicles = response.data!;
+      });
+    } else {
+      this.vehiclesService.getUserVehicles().subscribe((response) => {
+        this.vehicles = response.data!;
+      });
+    }
   }
 
   deleteVehicle(id: string) {
     this.vehiclesService.deleteVehicle(id).subscribe((response) => {
       if (response.success) {
         alert('Veículo Deletado com Sucesso!');
-        this.getUserVehicles();
+        this.getVehicles();
       } else {
-        alert('Erro ao Deletar o Veículo: ' + response.message);
+        alert("Erro ao deletar veículo. Por favor, tente novamente mais tarde.");
       }
     }, (error) => {
-      console.error('Error deleting vehicle:', error);
+      console.error("Erro ao deletar veículo. Por favor, tente novamente mais tarde.");
     });
   }
 

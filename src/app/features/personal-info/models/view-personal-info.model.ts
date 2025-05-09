@@ -8,4 +8,5 @@ export interface ViewPersonalInfoModel {
   birthDate: Date;
   apartmentNumber: number;
   email: string;
+  salary: number;
 }

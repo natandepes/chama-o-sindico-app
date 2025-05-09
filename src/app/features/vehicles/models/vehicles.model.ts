@@ -6,4 +6,5 @@ export interface Vehicle {
     carSpace: number;
     licensePlate: string;
     color: string;
+    createdByUserName: string;
 }

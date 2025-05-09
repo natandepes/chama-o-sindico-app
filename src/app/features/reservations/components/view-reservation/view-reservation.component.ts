@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ReservationService } from '../../services/reservation.service';
-import { AreaReservation } from '../../models/area-reservation.model';
+import { AuthService } from '../../../authentication/services/auth.service';
+import { UserRole } from '../../../authentication/models/user-roles.model';
+import { AreaReservationResponse } from '../../models/area-reservation-response.model';
 
 @Component({
   selector: 'app-view-reservation',
@@ -9,23 +11,36 @@ import { AreaReservation } from '../../models/area-reservation.model';
   styleUrl: './view-reservation.component.css',
 })
 export class ViewReservationComponent implements OnInit {
-  previousAreaReservations: AreaReservation[] = [];
-  nextAreaReservations: AreaReservation[] = [];
+  previousAreaReservations: AreaReservationResponse[] = [];
+  nextAreaReservations: AreaReservationResponse[] = [];
   searchText: string = '';
+  protected userRole: UserRole | null = null;
+  protected readonly UserRoleEnum = UserRole;
 
-  constructor(private areaReservationService: ReservationService) {}
+  constructor(
+    private areaReservationService: ReservationService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
-    this.getUserAreaReservations();
+    this.userRole = this.authService.getUserRole();
+
+    this.getAreaReservations();
   }
 
-  getUserAreaReservations() {
-    const userId = localStorage.getItem('userId')!; 
-
-    this.areaReservationService.getUserAreaReservations(userId).subscribe((data) => {
-      this.previousAreaReservations = data.data?.filter(reservation => new Date(reservation.endDate) < new Date()) ?? [] as AreaReservation[];
-      this.nextAreaReservations = data.data?.filter(reservation => new Date(reservation.endDate) >= new Date()) ?? [] as AreaReservation[];
-    });
+  private getAreaReservations() {
+    if (this.userRole == this.UserRoleEnum.CondominalManager) {
+      this.areaReservationService.getAllAreaReservations().subscribe((data) => {
+        this.previousAreaReservations = data.data?.filter(reservation => new Date(reservation.endDate) < new Date()) ?? [] as AreaReservationResponse[];
+        this.nextAreaReservations = data.data?.filter(reservation => new Date(reservation.endDate) >= new Date()) ?? [] as AreaReservationResponse[];
+      });
+    }
+    else {
+      this.areaReservationService.getUserAreaReservations().subscribe((data) => {
+        this.previousAreaReservations = data.data?.filter(reservation => new Date(reservation.endDate) < new Date()) ?? [] as AreaReservationResponse[];
+        this.nextAreaReservations = data.data?.filter(reservation => new Date(reservation.endDate) >= new Date()) ?? [] as AreaReservationResponse[];
+      });
+    }
   }
 
   filterPreviousReservations(){
@@ -41,7 +56,6 @@ export class ViewReservationComponent implements OnInit {
   }
 
   filterNextReservations(){
-    console.log(this.searchText);
     if(this.searchText){
       return this.nextAreaReservations.filter(reservation =>
         reservation.areaName.toUpperCase().includes(this.searchText.toUpperCase())
@@ -53,16 +67,10 @@ export class ViewReservationComponent implements OnInit {
     return this.nextAreaReservations;
   }
 
-  // getAreaReservation(id: string) {
-  //   this.areaReservationService.getAreaReservation(id).subscribe((data) => {
-  //     console.log(data);
-  //   });
-  // }
-
   deleteAreaReservation(id: string) {
     this.areaReservationService.deleteAreaReservation(id).subscribe(() => {
       alert('Reservation deleted successfully!');
-      this.getUserAreaReservations(); // Refresh the list after deletion
+      this.getAreaReservations(); // Refresh the list after deletion
     });
   }
 

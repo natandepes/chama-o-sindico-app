@@ -42,18 +42,15 @@ export class CreateComplaintComponent {
   }
 
   createComplaint(): void {
-    console.log('clicou')
     if(this.complaintForm.valid)
     {
-      console.log('Entrou')
       this.complaintModel = this.transformToComplaintModel();
 
       this.complaintService.createComplaint(this.complaintModel).subscribe({
         next: (response) => {
-          console.log('Complaint created successfully')
-        },
-        error:(err) => {
-          console.log('Error', err)
+          if (response.success) {
+            alert('Reclamação criada com sucesso!');
+          }
         }
       })
     }

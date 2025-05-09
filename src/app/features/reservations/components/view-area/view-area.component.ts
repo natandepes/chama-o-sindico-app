@@ -37,8 +37,16 @@ export class ViewAreaComponent implements OnInit{
   }
 
   deleteArea(id: string) {
-    this.areaReservationService.deleteArea(id).subscribe(() => {
-      this.getAreas();
-    });
+    this.areaReservationService.deleteArea(id).subscribe({
+      next: (data) => {
+        if (data.success) {
+          alert('Área excluída com sucesso!');
+          this.getAreas();
+        }
+        else {
+          alert('Erro ao excluir a área. Por favor, tente novamente mais tarde.');
+        }
+      }
+    })
   }
 }

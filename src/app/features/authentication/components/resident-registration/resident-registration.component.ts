@@ -4,6 +4,7 @@ import { ResidentRegistrationModel } from '../../models/resident-registration.mo
 import { UserRole } from '../../models/user-roles.model';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { ROUTE_PATHS } from '../../../../app.paths';
 
 @Component({
   selector: 'app-resident-registration',
@@ -46,15 +47,12 @@ export class ResidentRegistrationComponent {
             
             alert('Usuário registrado com sucesso!');
 
-            this.router.navigate(['/complaints/create']);
+            this.router.navigate([ROUTE_PATHS.home]);
             
             return;
           }
 
           alert(response.message || 'Ocorreu um erro ao registrar o usuário. Tente novamente mais tarde.');
-        },
-        error: () => {
-          alert('Ocorreu um erro ao registrar o usuário. Tente novamente mais tarde.');
         }
       });
 

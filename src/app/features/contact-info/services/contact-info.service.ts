@@ -1,5 +1,8 @@
 import { Injectable } from "@angular/core";
 import { ContactInfo } from "../models/contact-info";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { ApiResponse } from "../../complaint/models/complaint.models";
 
 @Injectable({
   providedIn: 'root'
@@ -7,16 +10,10 @@ import { ContactInfo } from "../models/contact-info";
 export class ContactInfoService {
   private readonly API_URL = "https://localhost:7020/api";
 
-  private mockCondominalManagerInfo: ContactInfo = {
-    name: "João Silva da Costa",
-    email: "joaocostasindico@gmail.com",
-    phone: "+55 11 91234-5678"
-  }
+  constructor(private http: HttpClient) { }
 
-  constructor() { }
-
-  public getCondominalManagerInfo(): ContactInfo {
-    return this.mockCondominalManagerInfo;
+  public getCondominalManagerInfo(): Observable<ApiResponse<ContactInfo>> {
+    return this.http.get<ApiResponse<ContactInfo>>(`${this.API_URL}/CondominalManager/GetCurrentCondominalManager`);
   }
 
 }
