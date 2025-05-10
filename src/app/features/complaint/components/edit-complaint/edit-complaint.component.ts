@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ComplaintMock } from '../../models/complaint.models';
+import { ComplaintMock, ComplaintStatus } from '../../models/complaint.models';
 import { ComplaintService } from '../../services/complaint.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 export class EditComplaintComponent {
   protected complaintForm: FormGroup;
   private complaintModel!: ComplaintMock
+  private complaintStatus!: ComplaintStatus
 
   closedAt!: Date;
   userId: string | null = '';
@@ -113,7 +114,7 @@ export class EditComplaintComponent {
       title: this.complaintForm.get('title')?.value,
       description: this.complaintForm.get('description')?.value,
       imageUrl: this.urlImagem,
-      status: this.complaintModel.status ?? CopmplaintStatus.Pending,  // TODOSSSSSS
+      status: this.complaintModel.status,
       createdAt: this.complaintForm.get('createdAt')?.value,
       closedAt: this.complaintModel.closedAt ?? null,
       createdByUserId: this.userId,
