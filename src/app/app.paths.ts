@@ -3,7 +3,7 @@ export interface RoutePaths {
   register: string;
   home: string;
   createComplaint: string;
-  viewComplaint: string;
+  editComplaint: string;
   createCondominalService: string;
   viewCondominalService: string;
   listComplaints: string;
@@ -26,7 +26,7 @@ export const ROUTE_PATHS: RoutePaths = {
   register: 'register',
   home: 'home',
   createComplaint: 'complaints/create',
-  viewComplaint: 'complaints/view',
+  editComplaint: 'complaints/edit:id',
   listComplaints: 'complaints/list',
   viewReservation: 'reservations/view',
   viewArea: 'areas/view',

@@ -78,9 +78,6 @@ export class ListComplaintsComponent implements OnInit {
         }
       });
     }
-    
-
-
   }
 
   mapStatus(statusNumber: number): ComplaintStatus {
@@ -97,7 +94,12 @@ export class ListComplaintsComponent implements OnInit {
     this.router.navigate([ROUTE_PATHS.createComplaint])
   }
 
-  deleteComplaint(id: string) {
+  protected goToEditComplaint()
+  {
+    this.router.navigate([ROUTE_PATHS.editComplaint])
+  }
+
+  deleteComplaint(id: string, idCreator: string | null) {
     if (confirm('Tem certeza que deseja deletar esta denúncia?')) {
       this.complaintService.deleteComplaint(id).subscribe({
         next: () => {
