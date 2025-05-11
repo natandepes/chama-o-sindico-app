@@ -21,4 +21,8 @@ export class ResidentService {
   public updateResidentInfo(residentInfo: ViewPersonalInfoModel): Observable<ApiResponse<string>> {
     return this.http.put<ApiResponse<string>>(`${this.API_URL}/Resident/Update`, residentInfo);
   }
+
+  public getAllResidents(): Observable<ApiResponse<ViewPersonalInfoModel[]>> {
+    return this.http.get<ApiResponse<ViewPersonalInfoModel[]>>(`${this.API_URL}/Resident/GetAllResidents`);
+  }
 }

@@ -9,6 +9,7 @@ export interface RoutePaths {
   listComplaints: string;
   contactInfo: string;
   personalInfo: string;
+  listResidents: string;
   viewArea: string;
   formArea: string;
   formAreaEdit: string;
@@ -41,5 +42,6 @@ export const ROUTE_PATHS: RoutePaths = {
   viewCondominalService: 'condominal-service/view/:id',
   contactInfo: 'contact-info',
   personalInfo: 'personal-info',
+  listResidents: 'residents/list',
   wildcard: '**',
 };

@@ -2,6 +2,7 @@
   <button class="sidebar-toggle" (click)="toggleSidebar()">☰</button>
 
   <div class="menu-content">
+    <h2 (click)="goToResidentsList()" *ngIf="this.userRole == UserRoleEnum.CondominalManager">Ver moradores</h2>
     <h2>Serviços</h2>
     <h2 (click)="goToComplaints()">Denúncias</h2>
     <h2 (click)="goToReservations()">Reservas</h2>

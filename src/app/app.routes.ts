@@ -20,6 +20,7 @@ import { FormVehiclesComponent } from './features/vehicles/components/form-vehic
 import { UserRole } from './features/authentication/models/user-roles.model';
 import { RoleGuard } from './core/guard/auth/role.guard';
 import { PersonalInfoComponent } from './features/personal-info/components/personal-info/personal-info.component';
+import { ResidentListComponent } from './features/personal-info/components/resident-list/resident-list.component';
 
 export const appRoutes: Route[] = [
   { 
@@ -65,6 +66,11 @@ export const appRoutes: Route[] = [
   {
     path: ROUTE_PATHS.personalInfo,
     component: PersonalInfoComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: ROUTE_PATHS.listResidents,
+    component: ResidentListComponent,
     canActivate: [AuthGuard]
   },
   { 
