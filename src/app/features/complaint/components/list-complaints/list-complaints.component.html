@@ -1,11 +1,15 @@
-<div class="headerProvisorio">
-  <p>Provisório</p>
-</div>
-<div class="container">
-  <div class="complaint-container">
-    <button (click)="goToCreateComplaint()">Criar</button>
-    <h2>Listagem de Denúncias</h2>
+<main>
+  <div class="header">
+    <h1>Denúncias</h1>
+    <div class="subtitle-bar"></div>
+  </div>
 
+  <div class="main-box">
+    <div class="content-container">
+      <div class="card-title" style="">
+        <button class="details-button" (click)="goToCreateComplaint()">Nova Denúncia</button>
+      </div>
+      
     <div *ngFor="let complaint of complaints" class="complaint-card">
       <p>{{complaint.title}}</p>
       <h3>{{ complaint.description | slice:0:30 }}{{ complaint.description.length > 30 ? '...' : '' }}</h3>
@@ -18,6 +22,7 @@
       <p><strong>Data:</strong> {{ complaint.createdAt | date: 'dd/MM/yyyy' }}</p>
       <button *ngIf="complaint.id" (click)="deleteComplaint(complaint.id, complaint.createdByUserId)">Delete</button>
       <button *ngIf="complaint.id" (click)="goToEditComplaint()">Edit</button>
+
     </div>
   </div>
-</div>
+</main>
