@@ -5,7 +5,6 @@ import { ViewCondominalServiceComponent } from './features/condominal-services/c
 import { CreateComplaintComponent } from './features/complaint/components/create-complaint/create-complaint.component';
 import { LoginComponent } from './features/authentication/components/login/login.component';
 import { ListComplaintsComponent } from './features/complaint/components/list-complaints/list-complaints.component';
-import { EditComplaintComponent } from './features/complaint/components/edit-complaint/edit-complaint.component';
 import { ContactInfoComponent } from './features/contact-info/components/contact-info/contact-info.component';
 import { HomeComponent } from './features/home/components/home.component';
 import { ViewReservationComponent } from './features/reservations/components/view-reservation/view-reservation.component';
@@ -17,10 +16,9 @@ import { ResidentRegistrationComponent } from './features/authentication/compone
 
 import { ViewVehiclesComponent } from './features/vehicles/components/view-vehicles/view-vehicles.component';
 import { FormVehiclesComponent } from './features/vehicles/components/form-vehicles/form-vehicles.component';
-import { UserRole } from './features/authentication/models/user-roles.model';
-import { RoleGuard } from './core/guard/auth/role.guard';
 import { PersonalInfoComponent } from './features/personal-info/components/personal-info/personal-info.component';
 import { ResidentListComponent } from './features/personal-info/components/resident-list/resident-list.component';
+import { ViewComplaintComponent } from './features/complaint/components/edit-complaint/view-complaint.component';
 
 export const appRoutes: Route[] = [
   { 
@@ -53,8 +51,8 @@ export const appRoutes: Route[] = [
     canActivate: [AuthGuard]
   },
   { 
-    path: ROUTE_PATHS.editComplaint, 
-    component: EditComplaintComponent,
+    path: ROUTE_PATHS.viewComplaint, 
+    component: ViewComplaintComponent,
     canActivate: [AuthGuard] 
   },
   { 

@@ -1,14 +1,13 @@
-
-export interface ApiResponse<T> {
-  success: boolean;
-  message: string | null;
-  data: T;
-  statusCode: number;
-}
 export enum ComplaintStatus {
-  Pending = 'Pending',
-  InProgress = 'In Progress',
-  Resolved = 'Resolved',
+  Pending = 'Pendente',
+  InProgress = 'Em progresso',
+  Resolved = 'Resolvida',
+}
+
+export enum ComplaintStatusEnum {
+  Pending = 0,
+  InProgress = 1,
+  Resolved = 2,
 }
 
 export interface ComplaintMock {

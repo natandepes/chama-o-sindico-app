@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ContactInfo } from "../models/contact-info";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { ApiResponse } from "../../complaint/models/complaint.models";
+import { ApiResponse } from "../../../core/shared/api-response.model";
 
 @Injectable({
   providedIn: 'root'
