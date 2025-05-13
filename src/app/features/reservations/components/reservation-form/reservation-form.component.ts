@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ReservationService } from '../../services/reservation.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AreaReservation } from '../../models/area-reservation.model';
+import { AreaReservation, AreaReservationStatusEnum } from '../../models/area-reservation.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Area } from '../../models/area.model';
 import { ROUTE_PATHS } from '../../../../app.paths';
+import { AuthService } from '../../../authentication/services/auth.service';
+import { UserRole } from '../../../authentication/models/user-roles.model';
+import { AreaReservationAnswerModel } from '../../models/area-reservation-answer.model';
+import { AreaReservationFullModel } from '../../models/area-reservation-full.model';
 
 @Component({
   selector: 'app-reservation-form',
@@ -13,59 +17,90 @@ import { ROUTE_PATHS } from '../../../../app.paths';
   styleUrl: './reservation-form.component.css',
 })
 export class ReservationFormComponent implements OnInit {
+  formulario!: FormGroup;
+  protected areaReservationAnswerForm!: FormGroup;
+  
+  areaReservations!: AreaReservationFullModel;
+  areas: Area[] = [];
+  
+  userId!: string;
+  areaReservationId!: string;
+  
+  protected readOnlyMode = false;
+  
+  protected areaReservationStatusEnum = AreaReservationStatusEnum;
+  protected areaReservationStatus!: AreaReservationStatusEnum;
 
-  formulario!: FormGroup; // Define the type of formulario based on your form structure
-  areaReservations!: AreaReservation; // Define the type of areaReservations based on your model
-  areas: Area[] = []; // Define the type of areas based on your model	
-  userId!: string; // Replace with actual user ID logic
-  areaReservationId!: string; // Define the type of areaReservationId based on your model
+  protected minDate: string = new Date().toISOString().split('T')[0];
+
+  protected userRole: UserRole | null = null;
+  protected readonly UserRoleEnum = UserRole;
 
   constructor(
     private areaReservationService: ReservationService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {
-    this.initForm();
-  }
-  // Define any properties or methods needed for the component here
+    private router: Router,
+    private authService: AuthService
+  ) {}
+  
   ngOnInit() {
     this.getAreas();
-    this.userId = localStorage.getItem('userId')!;
+    this.userId = this.authService.getUserId() || '';
+    this.userRole = this.authService.getUserRole();
     this.areaReservationId = this.route.snapshot.paramMap.get('id')!;
+
+    this.initForm();
 
     if (this.areaReservationId) {
       this.getAreaReservation(this.areaReservationId);
+      this.formulario.disable();
+      this.readOnlyMode = true;
     }
   }
 
   getAreaReservation(id: string) {
-    this.areaReservationService.getAreaReservation(id).subscribe((data) => {
-      this.areaReservations = data.data!;
-      this.getFormValues();
+    this.areaReservationService.getAreaReservation(id).subscribe({
+      next: (data) => {
+        if (data.success && data.data) {
+          this.areaReservations = data.data!;
+          this.getFormValues();
+          this.areaReservationStatus = data.data.status as AreaReservationStatusEnum;
+        }
+      },
     });
   }
 
   getAreas(){
-    this.areaReservationService.getAreas().subscribe((data) => {
-      this.areas = data.data ?? [] as Area[];
-    });
+    this.areaReservationService.getAreas().subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          this.areas = response.data;
+        }
+      }
+    })
   }
 
   calculateLengthTime(type: string): string {
-    if(type === 'start'){
-      return this.areas.filter(area => area.id === this.formulario.value.areaId)[0].openTime;
-    }
-    
-    return this.areas.filter(area => area.id === this.formulario.value.areaId)[0].closeTime;
+    const selectedAreaId = this.formulario?.get('areaId')?.value;
+    const selectedArea = this.areas.find(area => area.id === selectedAreaId);
+
+    if (!selectedArea) return ''; // fallback to blank if not loaded yet
+
+    return type === 'start' ? selectedArea.openTime : selectedArea.closeTime;
   }
 
   initForm() {
     this.formulario = new FormGroup({
       areaId: new FormControl('', Validators.required),
-      createdByUserId: new FormControl('', Validators.required),
+      createdByUserId: new FormControl(this.userId, Validators.required),
       date: new FormControl(new Date(), Validators.required),
       startTime: new FormControl('', Validators.required),
       endTime: new FormControl('', Validators.required),
+      status: new FormControl(''),
+    });
+
+    this.areaReservationAnswerForm = new FormGroup({
+      answer: new FormControl('', Validators.required),
     });
   }
 
@@ -99,27 +134,94 @@ export class ReservationFormComponent implements OnInit {
 
   saveAreaReservation() {
     if(this.formulario.valid){
-      const reservationData: AreaReservation = {
-        areaId: this.formulario.value.areaId,
-        areaName: this.areas.find(area => area.id === this.formulario.value.areaId)?.name ?? '',
-        createdByUserId: this.userId,
-        startDate: this.combineDateAndTime(this.formulario.value.date, this.formulario.value.startTime),
-        endDate: this.combineDateAndTime(this.formulario.value.date, this.formulario.value.endTime),
-        status: "WaitingApproval",
-      };
-  
-      if (this.areaReservationId) {
-        reservationData.id = this.areaReservationId;
-      }
-  
-      this.areaReservationService.saveAreaReservation(reservationData).subscribe(
-        () => {
-          this.router.navigate([ROUTE_PATHS.viewReservation]);
+      if (confirm('Você tem certeza que deseja reservar esta área? Ela não poderá ser editada depois!')) {
+        const reservationData: AreaReservation = {
+          areaId: this.formulario.value.areaId,
+          areaName: this.areas.find(area => area.id === this.formulario.value.areaId)?.name ?? '',
+          createdByUserId: this.userId,
+          startDate: this.combineDateAndTime(this.formulario.value.date, this.formulario.value.startTime),
+          endDate: this.combineDateAndTime(this.formulario.value.date, this.formulario.value.endTime),
+          status: this.areaReservationStatusEnum.Pending,
+        };
+    
+        if (this.areaReservationId) {
+          reservationData.id = this.areaReservationId;
         }
-      );
+    
+        this.areaReservationService.saveAreaReservation(reservationData).subscribe(
+          {
+            next: (response) => {
+              if (response.success) {
+                alert('Reserva salva com sucesso!');
+                this.router.navigate([ROUTE_PATHS.viewReservation]);
+              } else {
+                alert('Erro ao salvar a reserva. Por favor, tente novamente.');
+              }
+            }
+          }
+        );
+      }
     }
     else {
-      alert('Preencha todos os campos obrigatórios !');
+      alert('Preencha todos os campos obrigatórios!');
     }
+  }
+
+  protected addAnswer() {
+    if (this.areaReservationAnswerForm.valid) {
+      let newAnswer = this.transformToAnswerModel();
+
+      this.areaReservationService.addAnswerToAreaReservation(newAnswer).subscribe({
+        next: (response) => {
+          if (response.success) {
+            alert('Resposta adicionada com sucesso!');
+            this.areaReservationAnswerForm.reset();
+            this.getAreaReservation(this.areaReservationId);
+          } else {
+            alert('Erro ao adicionar resposta. Por favor, tente novamente.');
+          }
+        }
+      });
+    }
+  }
+
+  protected changeStatus(status: AreaReservationStatusEnum) {
+    this.areaReservationService.changeAreaReservationStatus(this.areaReservationId, status).subscribe({
+      next: (response) => {
+        if (response.success) {
+          alert('Status alterado com sucesso!');
+          this.getAreaReservation(this.areaReservationId);
+        } else {
+          alert('Erro ao alterar o status. Por favor, tente novamente.');
+        }
+      }
+    })
+  }
+
+  get selectedArea(): Area | undefined {
+    const selectedId = this.formulario?.get('areaId')?.value;
+    return this.areas.find(area => area.id === selectedId);
+  }
+
+  protected mapStatus(status: number): string {
+    switch (status) {
+      case 1: return 'Aguardando Aprovação';
+      case 2: return 'Aprovada';
+      case 3: return 'Rejeitada';
+      default: return 'Desconhecido';
+    }
+  }
+
+  private transformToAnswerModel(): AreaReservationAnswerModel {
+    let model: AreaReservationAnswerModel;
+
+    model = {
+      areaReservationId: this.areaReservationId,
+      answer: this.areaReservationAnswerForm.get('answer')?.value,
+      answeredByUserId: this.userId,
+      answeredAt: new Date()
+    }
+
+    return model;
   }
 }

@@ -6,5 +6,11 @@ export interface AreaReservation {
     startDate: Date;
     endDate: Date;
     createdAt?: Date;
-    status: "Approved" | "WaitingApproval" | "Denied";
+    status: 1 | 2 | 3;
+}
+
+export enum AreaReservationStatusEnum {
+    Pending = 1,
+    Approved = 2,
+    Rejected = 3,
 }

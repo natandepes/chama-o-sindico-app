@@ -1,36 +1,99 @@
 <main>
-    <div class="content-container">
-        <form [formGroup]="formulario">
+  <div class="content-container">
+    <form [formGroup]="formulario">
+      <div class="form-group">
+        <label>Selecione a Área <span style="color: red">*</span></label>
+        <select formControlName="areaId" class="form-control">
+          <option value="" disabled hidden>Selecione a área</option>
+          @for (item of areas; track $index) {
+            <option [value]="item.id">{{ item.name }}</option>
+          } @empty {
+            <option value="">Nenhuma área disponível</option>
+          }
+        </select>
+        <div *ngIf="selectedArea" class="area-details">
+          <p><strong>Descrição:</strong> {{ selectedArea.description }}</p>
+          <p><strong>Capacidade:</strong> {{ selectedArea.capacity }} pessoas</p>
+          <p>
+            <strong>Status da área:</strong>
+            <span [ngClass]="{ 'text-green': selectedArea.status, 'text-red': !selectedArea.status }">
+              {{ selectedArea.status ? 'Disponível' : 'Indisponível' }}
+            </span>
+          </p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Selecione a Data <span style="color: red">*</span></label>
+        <input formControlName="date" type="date" [min]="minDate" />
+      </div>
+      <div class="form-group">
+        <label>Informe o Intervalo de duração da reserva: <span style="color: red">*</span></label>
+        <div class="form-group">
+          <div class="input">
+            <label>Hora Início:</label>
+            <input formControlName="startTime" [min]="calculateLengthTime('start')" [max]="calculateLengthTime('end')" type="time" />
+          </div>
+          <div class="input">
+            <label>Hora Fim:</label>
+            <input formControlName="endTime" [min]="calculateLengthTime('start')" [max]="calculateLengthTime('end')" type="time" />
+          </div>
+        </div>
+      </div>
+      <div *ngIf="readOnlyMode && formulario.get('status')?.value">
+        <label>Status:</label>
+        <span class="status-badge">
+          {{ mapStatus(formulario.get('status')?.value) }}
+        </span>
+      </div>
+    </form>
+    <div>
+      <h1>Respostas da Reserva</h1>
+      <br>
+
+      <div>
+        <div *ngFor="let answer of areaReservations?.answers">
+          <p><strong>Resposta:</strong></p>
+          <textarea readonly [value]="answer.answer"></textarea>
+          <p><strong>Data:</strong> {{ answer.answeredAt | date: 'dd/MM/yyyy, HH:mm' }}</p>
+          <p><strong>Respondido por:</strong> {{ answer.answeredByUserName }}</p>
+          <br />
+        </div>
+      </div>
+
+      <div *ngIf="this.userRole == this.UserRoleEnum.CondominalManager && this.areaReservationStatus == this.areaReservationStatusEnum.Pending">
+        <div>
+          <h1>Adicionar Resposta</h1>
+          
+          <br>
+
+          <form [formGroup]="areaReservationAnswerForm" (ngSubmit)="addAnswer()">
             <div class="form-group">
-                <label>Selecione a Área <span style="color: red;">*</span></label>
-                <select formControlName="areaId" class="form-control">
-                    <option value="" disabled hidden>Selecione a área</option>
-                    @for (item of areas; track $index) {
-                        <option [value]="item.id">{{item.name}}</option>
-                    }
-                    @empty {
-                        <option value="">Nenhuma área disponível</option>
-                    }
-                </select>
+              <label>Resposta:</label>
+              <textarea id="answer" formControlName="answer" placeholder="Descreva a resposta aqui" class="form-textarea"></textarea>
             </div>
-            <div class="form-group">
-                <label>Selecione a Data <span style="color: red;">*</span></label>
-                <input formControlName="date" type="date">
-            </div>
-            <div class="form-group">
-                <label>Informe o Intervalo de duração da reserva: <span style="color: red;">*</span></label>
-                <div class="form-group">
-                    <div class="input">
-                        <label>Hora Início:</label>
-                        <input formControlName="startTime" [min]="calculateLengthTime('start')" [max]="calculateLengthTime('end')" type="time">
-                    </div>
-                    <div class="input">
-                        <label>Hora Fim:</label>
-                        <input formControlName="endTime" [min]="calculateLengthTime('start')" [max]="calculateLengthTime('end')" type="time">
-                    </div>
-                </div>
-            </div>
-        </form>
-        <button class="create-reservation-button" (click)="saveAreaReservation()">Criar Reserva</button>
+            <button type="submit" class="submit-button">
+              Adicionar Resposta
+            </button>
+          </form>
+        </div>
+
+        <br />
+
+        <div>
+          <h1>Alterar Status</h1>
+          <button
+            *ngIf="this.areaReservationStatus == this.areaReservationStatusEnum.Pending"
+            (click)="changeStatus(areaReservationStatusEnum.Rejected)"
+            class="submit-button"
+          >
+            Rejeitar
+          </button>
+          <button (click)="changeStatus(areaReservationStatusEnum.Approved)" class="submit-button">Aprovar</button>
+        </div>
+        
+      </div>
     </div>
+    
+    <button *ngIf="this.readOnlyMode == false" class="create-reservation-button" (click)="saveAreaReservation()">Criar Reserva</button>
+  </div>
 </main>

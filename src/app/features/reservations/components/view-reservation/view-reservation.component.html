@@ -2,7 +2,7 @@
     <div class="content-container">
         <div class="top-content">
             <input [(ngModel)]="searchText" class="search-input" type="text" placeholder="Buscar">
-            <button *ngIf="this.userRole == this.UserRoleEnum.CondominalManager" class="create-reservation-button" routerLink="/reservations/form">
+            <button *ngIf="this.userRole == this.UserRoleEnum.Resident" class="create-reservation-button" routerLink="/reservations/form">
                 Criar Reserva
             </button>
         </div>
@@ -38,7 +38,7 @@
                                 <p *ngIf="this.userRole == UserRoleEnum.CondominalManager">Reservado por: {{item.createdByUserName}}</p>
                             </div>
                             <div class="buttons">
-                                <button [routerLink]="'/reservations/form/' + item.id">Editar</button>
+                                <button [routerLink]="'/reservations/form/' + item.id">Ver detalhes</button>
                                 <button (click)="deleteAreaReservation(item.id!)">Deletar</button>
                             </div>
                         </li>
