@@ -63,4 +63,8 @@ export class SidebarComponent {
   protected goToContactInfo() {
     this.router.navigate([ROUTE_PATHS.contactInfo]);
   }
+
+  protected goToResidentsList() {
+    this.router.navigate([ROUTE_PATHS.listResidents]);
+  }
 }

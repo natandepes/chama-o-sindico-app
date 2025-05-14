@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { CreateComplaintComponent } from './components/create-complaint/create-complaint.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListComplaintsComponent } from './components/list-complaints/list-complaints.component';
-import { EditComplaintComponent } from './components/edit-complaint/edit-complaint.component';
+import { RouterModule } from '@angular/router';
+import { ViewComplaintComponent } from './components/edit-complaint/view-complaint.component';
 
 @NgModule({
-  declarations: [CreateComplaintComponent, ListComplaintsComponent, EditComplaintComponent],
-  exports: [CreateComplaintComponent, ListComplaintsComponent, EditComplaintComponent],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  declarations: [CreateComplaintComponent, ListComplaintsComponent, ViewComplaintComponent],
+  exports: [CreateComplaintComponent, ListComplaintsComponent, ViewComplaintComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
 })
 export class ComplaintModule {}

@@ -16,6 +16,7 @@
                                 <h3>{{item.name}}</h3>
                                 <p>{{item.description}}</p>
                                 <p>Capacidade: {{item.capacity}} Pessoas</p>
+                                <p>Está funcionando? {{item.status == true ? "Sim" : "Não"}}</p>
                             </div>
                             <div class="buttons">
                                 <button [routerLink]="'/areas/form/' + item.id">Ver detalhes</button>

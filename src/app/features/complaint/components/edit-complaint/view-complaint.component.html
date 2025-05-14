@@ -1,0 +1,89 @@
+<div class="headerProvisorio">
+  <p>Provisório</p>
+</div>
+
+<div class="container">
+  <form [formGroup]="viewComplaintForm" class="form">
+    <h1>Detalhes da Ocorrência</h1>
+
+    <!-- Assunto -->
+    <div class="form-group">
+      <label for="title">Assunto:</label>
+      <input type="text" id="title" formControlName="title" readonly />
+    </div>
+
+    <!-- Data da Ocorrência -->
+    <p><strong>Data da Ocorrência:</strong> {{ complaintModel.createdAt | date: 'dd/MM/yyyy, HH:mm' }}</p>
+
+    <!-- Descrição -->
+    <div class="form-group">
+      <label for="description">Descrição Detalhada:</label>
+      <textarea id="description" formControlName="description" readonly class="form-textarea"></textarea>
+    </div>
+
+    <!-- Imagem -->
+    <div class="form-group">
+      <label>Imagem do Problema:</label>
+      <div class="complaint-image" *ngIf="complaintModel?.imageUrl">
+      <img [src]="complaintModel.imageUrl" alt="Imagem da denúncia" style="max-width: 200px; max-height: 200px;" />
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="form-group">
+      <label>Status:</label>
+      <input type="text" formControlName="status" readonly />
+    </div>
+
+    <!-- Data da Resolução -->
+    <p *ngIf="complaintModel.closedAt">
+      <strong>Data de Resolução:</strong> {{ complaintModel.closedAt | date: 'dd/MM/yyyy, HH:mm' }}
+    </p>
+
+
+  </form>
+
+  <div>
+    <h1>Respostas da Ocorrência</h1>
+    <br>
+    
+    <div>
+      <div *ngFor="let answer of complaintModel?.answers">
+        <p><strong>Resposta:</strong></p>
+        <textarea readonly [value]="answer.answer"></textarea>
+        <p><strong>Data:</strong> {{ answer.answeredAt | date: 'dd/MM/yyyy, HH:mm' }}</p>
+        <p><strong>Respondido por:</strong> {{ answer.anseredByUserName }}</p>
+        <br>
+    </div>
+
+    <div *ngIf="this.userRole == this.UserRoleEnum.CondominalManager && (this.complaintStatus === this.complaintStatusEnum.Pending || this.complaintStatus === this.complaintStatusEnum.InProgress)">
+      <div>
+        <h1>Adicionar Resposta</h1>
+      <br>
+      <form [formGroup]="complaintAnswerForm" class="form" (ngSubmit)="addAnswer()">
+        <!-- Resposta -->
+        <div class="form-group">
+          <label for="answer">Adicionar Resposta:</label>
+          <textarea id="answer" formControlName="answer" placeholder="Descreva a resposta aqui" class="form-textarea"></textarea>
+        </div>
+        <button type="submit" class="submit-button">
+          Adicionar Resposta
+        </button>
+      </form>
+      </div>
+      <div *ngIf="this.userRole == this.UserRoleEnum.CondominalManager && (this.complaintStatus === this.complaintStatusEnum.Pending || this.complaintStatus === this.complaintStatusEnum.InProgress)">
+        <br>
+        <h1>Alterar Status</h1>
+        <button *ngIf="this.complaintStatus !== this.complaintStatusEnum.InProgress" (click)="changeStatus(complaintStatusEnum.InProgress)" class="submit-button">
+          Em Andamento
+        </button>
+        <button (click)="changeStatus(complaintStatusEnum.Resolved)" class="submit-button">
+          Resolvido
+        </button>
+
+      </div>
+    </div>
+    
+  </div>
+  
+</div>

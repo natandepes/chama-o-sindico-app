@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ComplaintMock, ComplaintStatus } from '../../models/complaint.models';
 import { ComplaintService } from '../../services/complaint.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ROUTE_PATHS } from '../../../../app.paths';
 
 @Component({
   selector: 'app-create-complaint',
@@ -25,7 +27,7 @@ export class CreateComplaintComponent {
   constructor(
     private complaintService: ComplaintService,
     private formBuilder: FormBuilder,
-
+    private router: Router
   ) {
     this.complaintForm = this.formBuilder.group(
       {
@@ -44,15 +46,19 @@ export class CreateComplaintComponent {
   createComplaint(): void {
     if(this.complaintForm.valid)
     {
-      this.complaintModel = this.transformToComplaintModel();
+      if (confirm('Você tem certeza que deseja criar a denúncia? Ela não poderá ser editada depois!')) {
+        this.complaintModel = this.transformToComplaintModel();
 
-      this.complaintService.createComplaint(this.complaintModel).subscribe({
-        next: (response) => {
-          if (response.success) {
-            alert('Reclamação criada com sucesso!');
+        this.complaintService.createComplaint(this.complaintModel).subscribe({
+          next: (response) => {
+            if (response.success) {
+              alert('Reclamação criada com sucesso!');
+              this.complaintForm.reset();
+              this.router.navigate([ROUTE_PATHS.listComplaints]);
+            }
           }
-        }
-      })
+        })
+      }
     }
     else{
       alert('Preencha os campos obrigatórios corretamente')

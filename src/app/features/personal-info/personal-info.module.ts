@@ -1,18 +1,22 @@
 import { NgModule } from "@angular/core";
 import { PersonalInfoComponent } from "./components/personal-info/personal-info.component";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { ReactiveFormsModule } from "@angular/forms";
+import { ResidentListComponent } from "./components/resident-list/resident-list.component";
 
 @NgModule({
   declarations: [
-    PersonalInfoComponent
+    PersonalInfoComponent,
+    ResidentListComponent
   ],
   imports: [
-    CommonModule, 
+    CommonModule,
+    FormsModule,
     ReactiveFormsModule
   ],
   exports: [
-    PersonalInfoComponent
+    PersonalInfoComponent,
+    ResidentListComponent
   ]
 })
 export class PersonalInfoModule {}

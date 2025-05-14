@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../authentication/services/auth.service';
 import { UserRole } from '../../../authentication/models/user-roles.model';
 import { ROUTE_PATHS } from '../../../../app.paths';
+import { ComplaintResponseModel } from '../../models/complaint-response.model';
 
 @Component({
   selector: 'app-list-complaints',
@@ -13,11 +14,10 @@ import { ROUTE_PATHS } from '../../../../app.paths';
   standalone: false,
 })
 export class ListComplaintsComponent implements OnInit {
-  complaints: ComplaintMock[] = [];
-  rawComplaints: ComplaintMock[] = [];
-  userId: string | null = "";
+  complaints: ComplaintResponseModel[] = [];
   protected userRole: UserRole | null = null;
   protected readonly UserRoleEnum = UserRole;
+  protected readonly ComplaintStatusEnum = ComplaintStatus;
   
   constructor(
     private complaintService: ComplaintService,
@@ -37,22 +37,20 @@ export class ListComplaintsComponent implements OnInit {
     {
 
       this.complaintService.getAllComplaints().subscribe({
-        next: (response: any) => 
+        next: (response) => 
         {
-          this.rawComplaints = response?.data ?? [];
-  
-          this.complaints = this.rawComplaints.map((c: any) => 
-          ({
-            id: c.id,
-            title: c.title,
-            description: c.description,
-            imageUrl: c.imageUrl,
-            status: this.mapStatus(c.status), 
-            createdAt: new Date(c.createdAt),
-            closedAt: c.closedAt ? new Date(c.closedAt) : null,
-            createdByUserId: c.createdByUserId,
-            closedByUserId: c.closedByUserId ? null: ''
-          }))
+          if (response.success && response.data) {
+            console.log(response.data);
+            this.complaints = response.data!.map((c: any) => 
+              ({
+                complaintId: c.complaintId,
+                title: c.title,
+                description: c.description,
+                status: this.mapStatus(c.status), 
+                createdAt: new Date(c.createdAt),
+                createdByUserName: c.createdByUserName
+              }))
+          }
         }
       });
     }
@@ -61,20 +59,17 @@ export class ListComplaintsComponent implements OnInit {
       this.complaintService.getAllComplaintsByUserId().subscribe({
         next: (response: any) => 
         {
-          this.rawComplaints = response?.data ?? [];
-  
-          this.complaints = this.rawComplaints.map((c: any) => 
-          ({
-            id: c.id,
-            title: c.title,
-            description: c.description,
-            imageUrl: c.imageUrl,
-            status: this.mapStatus(c.status), 
-            createdAt: new Date(c.createdAt),
-            closedAt: c.closedAt ? new Date(c.closedAt) : null,
-            createdByUserId: c.createdByUserId,
-            closedByUserId: c.closedByUserId ? null: ''
-          }))
+          if (response.success && response.data) {
+            this.complaints = response.data!.map((c: any) => 
+              ({
+                complaintId: c.complaintId,
+                title: c.title,
+                description: c.description,
+                status: this.mapStatus(c.status), 
+                createdAt: new Date(c.createdAt),
+                createdByUserName: c.createdByUserName
+              }))
+          }
         }
       });
     }
@@ -85,25 +80,21 @@ export class ListComplaintsComponent implements OnInit {
       case 0: return ComplaintStatus.Pending;
       case 1: return ComplaintStatus.InProgress;
       case 2: return ComplaintStatus.Resolved;
-      default: return ComplaintStatus.Pending;
+      default:
+        return ComplaintStatus.Pending;
     }
-  }
+  } 
   
   protected goToCreateComplaint()
   {
     this.router.navigate([ROUTE_PATHS.createComplaint])
   }
 
-  protected goToEditComplaint()
-  {
-    this.router.navigate([ROUTE_PATHS.editComplaint])
-  }
-
   deleteComplaint(id: string, idCreator: string | null) {
     if (confirm('Tem certeza que deseja deletar esta denúncia?')) {
       this.complaintService.deleteComplaint(id).subscribe({
         next: () => {
-          this.complaints = this.complaints.filter(c => c.id !== id);
+          this.complaints = this.complaints.filter(c => c.complaintId !== id);
           alert('Denúncia removida com sucesso');
         }
       });

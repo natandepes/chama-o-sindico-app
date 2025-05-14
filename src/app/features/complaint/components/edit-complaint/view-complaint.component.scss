@@ -12,14 +12,16 @@
   }
   
   .container {
-    background-color: #f5f7fa;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: calc(100vh - 80px);
-    padding: var(--spacing);
-    box-sizing: border-box;
-  }
+  background-color: #f5f7fa;
+  display: flex;
+  flex-direction: column; /* 👈 KEY CHANGE */
+  justify-content: flex-start;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+  padding: var(--spacing);
+  box-sizing: border-box;
+  gap: 2rem; /* optional spacing between stacked items */
+}
   
   .complaint-container {
     width: 100%;
