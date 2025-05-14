@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { CondominalServicesService } from '../../services/condominal-services.service';
-import { ROUTE_PATHS } from '../../../../app.paths';
+import { CondominalService } from '../../models/condominal-service.model';
 
 @Component({
   selector: 'app-create-service',
@@ -15,11 +13,7 @@ export class CreateCondominalServiceComponent {
   selectedImg: File | null = null;
   previewImg: string | null = null;
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private condominalServicesService: CondominalServicesService,
-  ) {
+  constructor(private fb: FormBuilder) {
     this.serviceForm = this.fb.group({
       serviceName: ['', Validators.required],
       serviceProvider: ['', Validators.required],
@@ -78,10 +72,15 @@ export class CreateCondominalServiceComponent {
   }
 
   onSubmit(): void {
-    if (this.serviceForm.valid) {
-      const idServico = new Date().getTime().toString(); // Gera um ID único baseado no timestamp
-      this.condominalServicesService.saveService(idServico, this.serviceForm.value);
-      this.router.navigate([ROUTE_PATHS.viewCondominalService.replace(':id', idServico)]);
-    }
+    let formValue = this.serviceForm.value;
+    let condominalService: CondominalService = {
+      id: crypto.randomUUID(),
+      title: formValue.serviceName,
+      providerName: formValue.serviceProvider,
+      cellphone: formValue.phone,
+      description: formValue.serviceDescription,
+      photoUrl: formValue.img,
+    };
+    console.log('Condominal service:', condominalService);
   }
 }
