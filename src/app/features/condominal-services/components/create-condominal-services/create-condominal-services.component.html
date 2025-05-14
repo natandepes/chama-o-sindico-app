@@ -1,71 +1,53 @@
 <!-- criar-servico.component.html -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 <div class="container">
-    <header>
-      <div class="icons">
-          <button class="menu-icon">☰</button>
-      </div>
-      <h1>Crie um Serviço</h1>
-      <div class="icons">
-        <button class="settings-icon">⚙</button>
-      </div>
-    </header>
-  
-    <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
-      <label for="serviceName">Nome do Serviço:</label>
-      <input id="serviceName" type="text" formControlName="serviceName" required />
-  
-      <label for="serviceProvider">Nome Completo do Prestador:</label>
-      <input id="serviceProvider" type="text" formControlName="serviceProvider" required />
-  
-      <label for="phone">Telefone de contato:</label>
-      <input id="phone" type="text" formControlName="phone" required />
-  
-      <label for="serviceDescription">Descrição detalhada do serviço:</label>
-      <textarea id="serviceDescription" rows="4" formControlName="serviceDescription"></textarea>
-  
-      <label>Sua foto:</label>
-        <div
-        class="upload-box"
-        (dragover)="onDragOver($event)"
-        (drop)="onDrop($event)"
-        style="position: relative;"
-        >
-        <!-- input escondido -->
-        <input
-            #fileInput
-            type="file"
-            (change)="onFileSelected($event)"
-            accept="image/*"
-            style="display: none"
-        />
+  <header>
+    <div class="icons">
+      <button class="menu-icon">☰</button>
+    </div>
+    <h1>Crie um Serviço</h1>
+    <div class="icons">
+      <button class="settings-icon">⚙</button>
+    </div>
+  </header>
 
-        <!-- Se NÃO tiver imagem preview -->
-        <ng-container *ngIf="!previewImg">
-            <button type="button" class="add-img" (click)="openImgSelector(fileInput)">
-            Buscar imagem
-            </button>
-            <p>Ou arraste a imagem aqui</p>
-        </ng-container>
+  <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+    <label for="serviceName">Nome do Serviço:</label>
+    <input id="serviceName" type="text" formControlName="serviceName" required />
 
-        <!-- Se TIVER imagem preview -->
-        <ng-container *ngIf="previewImg">
-            <!-- Botão com ícone de lixeira -->
-            <button type="button" class="remove-img" (click)="removeImg()" aria-label="Remover imagem">
-            <span class="material-icons" style="color: red; font-size: 24px;">delete</span>
-            </button>
+    <label for="serviceProvider">Nome Completo do Prestador:</label>
+    <input id="serviceProvider" type="text" formControlName="serviceProvider" required />
 
-            <!-- Imagem -->
-            <img
-            [src]="previewImg"
-            alt="Preview"
-            style="margin-top: 10px; max-width: 100%; border-radius: 6px;"
-            />
-        </ng-container>
-        </div>
+    <label for="phone">Telefone de contato:</label>
+    <input id="phone" type="text" formControlName="phone" required />
 
-  
-      <button type="submit">Enviar</button>
-    </form>
-  </div>
+    <label for="serviceDescription">Descrição detalhada do serviço:</label>
+    <textarea id="serviceDescription" rows="4" formControlName="serviceDescription"></textarea>
+
+    <label>Sua foto:</label>
+    <div class="upload-box" (dragover)="onDragOver($event)" (drop)="onDrop($event)" style="position: relative">
+      <!-- input escondido -->
+      <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none" />
+
+      <!-- Se NÃO tiver imagem preview -->
+      <ng-container *ngIf="!previewImg">
+        <button type="button" class="add-img" (click)="openImgSelector(fileInput)">Buscar imagem</button>
+        <p>Ou arraste a imagem aqui</p>
+      </ng-container>
+
+      <!-- Se TIVER imagem preview -->
+      <ng-container *ngIf="previewImg">
+        <!-- Botão com ícone de lixeira -->
+        <button type="button" class="remove-img" (click)="removeImg()" aria-label="Remover imagem">
+          <span class="material-icons" style="color: red; font-size: 24px">delete</span>
+        </button>
+
+        <!-- Imagem -->
+        <img [src]="previewImg" alt="Preview" style="margin-top: 10px; max-width: 100%; border-radius: 6px" />
+      </ng-container>
+    </div>
+
+    <button type="submit" [disabled]="!serviceForm.valid">Enviar</button>
+  </form>
+</div>
