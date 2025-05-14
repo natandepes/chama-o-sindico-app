@@ -87,3 +87,39 @@ main {
     grid-template-columns: 1fr;
   }
 }
+
+.action-box {
+  margin-top: 2rem;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 500px;
+}
+
+.action-btn {
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: var(--secondary-color);
+}
+
+/* Responsivo para ações */
+@media (max-width: 480px) {
+  .action-btn {
+    width: 100%;
+  }
+}

@@ -1,6 +1,6 @@
 <main>
   <div class="header">
-    <h1>Chama o síndico!</h1>
+    <h1>Chama o Síndico!</h1>
     <div class="subtitle-bar"></div>
   </div>
 
@@ -11,5 +11,12 @@
         <span class="label">{{ item.label }}</span>
       </div>
     </div>
+  </div>
+
+  <!-- Nova caixa de ações -->
+  <div class="action-box">
+    <button class="action-btn" (click)="onViewProfile()" style="background-color: #105a99">Ver Perfil</button>
+    <button class="action-btn" (click)="onLogout()" style="background-color: #d9534f">Log Out</button>
+    <button class="action-btn" (click)="onClose()" style="background-color: #6c757d">Fechar</button>
   </div>
 </main>
