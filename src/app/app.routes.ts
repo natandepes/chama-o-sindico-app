@@ -20,121 +20,132 @@ import { PersonalInfoComponent } from './features/personal-info/components/perso
 import { ResidentListComponent } from './features/personal-info/components/resident-list/resident-list.component';
 import { ViewComplaintComponent } from './features/complaint/components/edit-complaint/view-complaint.component';
 import { ListCondominalServicesComponent } from './features/condominal-services/components/list-condominal-services/list-condominal-services.component';
+import { CreateWarningComponent } from './features/warnings/components/create-warning/create-warning.component';
+import { ViewWarningsComponent } from './features/warnings/components/view-warnings/view-warnings.component';
 
 export const appRoutes: Route[] = [
-  { 
-    path: ROUTE_PATHS.login, 
-    component: LoginComponent 
+  {
+    path: ROUTE_PATHS.login,
+    component: LoginComponent,
   },
   {
     path: ROUTE_PATHS.register,
-    component: ResidentRegistrationComponent
+    component: ResidentRegistrationComponent,
   },
-  { 
-    path: ROUTE_PATHS.home, 
-    component: HomeComponent, 
+  {
+    path: ROUTE_PATHS.home,
+    component: HomeComponent,
     canActivate: [AuthGuard],
-
   },
-  { 
-    path: ROUTE_PATHS.createCondominalService, 
+  {
+    path: ROUTE_PATHS.createCondominalService,
     component: CreateCondominalServiceComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
-  { 
-    path: ROUTE_PATHS.viewCondominalService, 
+  {
+    path: ROUTE_PATHS.viewCondominalService,
     component: ViewCondominalServiceComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: ROUTE_PATHS.listCondominalService,
     component: ListCondominalServicesComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: ROUTE_PATHS.editCondominalService,
     component: CreateCondominalServiceComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
-  { 
-    path: ROUTE_PATHS.createComplaint, 
+  {
+    path: ROUTE_PATHS.createComplaint,
     component: CreateComplaintComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
-  { 
-    path: ROUTE_PATHS.viewComplaint, 
+  {
+    path: ROUTE_PATHS.viewComplaint,
     component: ViewComplaintComponent,
-    canActivate: [AuthGuard] 
+    canActivate: [AuthGuard],
   },
-  { 
+  {
     path: ROUTE_PATHS.listComplaints,
-    component: ListComplaintsComponent, 
-    canActivate: [AuthGuard]  
+    component: ListComplaintsComponent,
+    canActivate: [AuthGuard],
   },
 
   {
     path: ROUTE_PATHS.personalInfo,
     component: PersonalInfoComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: ROUTE_PATHS.listResidents,
     component: ResidentListComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
-  { 
-    path: ROUTE_PATHS.contactInfo, 
+  {
+    path: ROUTE_PATHS.contactInfo,
     component: ContactInfoComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
-  { 
-    path: ROUTE_PATHS.viewReservation, 
+  {
+    path: ROUTE_PATHS.viewReservation,
     component: ViewReservationComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
-  { 
-    path: ROUTE_PATHS.viewArea, 
+  {
+    path: ROUTE_PATHS.viewArea,
     component: ViewAreaComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
-  { 
-    path: ROUTE_PATHS.formArea, 
+  {
+    path: ROUTE_PATHS.formArea,
     component: AreaFormComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
-  { 
-    path: ROUTE_PATHS.formAreaEdit, 
+  {
+    path: ROUTE_PATHS.formAreaEdit,
     component: AreaFormComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
-  { 
-    path: ROUTE_PATHS.formReservation, 
+  {
+    path: ROUTE_PATHS.formReservation,
     component: ReservationFormComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: ROUTE_PATHS.viewVehicle,
     component: ViewVehiclesComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: ROUTE_PATHS.formVehicle,
     component: FormVehiclesComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: ROUTE_PATHS.editVehicle,
     component: FormVehiclesComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
-  { 
-    path: ROUTE_PATHS.formReservationEdit, 
+  {
+    path: ROUTE_PATHS.formReservationEdit,
     component: ReservationFormComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
-  { 
-    path: ROUTE_PATHS.wildcard, 
-    redirectTo: ROUTE_PATHS.home, 
-    pathMatch: 'full' 
-  }
+  {
+    path: ROUTE_PATHS.createWarning,
+    component: CreateWarningComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: ROUTE_PATHS.viewWarnings,
+    component: ViewWarningsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: ROUTE_PATHS.wildcard,
+    redirectTo: ROUTE_PATHS.home,
+    pathMatch: 'full',
+  },
 ];

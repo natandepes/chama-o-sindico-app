@@ -21,6 +21,8 @@ export interface RoutePaths {
   formVehicle: string;
   editVehicle: string;
   formReservationEdit: string;
+  createWarning: string;
+  viewWarnings: string;
   wildcard: string;
 }
 
@@ -47,5 +49,7 @@ export const ROUTE_PATHS: RoutePaths = {
   contactInfo: 'contact-info',
   personalInfo: 'personal-info',
   listResidents: 'residents/list',
+  createWarning: 'warnings/create',
+  viewWarnings: 'warnings/view',
   wildcard: '**',
 };
