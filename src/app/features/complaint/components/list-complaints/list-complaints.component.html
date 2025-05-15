@@ -6,22 +6,33 @@
 
   <div class="main-box">
     <div class="content-container">
-      <div class="card-title" style="">
-        <button class="details-button" (click)="goToCreateComplaint()">Nova Denúncia</button>
+      <button class="buttonCreateComplaint" (click)="goToCreateComplaint()">Nova Denúncia</button>
+
+      <div class="complaint-search-bar">
+        <input type="text" [(ngModel)]="searchText" placeholder="Pesquisar Denúncias" class="complaint-search-input" />
       </div>
 
-      <div *ngFor="let complaint of complaints" class="complaint-card">
-        <p>{{ complaint.title }}</p>
-        <h3>{{ complaint.description | slice: 0 : 30 }}{{ complaint.description.length > 30 ? '...' : '' }}</h3>
+      <div *ngFor="let complaint of filterComplaints()" class="card">
+        <h3>{{ complaint.title }}</h3>
+        <p>{{ complaint.description }}</p>
+
         <p>
-          <strong>Status: {{ complaint.status }}</strong>
-          <!-- <span class="status-badge status-{{ complaint.status | lowercase }}">
-          {{ complaint.status }}
-        </span> -->
+          <strong>Status:</strong>
+          <span
+            [ngClass]="{
+              'status-pendente': complaint.status === 'Pendente',
+              'status-em-andamento': complaint.status === 'Em progresso',
+              'status-resolvida': complaint.status === 'Resolvida',
+            }"
+            >{{ complaint.status }}</span
+          >
         </p>
         <p><strong>Data:</strong> {{ complaint.createdAt | date: 'dd/MM/yyyy' }}</p>
         <p><strong>Criado por:</strong> {{ complaint.createdByUserName }}</p>
-        <button *ngIf="complaint.complaintId" [routerLink]="'/complaints/view/' + complaint.complaintId">Ver detalhes</button>
+        <div class="card-actions">
+          <button *ngIf="complaint.complaintId" class="buttonViewComplaint" [routerLink]="'/complaints/view/' + complaint.complaintId">Ver detalhes</button>
+          <button class="delete-button" (click)="deleteComplaint(complaint.complaintId, complaint.createdByUserName)">Deletar</button>
+        </div>
       </div>
     </div>
   </div>
