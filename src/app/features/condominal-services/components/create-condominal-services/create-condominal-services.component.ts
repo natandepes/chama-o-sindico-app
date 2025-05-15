@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { CondominalService } from '../../models/condominal-service.model';
+import { CondominalServicesService } from '../../services/condominal-services.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-service',
@@ -13,13 +15,15 @@ export class CreateCondominalServiceComponent {
   selectedImg: File | null = null;
   previewImg: string | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private condominalServicesService: CondominalServicesService, private router: Router) {
+    // Inicializa o FormBuilder
     this.serviceForm = this.fb.group({
-      serviceName: ['', Validators.required],
-      serviceProvider: ['', Validators.required],
-      phone: ['', Validators.required],
-      serviceDescription: [''],
-      img: [''],
+      title: ['', Validators.required],
+      providerName: ['', Validators.required],
+      cellphone: ['', Validators.required],
+      imageType: ['', Validators.required],
+      description: [''],
+      photoUrl: [''],
     });
   }
 
@@ -33,7 +37,8 @@ export class CreateCondominalServiceComponent {
 
         // Se quiser manter no form:
         this.serviceForm.patchValue({
-          img: this.previewImg,
+          photoUrl: this.previewImg,
+          imageType: file.type
         });
       };
       reader.readAsDataURL(file);
@@ -74,13 +79,28 @@ export class CreateCondominalServiceComponent {
   onSubmit(): void {
     let formValue = this.serviceForm.value;
     let condominalService: CondominalService = {
-      id: crypto.randomUUID(),
-      title: formValue.serviceName,
-      providerName: formValue.serviceProvider,
-      cellphone: formValue.phone,
-      description: formValue.serviceDescription,
-      photoUrl: formValue.img,
+      title: formValue.title,
+      providerName: formValue.providerName,
+      cellphone: formValue.cellphone,
+      description: formValue.description,
+      providerPhotoUrl: formValue.photoUrl,
+      imageType: formValue.imageType,
     };
-    console.log('Condominal service:', condominalService);
+    
+    this.condominalServicesService.saveService(condominalService).subscribe({
+      next: (response) => {
+        if (response.success) {
+          console.log('Service saved successfully:', response.data);
+          this.serviceForm.reset();
+          this.removeImg();
+          this.router.navigate(["condominal-service/view/" + response.data]);
+        } else {
+          console.error('Error saving service:', response.message);
+        }
+      },
+      error: (error) => {
+        console.error('Error saving service:', error);
+      }
+    }); 
   }
 }

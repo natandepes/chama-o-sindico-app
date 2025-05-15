@@ -1,8 +1,9 @@
 export interface CondominalService {
-  id: string;
+  id?: string;
   title: string;
   providerName: string;
-  photoUrl: string;
+  providerPhotoUrl: string;
   cellphone: string;
   description: string;
+  imageType: string;
 }

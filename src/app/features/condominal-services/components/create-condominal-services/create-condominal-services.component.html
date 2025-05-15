@@ -14,16 +14,16 @@
 
   <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
     <label for="serviceName">Nome do Serviço:</label>
-    <input id="serviceName" type="text" formControlName="serviceName" required />
+    <input id="serviceName" type="text" formControlName="title" required />
 
     <label for="serviceProvider">Nome Completo do Prestador:</label>
-    <input id="serviceProvider" type="text" formControlName="serviceProvider" required />
+    <input id="serviceProvider" type="text" formControlName="providerName" required />
 
     <label for="phone">Telefone de contato:</label>
-    <input id="phone" type="text" formControlName="phone" required />
+    <input id="phone" type="text" formControlName="cellphone" required />
 
     <label for="serviceDescription">Descrição detalhada do serviço:</label>
-    <textarea id="serviceDescription" rows="4" formControlName="serviceDescription"></textarea>
+    <textarea id="serviceDescription" rows="4" formControlName="description"></textarea>
 
     <label>Sua foto:</label>
     <div class="upload-box" (dragover)="onDragOver($event)" (drop)="onDrop($event)" style="position: relative">
