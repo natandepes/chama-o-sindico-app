@@ -53,7 +53,8 @@ export class ListCondominalServicesComponent implements OnInit {
     this.condominalServiceService.deleteService(id).subscribe({
       next: (response) => {
         if (response.success) {
-          this.services = this.services.filter(service => service.id !== id);
+          alert('Serviço excluído com sucesso!');
+          this.getAllCondominalServices();
         } else {
           console.error('Error deleting service:', response.message);
         }
