@@ -4,4 +4,5 @@ export interface WarningModel {
   targetType: string;
   residentId: string;
   residentUserId: string;
+  createdAt?: Date;
 }

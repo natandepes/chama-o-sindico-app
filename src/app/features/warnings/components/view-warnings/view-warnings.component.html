@@ -10,6 +10,7 @@
       <div *ngFor="let warning of allWarnings" class="warning-card">
         <h3>{{ warning.title }}</h3>
         <p>{{ warning.description }}</p>
+        <p>Criado em {{warning.createdAt | date: "dd/MM/yyyy"}}</p>
         <br>
       </div>
     </div>
@@ -22,6 +23,7 @@
       <div *ngFor="let warning of userWarnings" class="warning-card">
         <h3>{{ warning.title }}</h3>
         <p>{{ warning.description }}</p>
+        <p>Criado em {{warning.createdAt | date: "dd/MM/yyyy"}}</p>
         <br>
       </div>
     </div>
