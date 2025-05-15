@@ -1,20 +1,26 @@
 // servico.service.ts
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CondominalService } from '../models/condominal-service.model';
+import { ApiResponse } from '../../../core/shared/api-response.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CondominalServicesService {
-  saveService(id: string, dados: Record<string, unknown>): void {
-    dados = { ...dados, imagemUrl: '../../images/bon-clay.jpg' };
-    localStorage.setItem(`servico-${id}`, JSON.stringify(dados));
-    console.log('Serviço salvo com ID:', id);
-    console.log(dados);
+
+  constructor(private http: HttpClient){}
+
+  private readonly baseUrl = 'https://localhost:7020/api';
+
+
+  saveService(service: CondominalService): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(`${this.baseUrl}/CondominalServices/SaveService`, service);
   }
 
-  getService(id: string) {
-    const dados = localStorage.getItem(`servico-${id}`);
-    console.log('Buscando serviço com ID:', id);
-    return dados ? JSON.parse(dados) : null;
+  getService(id: string): Observable<ApiResponse<CondominalService>> {
+    return this.http.get<ApiResponse<CondominalService>>(`${this.baseUrl}/CondominalServices/GetServiceById/${id}`);
   }
 }
+  
