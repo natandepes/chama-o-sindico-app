@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   selector: 'app-view-warnings',
   standalone: false,
   templateUrl: './view-warnings.component.html',
-  styleUrl: './view-warnings.component.css'
+  styleUrl: './view-warnings.component.css',
 })
 export class ViewWarningsComponent implements OnInit {
   protected allWarnings!: WarningModel[];
@@ -23,9 +23,9 @@ export class ViewWarningsComponent implements OnInit {
   constructor(
     private warningService: WarningService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
-  
+
   ngOnInit(): void {
     this.userRole = this.authService.getUserRole();
     this.userId = this.authService.getUserId();
@@ -34,25 +34,25 @@ export class ViewWarningsComponent implements OnInit {
   }
 
   private getAllWarnings() {
-    this.warningService.getAllWarnings().subscribe((response) => {
+    this.warningService.getAllWarnings().subscribe(response => {
       if (response.success && response.data) {
         const all = response.data;
         this.allWarnings = all.filter(warning => warning.targetType === 'all');
         this.userWarnings = all.filter(warning => warning.residentUserId === this.userId);
       } else {
-        alert("Falha ao carregar os avisos, por favor, tente novamente.");
+        alert('Falha ao carregar os avisos, por favor, tente novamente.');
       }
     });
   }
 
   protected deleteWarning(warningId: string) {
-    if (confirm("Tem certeza que deseja excluir este aviso?")) {
-      this.warningService.deleteWarning(warningId).subscribe((response) => {
+    if (confirm('Tem certeza que deseja excluir este aviso?')) {
+      this.warningService.deleteWarning(warningId).subscribe(response => {
         if (response.success) {
-          alert("Aviso excluído com sucesso.");
+          alert('Aviso excluído com sucesso.');
           this.getAllWarnings();
         } else {
-          alert("Falha ao excluir o aviso, por favor, tente novamente.");
+          alert('Falha ao excluir o aviso, por favor, tente novamente.');
         }
       });
     }

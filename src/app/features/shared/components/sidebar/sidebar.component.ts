@@ -64,4 +64,8 @@ export class SidebarComponent {
   protected goToWarnings() {
     this.router.navigate([ROUTE_PATHS.viewWarnings]);
   }
+
+  protected goToWarnings() {
+    this.router.navigate([ROUTE_PATHS.viewWarnings]);
+  }
 }
