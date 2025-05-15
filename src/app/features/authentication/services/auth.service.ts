@@ -7,25 +7,27 @@ import { ApiResponse } from '../../../core/shared/api-response.model';
 import { AuthResultModel } from '../models/auth-result.model';
 import { LoginModel } from '../models/login.model';
 import { UserRole } from '../models/user-roles.model';
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
+import { LoaderService } from '../../shared/services/loader.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  private readonly API_URL = "http://localhost:5158/api";
+  private readonly API_URL = 'http://localhost:5158/api';
 
   constructor(
-    private http: HttpClient, 
-    private router: Router
-  ) { }
+    private http: HttpClient,
+    private router: Router,
+    public loaderService: LoaderService,
+  ) {}
 
-  public login(loginDto: LoginModel) : Observable<ApiResponse<AuthResultModel>> {
+  public login(loginDto: LoginModel): Observable<ApiResponse<AuthResultModel>> {
     return this.http.post<ApiResponse<AuthResultModel>>(`${this.API_URL}/Auth/LoginUser`, loginDto);
   }
 
-  public register(registerDto: ResidentRegistrationModel) : Observable<ApiResponse<AuthResultModel>> {
-    return this.http.post<ApiResponse<AuthResultModel>>(`${this.API_URL}/Auth/RegisterUser`, registerDto );
+  public register(registerDto: ResidentRegistrationModel): Observable<ApiResponse<AuthResultModel>> {
+    return this.http.post<ApiResponse<AuthResultModel>>(`${this.API_URL}/Auth/RegisterUser`, registerDto);
   }
 
   public deleteUser(userId: string): Observable<ApiResponse<string>> {
@@ -48,7 +50,7 @@ export class AuthService {
     localStorage.setItem('userName', name);
     localStorage.setItem('userId', userId);
   }
-  
+
   public getUserName(): string | null {
     return localStorage.getItem('userName');
   }
@@ -72,7 +74,7 @@ export class AuthService {
 
     try {
       const decoded: any = jwtDecode(token);
-      const roleStr = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      const roleStr = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
 
       switch (roleStr) {
         case 'Resident':
@@ -85,30 +87,38 @@ export class AuthService {
     } catch (e) {
       return null;
     }
-
   }
 
-  public logout() : void {
+  public logout(): void {
     const token = localStorage.getItem('token');
     if (!token) {
       this.router.navigate(['/login']);
       return;
     }
 
-    this.http.post(`${this.API_URL}/Auth/LogoutUser`, {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    .subscribe({
-      next: () => {
-        this.clearStorage();
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        console.error('Logout error:', err);
-        // even if server fails, clear token client-side
-        this.clearStorage();
-        this.router.navigate(['/login']);
-      }
-    });
+    this.loaderService.show();
+
+    this.http
+      .post(
+        `${this.API_URL}/Auth/LogoutUser`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
+      .subscribe({
+        next: () => {
+          this.clearStorage();
+          this.router.navigate(['/login']);
+          this.loaderService.hide();
+        },
+        error: err => {
+          console.error('Logout error:', err);
+          this.loaderService.hide();
+          // even if server fails, clear token client-side
+          this.clearStorage();
+          this.router.navigate(['/login']);
+        },
+      });
   }
 }

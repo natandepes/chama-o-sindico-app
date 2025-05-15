@@ -65,8 +65,7 @@ main {
 }
 
 .icon {
-  width: 48px;
-  height: 48px;
+  font-size: 48px;
   object-fit: contain;
 }
 
@@ -97,9 +96,10 @@ main {
   display: flex;
   gap: 1rem;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  max-width: 500px;
+  max-width: 300px;
 }
 
 .action-btn {
@@ -110,10 +110,14 @@ main {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .action-btn:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   background-color: var(--secondary-color);
 }
 

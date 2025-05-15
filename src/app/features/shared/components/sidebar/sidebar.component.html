@@ -1,20 +1,25 @@
-<div class="sidebar" [class.open]="isOpen">
-  <button class="sidebar-toggle" (click)="toggleSidebar()">☰</button>
-
-  <div class="menu-content">
-    <h2 (click)="goToResidentsList()" *ngIf="this.userRole == UserRoleEnum.CondominalManager">Ver moradores</h2>
-    <h2>Serviços</h2>
-    <h2 (click)="goToComplaints()">Denúncias</h2>
-    <h2 (click)="goToReservations()">Reservas</h2>
-    <h2 (click)="goToAreas()" *ngIf="this.userRole == UserRoleEnum.CondominalManager">Áreas</h2>
-    <h2 (click)="goToVehicles()">Veículos</h2>
-    <h2 (click)="goToContactInfo()" routerLink="/contact-info" *ngIf="this.userRole == UserRoleEnum.Resident">Contato do síndico</h2>
+<div class="sidebar" [class.collapsed]="!isOpen">
+  <div class="sidebar-header">
+    <button class="sidebar-toggle" (click)="toggleSidebar()" aria-label="Alternar menu">
+      <span class="material-symbols-outlined toggle-icon">
+        {{ isOpen ? 'chevron_left' : 'chevron_right' }}
+      </span>
+    </button>
   </div>
 
-  <div class="user-info">
+  <div class="menu-content">
+    <ng-container *ngFor="let item of menuItems">
+      <div class="menu-item" *ngIf="isVisible(item)" (click)="routeTo(item.route)" [title]="!isOpen ? item.label : ''">
+        <span class="material-symbols-outlined icon">{{ item.icon }}</span>
+        <span class="label" *ngIf="isOpen">{{ item.label }}</span>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="user-info" *ngIf="isOpen">
     <p class="greeting">Olá, {{ userName }}!</p>
     <div class="action-buttons">
-      <button class="profile-button" (click)="goToProfile()">Ver Perfil</button>
+      <button class="profile-button" (click)="routeTo(ROUTE_PATHS.personalInfo)">Ver Perfil</button>
       <button class="logout-button" (click)="logout()">Sair</button>
     </div>
   </div>

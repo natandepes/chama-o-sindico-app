@@ -15,9 +15,10 @@ import { AreaReservationModule } from './features/reservations/area-reservation.
 import { AuthInterceptor } from './core/interceptors/auth/auth.interceptor';
 import { VehiclesModule } from './features/vehicles/vehicles.module';
 import { PersonalInfoModule } from './features/personal-info/personal-info.module';
+import { LoaderComponent } from './features/shared/components/loader/loader.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, LoaderComponent],
   imports: [
     CommonModule,
     BrowserModule,
@@ -32,9 +33,7 @@ import { PersonalInfoModule } from './features/personal-info/personal-info.modul
     ContactInfoModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
   ],
-  providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
-    provideHttpClient(withInterceptorsFromDi())],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

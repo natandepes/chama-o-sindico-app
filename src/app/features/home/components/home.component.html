@@ -7,7 +7,7 @@
   <div class="main-box">
     <div class="content-container">
       <div class="card" *ngFor="let item of cards" (click)="routeTo(item.route)">
-        <img class="icon" [src]="item.icon" [alt]="item.label" />
+        <span class="material-symbols-outlined icon">{{ item.icon }}</span>
         <span class="label">{{ item.label }}</span>
       </div>
     </div>
@@ -15,8 +15,7 @@
 
   <!-- Nova caixa de ações -->
   <div class="action-box">
-    <button class="action-btn" (click)="onViewProfile()" style="background-color: #105a99">Ver Perfil</button>
-    <button class="action-btn" (click)="onLogout()" style="background-color: #d9534f">Log Out</button>
-    <button class="action-btn" (click)="onClose()" style="background-color: #6c757d">Fechar</button>
+    <button class="action-btn" (click)="routeTo(ROUTE_PATHS.personalInfo)" style="background-color: #105a99">Ver Perfil</button>
+    <button class="action-btn" (click)="onLogout()" style="background-color: #d9534f">Sair</button>
   </div>
 </main>
