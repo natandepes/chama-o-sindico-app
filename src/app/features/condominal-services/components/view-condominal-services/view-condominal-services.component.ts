@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CondominalServicesService } from '../../services/condominal-services.service';
 import { CondominalService } from '../../models/condominal-service.model';
+import { ServiceComment } from '../../models/service-comment.model';
 
 @Component({
   selector: 'app-view-condominal-services',
@@ -11,7 +12,10 @@ import { CondominalService } from '../../models/condominal-service.model';
 })
 export class ViewCondominalServiceComponent implements OnInit {
   service!: CondominalService;
+  comments: Array<ServiceComment> = [];
+  isCommenting = false;
   isEditing = false;
+  newComment = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -26,6 +30,7 @@ export class ViewCondominalServiceComponent implements OnInit {
         next: (response) => {
           if (response.success) {
             this.service = response.data!;
+            this.getComments(this.service.id!);
           } else {
             console.error('Error fetching service:', response.message);
           }
@@ -35,6 +40,55 @@ export class ViewCondominalServiceComponent implements OnInit {
         },
       });
     }
+  }
+
+  getComments(serviceId: string) {
+    this.condominalServicesService.getServiceComments(serviceId).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.comments = response.data!;
+        } else {
+          console.error('Error fetching comments:', response.message);
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching comments:', error);
+      },
+    });
+  }
+
+  addComment(){
+    this.isCommenting = true;
+  }
+
+  submitComment() {
+    if (this.newComment.trim()) {
+      const comment: ServiceComment = {
+        condominalServiceId: this.service.id!,
+        comment: this.newComment,
+        createdAt: new Date(),
+      };
+
+      this.condominalServicesService.createComment(comment).subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.getComments(this.service.id!);
+            this.newComment = '';
+            this.isCommenting = false;
+          } else {
+            console.error('Error creating comment:', response.message);
+          }
+        },
+        error: (error) => {
+          console.error('Error creating comment:', error);
+        },
+      });
+    }
+  }
+
+  cancelComment() {
+    this.isCommenting = false;
+    this.newComment = '';
   }
 
   toEdit() {

@@ -27,6 +27,18 @@
 
     <label>Descrição:</label>
     <p>{{ service.description }}</p>
+    <label>Comentários:</label>
+    <div *ngFor="let item of comments;">
+      <p>{{ item.comment }}</p>
+      <p>Por: {{ item.commentByUserName }}</p>
+      <p>Em: {{ item.createdAt | date: 'dd/MM/yyyy' }}</p>
+    </div>
+    <button (click)="addComment()">Adicionar Comentário</button>
+    <div class="coment-area" *ngIf="isCommenting">
+      <textarea [(ngModel)]="newComment" placeholder="Digite seu comentário aqui..."></textarea>
+      <button (click)="submitComment()">Enviar</button>
+      <button (click)="cancelComment()">Cancelar</button>
+    </div>
   </div>
   <ng-template #carregando>
     <p>Carregando serviço...</p>

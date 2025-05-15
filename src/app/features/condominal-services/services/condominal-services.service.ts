@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { CondominalService } from '../models/condominal-service.model';
 import { ApiResponse } from '../../../core/shared/api-response.model';
 import { Observable } from 'rxjs';
+import { ServiceComment } from '../models/service-comment.model';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,14 @@ export class CondominalServicesService {
 
   deleteService(id: string): Observable<ApiResponse<string>> {
     return this.http.delete<ApiResponse<string>>(`${this.baseUrl}/CondominalServices/DeleteService/${id}`);
+  }
+
+  createComment(commentService: ServiceComment): Observable<ApiResponse<ServiceComment>> {
+    return this.http.post<ApiResponse<ServiceComment>>(`${this.baseUrl}/CondominalServices/CreateServiceComment`, commentService);
+  }
+
+  getServiceComments(serviceId: string): Observable<ApiResponse<ServiceComment[]>> {
+    return this.http.get<ApiResponse<ServiceComment[]>>(`${this.baseUrl}/CondominalServices/GetServiceComments/${serviceId}`);
   }
 }
   
