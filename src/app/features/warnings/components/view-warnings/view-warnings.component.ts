@@ -45,7 +45,6 @@ export class ViewWarningsComponent implements OnInit {
     });
   }
 
-<<<<<<< HEAD
   protected deleteWarning(warningId: string) {
     if (confirm("Tem certeza que deseja excluir este aviso?")) {
       this.warningService.deleteWarning(warningId).subscribe((response) => {
@@ -59,8 +58,6 @@ export class ViewWarningsComponent implements OnInit {
     }
   }
 
-=======
->>>>>>> f1ebdbf (creating view warnings and create warning component)
   protected goToCreateWarning() {
     this.router.navigate([ROUTE_PATHS.createWarning]);
   }
