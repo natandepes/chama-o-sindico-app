@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoginModel } from '../../models/login.model';
 import { ROUTE_PATHS } from '../../../../app.paths';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  standalone: false
+  standalone: false,
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -19,20 +20,23 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private loaderService: LoaderService,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
   protected onSubmit() {
     if (this.loginForm.valid) {
       this.loginModel = this.transformToLoginModel();
-      
+
+      this.loaderService.show();
+
       this.authService.login(this.loginModel).subscribe({
-        next: (response) => {
+        next: response => {
           if (response.success && response.data) {
             this.authService.setToken(response.data.token);
             this.authService.setUserInfo(response.data.name, response.data.userId);
@@ -41,16 +45,17 @@ export class LoginComponent {
 
             this.router.navigate([ROUTE_PATHS.home]);
 
-            alert('Login realizado com sucesso!');
+            this.loaderService.hide();
 
             return;
           }
 
           if (response.success == false) {
+            this.loaderService.hide();
             alert(response.message);
             this.loginForm.reset();
           }
-        }
+        },
       });
     } else {
       alert('Por favor, preencha todos os campos obrigatórios corretamente.');
@@ -62,7 +67,7 @@ export class LoginComponent {
 
     model = {
       email: this.loginForm.get('email')?.value,
-      password: this.loginForm.get('password')?.value
+      password: this.loginForm.get('password')?.value,
     };
 
     return model;

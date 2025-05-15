@@ -4,6 +4,7 @@ import { AuthService } from '../../../authentication/services/auth.service';
 import { Router } from '@angular/router';
 import { UserRole } from '../../../authentication/models/user-roles.model';
 import { ROUTE_PATHS } from '../../../../app.paths';
+import { MenuItem, menuItems } from '../../models/menuItems';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,11 +17,12 @@ export class SidebarComponent {
   protected userName: string | null = null;
   protected userRole: UserRole | null = null;
   protected readonly UserRoleEnum = UserRole;
+  protected readonly ROUTE_PATHS = ROUTE_PATHS;
 
   constructor(
     private readonly sidebarService: SidebarService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {
     this.sidebarService.isOpen$.subscribe(open => {
       this.isOpen = open;
@@ -40,31 +42,17 @@ export class SidebarComponent {
     this.userName = null;
   }
 
-  protected goToProfile() {
-    this.router.navigate([ROUTE_PATHS.personalInfo]);
-  }
-  
-  protected goToComplaints() {
-    this.router.navigate([ROUTE_PATHS.listComplaints]);
+  protected menuItems: MenuItem[] = menuItems;
+
+  protected routeTo(route: string): void {
+    this.router.navigate([route]);
+    if (this.isOpen) {
+      this.sidebarService.toggle();
+    }
   }
 
-  protected goToReservations() {
-    this.router.navigate([ROUTE_PATHS.viewReservation]);
-  }
-
-  protected goToAreas() {
-    this.router.navigate([ROUTE_PATHS.viewArea]);
-  }
-
-  protected goToVehicles() {
-    this.router.navigate([ROUTE_PATHS.viewVehicle]);
-  }
-
-  protected goToContactInfo() {
-    this.router.navigate([ROUTE_PATHS.contactInfo]);
-  }
-
-  protected goToResidentsList() {
-    this.router.navigate([ROUTE_PATHS.listResidents]);
+  protected isVisible(item: MenuItem): boolean {
+    if (!item.roles) return true;
+    return item.roles.includes(this.userRole as UserRole);
   }
 }

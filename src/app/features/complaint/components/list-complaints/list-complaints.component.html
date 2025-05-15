@@ -9,20 +9,20 @@
       <div class="card-title" style="">
         <button class="details-button" (click)="goToCreateComplaint()">Nova Denúncia</button>
       </div>
-      
-    <div *ngFor="let complaint of complaints" class="complaint-card">
-      <p>{{complaint.title}}</p>
-      <h3>{{ complaint.description | slice:0:30 }}{{ complaint.description.length > 30 ? '...' : '' }}</h3>
-      <p>
-        <strong>Status: {{complaint.status}}</strong>
-        <!-- <span class="status-badge status-{{ complaint.status | lowercase }}">
+
+      <div *ngFor="let complaint of complaints" class="complaint-card">
+        <p>{{ complaint.title }}</p>
+        <h3>{{ complaint.description | slice: 0 : 30 }}{{ complaint.description.length > 30 ? '...' : '' }}</h3>
+        <p>
+          <strong>Status: {{ complaint.status }}</strong>
+          <!-- <span class="status-badge status-{{ complaint.status | lowercase }}">
           {{ complaint.status }}
         </span> -->
-      </p>
-      <p><strong>Data:</strong> {{ complaint.createdAt | date: 'dd/MM/yyyy' }}</p>
-      <p><strong>Criado por:</strong> {{complaint.createdByUserName}}</p>
-      <button *ngIf="complaint.complaintId" [routerLink]="'/complaints/view/' + complaint.complaintId">Ver detalhes</button>
+        </p>
+        <p><strong>Data:</strong> {{ complaint.createdAt | date: 'dd/MM/yyyy' }}</p>
+        <p><strong>Criado por:</strong> {{ complaint.createdByUserName }}</p>
+        <button *ngIf="complaint.complaintId" [routerLink]="'/complaints/view/' + complaint.complaintId">Ver detalhes</button>
+      </div>
     </div>
   </div>
-</div>
 </main>
