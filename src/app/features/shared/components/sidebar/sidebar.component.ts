@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SidebarService } from '../../services/sidebar.service';
 import { AuthService } from '../../../authentication/services/auth.service';
 import { Router } from '@angular/router';
@@ -13,6 +13,7 @@ import { MenuItem, menuItems } from '../../models/menuItems';
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
+  @Input() currentRoute: string = '';
   isOpen = false;
   protected userName: string | null = null;
   protected userRole: UserRole | null = null;

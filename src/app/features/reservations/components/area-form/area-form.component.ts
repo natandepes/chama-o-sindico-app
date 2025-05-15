@@ -3,6 +3,7 @@ import { ReservationService } from '../../services/reservation.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Area } from '../../models/area.model';
+import { ROUTE_PATHS } from '../../../../app.paths';
 
 @Component({
   selector: 'app-area-form',
@@ -11,7 +12,6 @@ import { Area } from '../../models/area.model';
   styleUrl: './area-form.component.css',
 })
 export class AreaFormComponent implements OnInit {
-
   formulario!: FormGroup;
   area!: Area;
   areaId!: string;
@@ -19,7 +19,7 @@ export class AreaFormComponent implements OnInit {
   constructor(
     private areaReservationService: ReservationService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {
     this.initForm();
   }
@@ -33,7 +33,11 @@ export class AreaFormComponent implements OnInit {
     }
   }
 
-  initForm(){
+  goBack() {
+    this.router.navigate([ROUTE_PATHS.viewArea]);
+  }
+
+  initForm() {
     this.formulario = new FormGroup({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
@@ -68,33 +72,32 @@ export class AreaFormComponent implements OnInit {
   }
 
   saveArea() {
-    if(this.formulario.valid){
-      const area = this.areaId ? 
-        {
-          id: this.areaId, 
-          ...this.formulario.value!,
-          openTime: this.formatTime(this.formulario.get('openTime')?.value), 
-          closeTime: this.formatTime(this.formulario.get('closeTime')?.value),
-        } : 
-        {
-          ...this.formulario.value!,
-          openTime: this.formatTime(this.formulario.get('openTime')?.value), 
-          closeTime: this.formatTime(this.formulario.get('closeTime')?.value),
-        }
+    if (this.formulario.valid) {
+      const area = this.areaId
+        ? {
+            id: this.areaId,
+            ...this.formulario.value!,
+            openTime: this.formatTime(this.formulario.get('openTime')?.value),
+            closeTime: this.formatTime(this.formulario.get('closeTime')?.value),
+          }
+        : {
+            ...this.formulario.value!,
+            openTime: this.formatTime(this.formulario.get('openTime')?.value),
+            closeTime: this.formatTime(this.formulario.get('closeTime')?.value),
+          };
 
       this.areaReservationService.createArea(area).subscribe({
-        next: (data) => {
+        next: data => {
           if (data.success) {
             alert('Área salva com sucesso!');
             this.router.navigate(['/areas/view']);
           } else {
-            alert("Erro ao salvar a área, por favor, tente novamente mais tarde.");
+            alert('Erro ao salvar a área, por favor, tente novamente mais tarde.');
           }
-        }
+        },
       });
-    }
-    else{
-      alert("Preencha todos os campos obrigatórios !")
+    } else {
+      alert('Preencha todos os campos obrigatórios !');
     }
   }
 }

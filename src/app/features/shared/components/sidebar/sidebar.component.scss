@@ -90,6 +90,16 @@
         background-color: #1e293b;
         transform: translateX(4px);
       }
+
+      &.active {
+        background-color: #1e293b;
+        transform: translateX(4px);
+
+        .icon,
+        .label {
+          color: #38bdf8;
+        }
+      }
     }
   }
 

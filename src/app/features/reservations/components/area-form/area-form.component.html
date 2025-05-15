@@ -1,40 +1,47 @@
 <main>
-    <div class="content-container">
-        <form [formGroup]="formulario">
-            <div class="form-group">
-                <label>Nome <span style="color: red;">*</span></label>
-                <input type="text" formControlName="name" placeholder="Nome da Área">
-            </div>
-            <div class="form-group">
-                <label>Descrição <span style="color: red;">*</span></label>
-                <input type="text" formControlName="description" placeholder="Descrição da Área">
-            </div>
-            <div class="form-group">
-                <label>Capacidade Total <span style="color: red;">*</span></label>
-                <input type="number" formControlName="capacity" placeholder="Capacidade Total" min="1" max="500">
-            </div>
-            <div class="form-group">
-                <label>Informe o Horário Disponível para reserva <span style="color: red;">*</span></label>
-                <div class="form-group">
-                    <div class="input">
-                        <label>Hora Início:</label>
-                        <input type="time" formControlName="openTime" placeholder="Hora Início">
-                    </div>
-                    <div class="input">
-                        <label>Hora Fim:</label>
-                        <input type="time" formControlName="closeTime" placeholder="Hora Fim">
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Está funcionando?</label>
-                <select formControlName="status">
-                    <option [ngValue]="true">Sim</option>
-                    <option [ngValue]="false">Não</option>
-                </select>
+  <div class="content-container">
+    <button class="back-button" (click)="goBack()">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Voltar
+    </button>
 
-            </div>
-        </form>
-        <button class="create-reservation-button" (click)="saveArea()">{{areaId ? 'Editar Área' : 'Criar Área'}}</button>
-    </div>
+    <form [formGroup]="formulario" novalidate>
+      <div class="form-group">
+        <label>Nome <span class="required">*</span></label>
+        <input type="text" formControlName="name" placeholder="Nome da Área" class="input-field" />
+      </div>
+      <div class="form-group">
+        <label>Descrição <span class="required">*</span></label>
+        <input type="text" formControlName="description" placeholder="Descrição da Área" class="input-field" />
+      </div>
+      <div class="form-group">
+        <label>Capacidade Total <span class="required">*</span></label>
+        <input type="number" formControlName="capacity" placeholder="Capacidade Total" min="1" max="500" class="input-field" />
+      </div>
+      <div class="form-group">
+        <label>Informe o Horário Disponível para reserva <span class="required">*</span></label>
+        <div class="time-inputs">
+          <div class="input">
+            <label>Hora Início:</label>
+            <input type="time" formControlName="openTime" class="input-field" />
+          </div>
+          <div class="input">
+            <label>Hora Fim:</label>
+            <input type="time" formControlName="closeTime" class="input-field" />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Está funcionando?</label>
+        <select formControlName="status" class="input-field">
+          <option [ngValue]="true">Sim</option>
+          <option [ngValue]="false">Não</option>
+        </select>
+      </div>
+    </form>
+
+    <button class="submit-button" (click)="saveArea()">
+      {{ areaId ? 'Editar Área' : 'Criar Área' }}
+    </button>
+  </div>
 </main>

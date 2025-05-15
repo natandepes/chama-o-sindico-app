@@ -1,27 +1,41 @@
-<div class="container">
-  <h1>Contato do síndico:</h1>
-  <div class="contact-info">
-    <div class="contact-info-item">
-      <p class="contact-info-item-label">Nome do síndico:</p>
-      <span class="contact-info-item-value">{{condominalManagerInfo.name}}</span>
-    </div>
-    <div class="contact-info-item">
-      <p class="contact-info-item-label">Número de contato:</p>
-      <input
-        type="tel"
-        [value]="condominalManagerInfo.phone"
-        class="contact-input-readonly"
-        readonly
-      />
-    </div>
-    <div class="contact-info-item">
-      <p class="contact-info-item-label">E-mail:</p>
-      <input
-        type="email"
-        [value]="condominalManagerInfo.email"
-        class="contact-input-readonly"
-        readonly
-      />
+<main>
+  <div class="content-container">
+    <h1 class="page-title">Informações de Contato do Síndico</h1>
+
+    <div class="contact-card">
+      <div class="contact-info-item">
+        <p class="label">Nome</p>
+        <div class="value with-icon">
+          <span class="material-symbols-outlined icon">person</span>
+          <span class="text-value">{{ condominalManagerInfo.name }}</span>
+        </div>
+      </div>
+
+      <div class="contact-info-item">
+        <p class="label">Celular</p>
+        <div class="value with-icon">
+          <span class="material-symbols-outlined icon">phone</span>
+          <span class="text-value">{{ condominalManagerInfo.phone }}</span>
+        </div>
+        <div class="actions-row">
+          <a href="tel:{{ condominalManagerInfo.phone }}" aria-label="Ligar para síndico" class="action-button phone-button" title="Ligar">
+            <span class="material-symbols-outlined">call</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-info-item">
+        <p class="label">Email</p>
+        <div class="value with-icon">
+          <span class="material-symbols-outlined icon">email</span>
+          <span class="text-value">{{ condominalManagerInfo.email }}</span>
+        </div>
+        <div class="actions-row">
+          <a href="mailto:{{ condominalManagerInfo.email }}" aria-label="Enviar email para síndico" class="action-button email-button" title="Enviar E-mail">
+            <span class="material-symbols-outlined">send</span>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</main>

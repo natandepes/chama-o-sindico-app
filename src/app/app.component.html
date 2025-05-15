@@ -1,5 +1,5 @@
 <div class="app-container" *ngIf="shouldShowSidebar; else noSidebarLayout">
-  <app-sidebar></app-sidebar>
+  <app-sidebar [currentRoute]="currentRoute"></app-sidebar>
   <div class="main-content" [class.collapsed]="!isSidebarOpen">
     <router-outlet></router-outlet>
   </div>

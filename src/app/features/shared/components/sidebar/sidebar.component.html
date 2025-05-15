@@ -9,7 +9,13 @@
 
   <div class="menu-content">
     <ng-container *ngFor="let item of menuItems">
-      <div class="menu-item" *ngIf="isVisible(item)" (click)="routeTo(item.route)" [title]="!isOpen ? item.label : ''">
+      <div
+        class="menu-item"
+        *ngIf="isVisible(item)"
+        (click)="routeTo(item.route)"
+        [title]="!isOpen ? item.label : ''"
+        [ngClass]="{ active: currentRoute.includes(item.route) }"
+      >
         <span class="material-symbols-outlined icon">{{ item.icon }}</span>
         <span class="label" *ngIf="isOpen">{{ item.label }}</span>
       </div>

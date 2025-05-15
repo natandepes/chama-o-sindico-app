@@ -1,34 +1,39 @@
 <main>
-    <div class="content-container">
-        <form [formGroup]="formulario">
-            <div class="form-group">
-                <label>Tipo <span style="color: red;">*</span></label>
-                <select formControlName="vehicleType" class="form-select">
-                    <option disabled hidden value="">Selecione o Tipo de Veículo</option>
-                    <option value="carro">Carro</option>
-                    <option value="moto">Moto</option>
-                </select>
-            </div> 
-            <div class="form-group">
-                <label>Modelo <span style="color: red;">*</span></label>
-                <input formControlName="model" type="text" placeholder="Modelo do Veículo">
-            </div>
-            <div class="form-group">
-                <label>Placa <span style="color: red;">*</span></label>
-                <input formControlName="licensePlate" type="text" placeholder="Placa do Veículo">
-            </div>
-            <div class="form-group">
-                <label>Número da Vaga <span style="color: red;">*</span></label>
-                <input formControlName="carSpace" type="number" placeholder="Número da Vaga" min="1" max="500">
-            </div>
-            <div class="form-group">
-                <label>Foto do Carro <span style="color: red;">*</span></label>
-                <input #fileInput (change)="onFileSelected($event)" class="file-input" type="file" accept="image/*" placeholder="Foto do Carro">
-            </div>
-        </form>
-        <div class="buttons">
-            <button class="" routerLink="/vehicles/view">Voltar</button>
-            <button class="" (click)="saveVehicle()">Enviar</button>
-        </div>
-    </div>
+  <div class="content-container">
+    <button class="back-button" routerLink="/vehicles/view">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Voltar
+    </button>
+
+    <form [formGroup]="formulario" novalidate>
+      <div class="form-group">
+        <label>Tipo <span class="required">*</span></label>
+        <select formControlName="vehicleType" class="input-field">
+          <option disabled hidden value="">Selecione o Tipo de Veículo</option>
+          <option value="carro">Carro</option>
+          <option value="moto">Moto</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Modelo <span class="required">*</span></label>
+        <input formControlName="model" type="text" placeholder="Modelo do Veículo" class="input-field" />
+      </div>
+      <div class="form-group">
+        <label>Placa <span class="required">*</span></label>
+        <input formControlName="licensePlate" type="text" placeholder="Placa do Veículo" class="input-field" />
+      </div>
+      <div class="form-group">
+        <label>Número da Vaga <span class="required">*</span></label>
+        <input formControlName="carSpace" type="number" placeholder="Número da Vaga" min="1" max="500" class="input-field" />
+      </div>
+      <div class="form-group">
+        <label>Foto do Veículo <span class="required">*</span></label>
+        <input #fileInput (change)="onFileSelected($event)" type="file" accept="image/*" class="file-input input-field" />
+      </div>
+    </form>
+
+    <button class="submit-button" (click)="saveVehicle()">
+      {{ vehicleId ? 'Editar Veículo' : 'Cadastrar Veículo' }}
+    </button>
+  </div>
 </main>
