@@ -3,12 +3,13 @@ export interface RoutePaths {
   register: string;
   home: string;
   createComplaint: string;
-  editComplaint: string;
+  viewComplaint: string;
   createCondominalService: string;
   viewCondominalService: string;
   listComplaints: string;
   contactInfo: string;
   personalInfo: string;
+  listResidents: string;
   viewArea: string;
   formArea: string;
   formAreaEdit: string;
@@ -26,7 +27,7 @@ export const ROUTE_PATHS: RoutePaths = {
   register: 'register',
   home: 'home',
   createComplaint: 'complaints/create',
-  editComplaint: 'complaints/edit:id',
+  viewComplaint: 'complaints/view/:id',
   listComplaints: 'complaints/list',
   viewReservation: 'reservations/view',
   viewArea: 'areas/view',
@@ -41,5 +42,6 @@ export const ROUTE_PATHS: RoutePaths = {
   viewCondominalService: 'condominal-service/view/:id',
   contactInfo: 'contact-info',
   personalInfo: 'personal-info',
+  listResidents: 'residents/list',
   wildcard: '**',
 };

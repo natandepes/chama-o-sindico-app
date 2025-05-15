@@ -26,6 +26,14 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group">
+                <label>Está funcionando?</label>
+                <select formControlName="status">
+                    <option [ngValue]="true">Sim</option>
+                    <option [ngValue]="false">Não</option>
+                </select>
+
+            </div>
         </form>
         <button class="create-reservation-button" (click)="saveArea()">{{areaId ? 'Editar Área' : 'Criar Área'}}</button>
     </div>
