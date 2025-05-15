@@ -19,6 +19,10 @@ export class CondominalServicesService {
     return this.http.post<ApiResponse<string>>(`${this.baseUrl}/CondominalServices/SaveService`, service);
   }
 
+  getAllCondominalServices(): Observable<ApiResponse<CondominalService[]>> {
+    return this.http.get<ApiResponse<CondominalService[]>>(`${this.baseUrl}/CondominalServices/GetAllServices`);
+  }
+
   getService(id: string): Observable<ApiResponse<CondominalService>> {
     return this.http.get<ApiResponse<CondominalService>>(`${this.baseUrl}/CondominalServices/GetServiceById/${id}`);
   }

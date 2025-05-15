@@ -4,11 +4,13 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewCondominalServiceComponent } from './components/view-condominal-services/view-condominal-services.component';
 import { CreateCondominalServiceComponent } from './components/create-condominal-services/create-condominal-services.component';
+import { ListCondominalServicesComponent } from './components/list-condominal-services/list-condominal-services.component';
 
 @NgModule({
   declarations: [
     CreateCondominalServiceComponent,
-    ViewCondominalServiceComponent
+    ViewCondominalServiceComponent,
+    ListCondominalServicesComponent
   ],
   imports: [
     CommonModule,
