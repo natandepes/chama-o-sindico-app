@@ -21,6 +21,8 @@
       <div *ngFor="let service of filterServices()" class="card">
         <h3>{{service.title}}</h3>
         <p>{{ service.description}}</p>
+        <p>Nome do Prestador: {{ service.providerName }}</p>
+        <p>Contato: {{ service.cellphone }}</p>
 
         <div class="card-actions">
           <button *ngIf="service.id" class="buttonViewService" [routerLink]="'/condominal-service/view/' + service.id">Ver detalhes</button>
