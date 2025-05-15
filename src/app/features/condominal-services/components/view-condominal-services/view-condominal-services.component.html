@@ -14,19 +14,31 @@
 
   <div class="conteudo" *ngIf="service; else carregando">
     <div class="service-image">
-      <img [src]="service['img']" alt="Imagem do serviço" class="preview-image" />
+      <img [src]="service.providerPhotoUrl" alt="Imagem do serviço" class="preview-image" />
     </div>
 
-    <h2 class="service-name">{{ service['serviceName'] }}</h2>
+    <h2 class="service-name">{{ service.title }}</h2>
 
     <label>Nome: </label>
-    <p>{{ service['serviceProvider'] }}</p>
+    <p>{{ service.providerName }}</p>
 
     <label>Contato:</label>
-    <p>{{ service['phone'] }}</p>
+    <p>{{ service.cellphone }}</p>
 
     <label>Descrição:</label>
-    <p>{{ service['serviceDescription'] }}</p>
+    <p>{{ service.description }}</p>
+    <label>Comentários:</label>
+    <div *ngFor="let item of comments;">
+      <p>{{ item.comment }}</p>
+      <p>Por: {{ item.commentByUserName }}</p>
+      <p>Em: {{ item.createdAt | date: 'dd/MM/yyyy' }}</p>
+    </div>
+    <button (click)="addComment()">Adicionar Comentário</button>
+    <div class="coment-area" *ngIf="isCommenting">
+      <textarea [(ngModel)]="newComment" placeholder="Digite seu comentário aqui..."></textarea>
+      <button (click)="submitComment()">Enviar</button>
+      <button (click)="cancelComment()">Cancelar</button>
+    </div>
   </div>
   <ng-template #carregando>
     <p>Carregando serviço...</p>

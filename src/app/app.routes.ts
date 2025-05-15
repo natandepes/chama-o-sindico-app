@@ -19,6 +19,7 @@ import { FormVehiclesComponent } from './features/vehicles/components/form-vehic
 import { PersonalInfoComponent } from './features/personal-info/components/personal-info/personal-info.component';
 import { ResidentListComponent } from './features/personal-info/components/resident-list/resident-list.component';
 import { ViewComplaintComponent } from './features/complaint/components/edit-complaint/view-complaint.component';
+import { ListCondominalServicesComponent } from './features/condominal-services/components/list-condominal-services/list-condominal-services.component';
 
 export const appRoutes: Route[] = [
   { 
@@ -43,6 +44,16 @@ export const appRoutes: Route[] = [
   { 
     path: ROUTE_PATHS.viewCondominalService, 
     component: ViewCondominalServiceComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: ROUTE_PATHS.listCondominalService,
+    component: ListCondominalServicesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: ROUTE_PATHS.editCondominalService,
+    component: CreateCondominalServiceComponent,
     canActivate: [AuthGuard]
   },
   { 

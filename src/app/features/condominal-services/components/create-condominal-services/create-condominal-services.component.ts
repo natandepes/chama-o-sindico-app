@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { CondominalService } from '../../models/condominal-service.model';
 import { CondominalServicesService } from '../../services/condominal-services.service';
-import { ROUTE_PATHS } from '../../../../app.paths';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-service',
@@ -10,23 +10,49 @@ import { ROUTE_PATHS } from '../../../../app.paths';
   styleUrl: './create-condominal-services.component.scss',
   standalone: false,
 })
-export class CreateCondominalServiceComponent {
+export class CreateCondominalServiceComponent implements OnInit {
   serviceForm: FormGroup;
+  serviceId!: string;
   selectedImg: File | null = null;
   previewImg: string | null = null;
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private condominalServicesService: CondominalServicesService,
-  ) {
+  constructor(private fb: FormBuilder, private condominalServicesService: CondominalServicesService, private router: Router, private route: ActivatedRoute) {
+    // Inicializa o FormBuilder
     this.serviceForm = this.fb.group({
-      serviceName: ['', Validators.required],
-      serviceProvider: ['', Validators.required],
-      phone: ['', Validators.required],
-      serviceDescription: [''],
-      img: [''],
+      title: ['', Validators.required],
+      providerName: ['', Validators.required],
+      cellphone: ['', Validators.required],
+      imageType: ['', Validators.required],
+      description: [''],
+      photoUrl: [''],
     });
+  }
+
+  ngOnInit(): void {
+    this.serviceId = this.route.snapshot.paramMap.get('id')!;
+    if (this.serviceId) {
+      this.condominalServicesService.getService(this.serviceId).subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.serviceForm.patchValue({
+              title: response.data?.title,
+              providerName: response.data?.providerName,
+              cellphone: response.data?.cellphone,
+              description: response.data?.description,
+              photoUrl: response.data?.providerPhotoUrl,
+              imageType: response.data?.imageType
+            });
+
+            this.previewImg = response.data?.providerPhotoUrl!;
+          } else {
+            console.error('Error fetching service:', response.message);
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching service:', error);
+        }
+      });
+    }
   }
 
   onFileSelected(event: Event): void {
@@ -39,7 +65,8 @@ export class CreateCondominalServiceComponent {
 
         // Se quiser manter no form:
         this.serviceForm.patchValue({
-          img: this.previewImg,
+          photoUrl: this.previewImg,
+          imageType: file.type
         });
       };
       reader.readAsDataURL(file);
@@ -78,10 +105,34 @@ export class CreateCondominalServiceComponent {
   }
 
   onSubmit(): void {
-    if (this.serviceForm.valid) {
-      const idServico = new Date().getTime().toString(); // Gera um ID único baseado no timestamp
-      this.condominalServicesService.saveService(idServico, this.serviceForm.value);
-      this.router.navigate([ROUTE_PATHS.viewCondominalService.replace(':id', idServico)]);
+    let formValue = this.serviceForm.value;
+    let condominalService: CondominalService = {
+      title: formValue.title,
+      providerName: formValue.providerName,
+      cellphone: formValue.cellphone,
+      description: formValue.description,
+      providerPhotoUrl: formValue.photoUrl,
+      imageType: formValue.imageType,
+    };
+
+    if(this.serviceId){
+      condominalService.id = this.serviceId;
     }
+    
+    this.condominalServicesService.saveService(condominalService).subscribe({
+      next: (response) => {
+        if (response.success) {
+          console.log('Service saved successfully:', response.data);
+          this.serviceForm.reset();
+          this.removeImg();
+          this.router.navigate(["condominal-service/view/" + response.data]);
+        } else {
+          console.error('Error saving service:', response.message);
+        }
+      },
+      error: (error) => {
+        console.error('Error saving service:', error);
+      }
+    }); 
   }
 }
