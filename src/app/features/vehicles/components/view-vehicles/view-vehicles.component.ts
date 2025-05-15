@@ -3,6 +3,7 @@ import { VehiclesService } from '../../services/vehicles.service';
 import { Vehicle } from '../../models/vehicles.model';
 import { UserRole } from '../../../authentication/models/user-roles.model';
 import { AuthService } from '../../../authentication/services/auth.service';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-view-vehicles',
@@ -18,7 +19,8 @@ export class ViewVehiclesComponent implements OnInit {
   
   constructor(
     private vehiclesService: VehiclesService,
-    private authService: AuthService
+    private authService: AuthService,
+    private loader: LoaderService,
   ) { }
 
   ngOnInit(): void {
@@ -41,27 +43,33 @@ export class ViewVehiclesComponent implements OnInit {
   }
 
   private getVehicles() {
+    
     if (this.userRole == this.UserRoleEnum.CondominalManager) {
+      this.loader.show();
       this.vehiclesService.getAllVehicles().subscribe((response) => {
         this.vehicles = response.data!;
+        this.loader.hide();
       });
     } else {
+      this.loader.show();
       this.vehiclesService.getUserVehicles().subscribe((response) => {
         this.vehicles = response.data!;
+        this.loader.hide();
       });
+      
     }
   }
 
   deleteVehicle(id: string) {
+    this.loader.show();
     this.vehiclesService.deleteVehicle(id).subscribe((response) => {
       if (response.success) {
-        alert('Veículo Deletado com Sucesso!');
+        this.loader.hide();
         this.getVehicles();
       } else {
         alert("Erro ao deletar veículo. Por favor, tente novamente mais tarde.");
+        this.loader.hide();
       }
-    }, (error) => {
-      console.error("Erro ao deletar veículo. Por favor, tente novamente mais tarde.");
     });
   }
 
