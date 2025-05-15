@@ -10,15 +10,14 @@
       <div *ngFor="let warning of allWarnings" class="warning-card">
         <h3>{{ warning.title }}</h3>
         <p>{{ warning.description }}</p>
-<<<<<<< HEAD
+
         <p>Criado em {{warning.createdAt | date: "dd/MM/yyyy, HH:MM"}}</p>
         <button 
           *ngIf="this.userRole == this.UserRoleEnum.CondominalManager"
           (click)="deleteWarning(warning.id!)">
           Remover aviso
         </button>
-=======
->>>>>>> f1ebdbf (creating view warnings and create warning component)
+        <p>Criado em {{warning.createdAt | date: "dd/MM/yyyy"}}</p>
         <br>
       </div>
     </div>
@@ -31,10 +30,7 @@
       <div *ngFor="let warning of userWarnings" class="warning-card">
         <h3>{{ warning.title }}</h3>
         <p>{{ warning.description }}</p>
-<<<<<<< HEAD
-        <p>Criado em {{warning.createdAt | date: "dd/MM/yyyy, HH:MM"}}</p>
-=======
->>>>>>> f1ebdbf (creating view warnings and create warning component)
+        <p>Criado em {{warning.createdAt | date: "dd/MM/yyyy"}}</p>
         <br>
       </div>
     </div>
