@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Area } from '../../models/area.model';
 import { ROUTE_PATHS } from '../../../../app.paths';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-area-form',
@@ -20,6 +21,7 @@ export class AreaFormComponent implements OnInit {
     private areaReservationService: ReservationService,
     private route: ActivatedRoute,
     private router: Router,
+    private loader: LoaderService,
   ) {
     this.initForm();
   }
@@ -49,9 +51,11 @@ export class AreaFormComponent implements OnInit {
   }
 
   getArea(id: string) {
+    this.loader.show();
     this.areaReservationService.getArea(id).subscribe(data => {
       this.area = data.data!;
       this.setFormValues();
+      this.loader.hide();
     });
   }
 
@@ -73,6 +77,8 @@ export class AreaFormComponent implements OnInit {
 
   saveArea() {
     if (this.formulario.valid) {
+      this.loader.show();
+
       const area = this.areaId
         ? {
             id: this.areaId,
@@ -89,9 +95,10 @@ export class AreaFormComponent implements OnInit {
       this.areaReservationService.createArea(area).subscribe({
         next: data => {
           if (data.success) {
-            alert('Área salva com sucesso!');
+            this.loader.hide();
             this.router.navigate(['/areas/view']);
           } else {
+            this.loader.hide();
             alert('Erro ao salvar a área, por favor, tente novamente mais tarde.');
           }
         },

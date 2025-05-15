@@ -9,6 +9,7 @@ import { AuthService } from '../../../authentication/services/auth.service';
 import { UserRole } from '../../../authentication/models/user-roles.model';
 import { AreaReservationAnswerModel } from '../../models/area-reservation-answer.model';
 import { AreaReservationFullModel } from '../../models/area-reservation-full.model';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-reservation-form',
@@ -40,7 +41,8 @@ export class ReservationFormComponent implements OnInit {
     private areaReservationService: ReservationService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private loader: LoaderService,
   ) {}
   
   ngOnInit() {
@@ -71,10 +73,12 @@ export class ReservationFormComponent implements OnInit {
   }
 
   getAreas(){
+    this.loader.show();
     this.areaReservationService.getAreas().subscribe({
       next: (response) => {
         if (response.success && response.data) {
           this.areas = response.data;
+          this.loader.hide();
         }
       }
     })
@@ -133,8 +137,47 @@ export class ReservationFormComponent implements OnInit {
   }
 
   saveAreaReservation() {
+    if (!this.selectedArea?.status) {
+      alert("Área não disponível para reserva!");
+      return;
+    }
+
+    // if the reservation Hora Início and hora Fim are the same, show an alert
+    if (this.formulario.value.startTime === this.formulario.value.endTime) {
+      alert('Hora de início e hora de fim não podem ser iguais!');
+      return;
+    }
+
+    // if the reservation Hora Início is greater than hora Fim, show an alert
+    if (this.formulario.value.startTime > this.formulario.value.endTime) {
+      alert('Hora de início não pode ser maior que hora de fim!');
+      return;
+    }
+
+    // if the reservation duration is less than 1 hour, show an alert
+    const startTime = new Date(this.combineDateAndTime(this.formulario.value.date, this.formulario.value.startTime));
+    const endTime = new Date(this.combineDateAndTime(this.formulario.value.date, this.formulario.value.endTime));
+    const duration = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60); // in hours
+    
+    if (duration < 1) {
+      alert('A reserva deve ter duração mínima de 1 hora!');
+      return;
+    }
+
+    // if the reservation Hora Inicio and hora Fim are not between the area open and close time, show an alert
+    const areaOpenTime = this.calculateLengthTime('start');
+    const areaCloseTime = this.calculateLengthTime('end');
+    const areaOpenDate = new Date(this.combineDateAndTime(this.formulario.value.date, areaOpenTime));
+    const areaCloseDate = new Date(this.combineDateAndTime(this.formulario.value.date, areaCloseTime));
+
+    if (startTime < areaOpenDate || endTime > areaCloseDate) {
+      alert('A reserva deve estar dentro do horário de funcionamento da área!');
+      return;
+    }
+
     if(this.formulario.valid){
       if (confirm('Você tem certeza que deseja reservar esta área? Ela não poderá ser editada depois!')) {
+        this.loader.show();
         const reservationData: AreaReservation = {
           areaId: this.formulario.value.areaId,
           areaName: this.areas.find(area => area.id === this.formulario.value.areaId)?.name ?? '',
@@ -152,9 +195,10 @@ export class ReservationFormComponent implements OnInit {
           {
             next: (response) => {
               if (response.success) {
-                alert('Reserva salva com sucesso!');
+                this.loader.hide();
                 this.router.navigate([ROUTE_PATHS.viewReservation]);
               } else {
+                this.loader.hide();
                 alert('Erro ao salvar a reserva. Por favor, tente novamente.');
               }
             }

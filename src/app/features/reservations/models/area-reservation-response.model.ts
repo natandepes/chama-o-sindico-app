@@ -4,4 +4,5 @@ export interface AreaReservationResponse {
   createdByUserName: string;
   startDate: Date;
   endDate: Date;
+  status: number;
 }

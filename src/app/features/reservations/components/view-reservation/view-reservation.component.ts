@@ -3,6 +3,7 @@ import { ReservationService } from '../../services/reservation.service';
 import { AuthService } from '../../../authentication/services/auth.service';
 import { UserRole } from '../../../authentication/models/user-roles.model';
 import { AreaReservationResponse } from '../../models/area-reservation-response.model';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-view-reservation',
@@ -19,7 +20,8 @@ export class ViewReservationComponent implements OnInit {
 
   constructor(
     private areaReservationService: ReservationService,
-    private authService: AuthService
+    private authService: AuthService,
+    private loader: LoaderService,
   ) {}
 
   ngOnInit() {
@@ -30,15 +32,19 @@ export class ViewReservationComponent implements OnInit {
 
   private getAreaReservations() {
     if (this.userRole == this.UserRoleEnum.CondominalManager) {
+      this.loader.show();
       this.areaReservationService.getAllAreaReservations().subscribe((data) => {
         this.previousAreaReservations = data.data?.filter(reservation => new Date(reservation.endDate) < new Date()) ?? [] as AreaReservationResponse[];
         this.nextAreaReservations = data.data?.filter(reservation => new Date(reservation.endDate) >= new Date()) ?? [] as AreaReservationResponse[];
+        this.loader.hide();
       });
     }
     else {
+      this.loader.show();
       this.areaReservationService.getUserAreaReservations().subscribe((data) => {
         this.previousAreaReservations = data.data?.filter(reservation => new Date(reservation.endDate) < new Date()) ?? [] as AreaReservationResponse[];
         this.nextAreaReservations = data.data?.filter(reservation => new Date(reservation.endDate) >= new Date()) ?? [] as AreaReservationResponse[];
+        this.loader.hide();
       });
     }
   }
@@ -68,15 +74,24 @@ export class ViewReservationComponent implements OnInit {
   }
 
   deleteAreaReservation(id: string) {
+    if (!confirm('Você tem certeza que deseja excluir esta reserva?')) {
+      return;
+    }
+
+    this.loader.show();
+    
     this.areaReservationService.deleteAreaReservation(id).subscribe(() => {
-      alert('Reservation deleted successfully!');
-      this.getAreaReservations(); // Refresh the list after deletion
+      this.loader.hide();
+      this.getAreaReservations();
     });
   }
 
   extractDate(dateTime: Date | string): string {
     const dt = new Date(dateTime);
-    return dt.toISOString().split('T')[0].replace(/-/g, '/');
+    const day = String(dt.getDate()).padStart(2, '0');
+    const month = String(dt.getMonth() + 1).padStart(2, '0');
+    const year = dt.getFullYear();
+    return `${day}/${month}/${year}`;
   }
 
   extractTime(dateTime: Date | string): string {
@@ -84,5 +99,14 @@ export class ViewReservationComponent implements OnInit {
     const hh = String(dt.getHours()).padStart(2, '0');
     const mm = String(dt.getMinutes()).padStart(2, '0');
     return `${hh}:${mm}`;
+  }
+
+  protected mapStatus(status: number): string {
+    switch (status) {
+      case 1: return 'Aguardando Aprovação';
+      case 2: return 'Aprovada';
+      case 3: return 'Rejeitada';
+      default: return 'Desconhecido';
+    }
   }
 }

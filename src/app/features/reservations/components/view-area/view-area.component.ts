@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReservationService } from '../../services/reservation.service';
 import { Area } from '../../models/area.model';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-view-area',
@@ -13,7 +14,7 @@ export class ViewAreaComponent implements OnInit{
   areas: Area[] = [];
   searchText: string = '';
 
-  constructor(private areaReservationService: ReservationService) {}
+  constructor(private areaReservationService: ReservationService, private loader: LoaderService) {}
   
 
   ngOnInit() {
@@ -31,19 +32,28 @@ export class ViewAreaComponent implements OnInit{
   }
 
   getAreas() {
+    this.loader.show();
     this.areaReservationService.getAreas().subscribe((data) => {
       this.areas = data.data ?? [] as Area[];
+      this.loader.hide();
     });
   }
 
   deleteArea(id: string) {
+    if (!confirm('Você tem certeza que deseja excluir esta área?')) {
+      return;
+    }
+
+    this.loader.show();
+
     this.areaReservationService.deleteArea(id).subscribe({
       next: (data) => {
         if (data.success) {
-          alert('Área excluída com sucesso!');
+          this.loader.hide();
           this.getAreas();
         }
         else {
+          this.loader.hide();
           alert('Erro ao excluir a área. Por favor, tente novamente mais tarde.');
         }
       }
