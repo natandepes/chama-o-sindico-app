@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { VehiclesService } from '../../services/vehicles.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-form-vehicles',
@@ -14,7 +15,7 @@ export class FormVehiclesComponent implements OnInit {
     formulario!: FormGroup
     vehicleId!: string;
 
-    constructor(private vehiclesService: VehiclesService, private route: ActivatedRoute, private router: Router) {   
+    constructor(private vehiclesService: VehiclesService, private route: ActivatedRoute, private router: Router, private loader: LoaderService) {   
       this.formulario = new FormGroup({
         model: new FormControl('', Validators.required),
         vehicleType: new FormControl('', Validators.required),
@@ -39,21 +40,17 @@ export class FormVehiclesComponent implements OnInit {
       }
 
       if(this.formulario.valid){
+        this.loader.show();
+
         this.vehiclesService.saveVehicle(this.formulario.value).subscribe((response) => {
           if (response.success) {
-            if (this.vehicleId) {
-              alert('Veículo atualizado com sucesso!');
-            }
-            else {
-              alert('Veículo criado com sucesso!');
-            }
+            this.loader.hide();
             this.formulario.reset();
             this.router.navigate(['/vehicles/view']);
           } else {
+            this.loader.hide();
             alert('Erro ao criar veículo. Por favor, tente novamente mais tarde.');
           }
-        }, (error) => {
-          console.error('Erro ao criar veículo. Por favor, tente novamente mais tarde.');
         });
       }
       else {
@@ -74,16 +71,16 @@ export class FormVehiclesComponent implements OnInit {
     }
 
     getVehicleById() {
+      this.loader.show();
       this.vehiclesService.getVehicleById(this.vehicleId).subscribe((response) => {
         if (response.success) {
           const vehicle = response.data!;
           vehicle.vehicleType = vehicle.vehicleType.toLowerCase();
           this.formulario.patchValue(vehicle);
+          this.loader.hide();
         } else {
           alert("Erro ao carregar os dados do veículo. Por favor, tente novamente mais tarde.");
         }
-      }, (error) => {
-        alert("Erro ao carregar os dados do veículo. Por favor, tente novamente mais tarde.");
       });
     }
 }

@@ -24,7 +24,7 @@
                 <p>
                   Placa: <strong>{{ item.licensePlate }}</strong>
                 </p>
-                <p>
+                <p *ngIf="this.userRole === UserRoleEnum.CondominalManager">
                   Proprietário: <strong>{{ item.createdByUserName }}</strong>
                 </p>
               </div>
