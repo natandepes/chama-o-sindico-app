@@ -1,53 +1,53 @@
-<!-- criar-servico.component.html -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-<div class="container">
-  <header>
-    <div class="icons">
-      <button class="menu-icon">☰</button>
-    </div>
-    <h1>Crie um Serviço</h1>
-    <div class="icons">
-      <button class="settings-icon">⚙</button>
-    </div>
-  </header>
+<main>
+  <div class="content-container">
+    <button class="back-button" (click)="goBack()">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Voltar
+    </button>
 
-  <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
-    <label for="serviceName">Nome do Serviço:</label>
-    <input id="serviceName" type="text" formControlName="title" required />
+    <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="form-group">
+        <label>Nome do Serviço <span class="required">*</span></label>
+        <input type="text" formControlName="title" placeholder="Nome do Serviço" class="input-field" />
+      </div>
 
-    <label for="serviceProvider">Nome Completo do Prestador:</label>
-    <input id="serviceProvider" type="text" formControlName="providerName" required />
+      <div class="form-group">
+        <label>Nome do Prestador <span class="required">*</span></label>
+        <input type="text" formControlName="providerName" placeholder="Nome Completo do Prestador" class="input-field" />
+      </div>
 
-    <label for="phone">Telefone de contato:</label>
-    <input id="phone" type="text" formControlName="cellphone" required />
+      <div class="form-group">
+        <label>Telefone de Contato <span class="required">*</span></label>
+        <input type="text" formControlName="cellphone" placeholder="(00) 00000-0000" class="input-field" />
+      </div>
 
-    <label for="serviceDescription">Descrição detalhada do serviço:</label>
-    <textarea id="serviceDescription" rows="4" formControlName="description"></textarea>
+      <div class="form-group">
+        <label>Descrição <span class="required">*</span></label>
+        <textarea rows="4" formControlName="description" class="input-field" placeholder="Descreva o serviço"></textarea>
+      </div>
 
-    <label>Sua foto:</label>
-    <div class="upload-box" (dragover)="onDragOver($event)" (drop)="onDrop($event)" style="position: relative">
-      <!-- input escondido -->
-      <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none" />
+      <div class="form-group">
+        <label>Foto do Serviço</label>
+        <div class="upload-box" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+          <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none" />
 
-      <!-- Se NÃO tiver imagem preview -->
-      <ng-container *ngIf="!previewImg">
-        <button type="button" class="add-img" (click)="openImgSelector(fileInput)">Buscar imagem</button>
-        <p>Ou arraste a imagem aqui</p>
-      </ng-container>
+          <ng-container *ngIf="!previewImg">
+            <button type="button" class="add-img" (click)="openImgSelector(fileInput)">Buscar imagem</button>
+            <p>Ou arraste a imagem aqui</p>
+          </ng-container>
 
-      <!-- Se TIVER imagem preview -->
-      <ng-container *ngIf="previewImg">
-        <!-- Botão com ícone de lixeira -->
-        <button type="button" class="remove-img" (click)="removeImg()" aria-label="Remover imagem">
-          <span class="material-icons" style="color: red; font-size: 24px">delete</span>
-        </button>
+          <ng-container *ngIf="previewImg">
+            <button type="button" class="remove-img" (click)="removeImg()" aria-label="Remover imagem">
+              <span class="material-symbols-outlined" style="color: red; font-size: 24px">delete</span>
+            </button>
+            <img [src]="previewImg" alt="Preview" style="max-width: 350px; object-fit: cover" />
+          </ng-container>
+        </div>
+      </div>
 
-        <!-- Imagem -->
-        <img [src]="previewImg" alt="Preview" style="margin-top: 10px; max-width: 100%; border-radius: 6px" />
-      </ng-container>
-    </div>
-
-    <button type="submit" [disabled]="!serviceForm.valid">Enviar</button>
-  </form>
-</div>
+      <button class="submit-button" type="submit" [disabled]="!serviceForm.valid">
+        {{ serviceId ? 'Editar' : 'Criar' }}
+      </button>
+    </form>
+  </div>
+</main>

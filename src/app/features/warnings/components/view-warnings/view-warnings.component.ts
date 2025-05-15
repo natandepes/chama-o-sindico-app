@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
   styleUrl: './view-warnings.component.css',
 })
 export class ViewWarningsComponent implements OnInit {
+  protected searchText: string = '';
   protected allWarnings!: WarningModel[];
   protected userWarnings!: WarningModel[];
 
@@ -60,5 +61,13 @@ export class ViewWarningsComponent implements OnInit {
 
   protected goToCreateWarning() {
     this.router.navigate([ROUTE_PATHS.createWarning]);
+  }
+
+  filteredAllWarnings() {
+    return this.allWarnings.filter(w => w.title.toLowerCase().includes(this.searchText?.toLowerCase() ?? ''));
+  }
+
+  filteredUserWarnings() {
+    return this.userWarnings.filter(w => w.title.toLowerCase().includes(this.searchText?.toLowerCase() ?? ''));
   }
 }

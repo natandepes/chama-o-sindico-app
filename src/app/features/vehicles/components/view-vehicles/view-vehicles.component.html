@@ -1,4 +1,5 @@
 <main>
+  <h1 class="page-title">Veículos</h1>
   <div class="content-container">
     <div class="top-content">
       <input [(ngModel)]="searchText" class="search-input" type="text" placeholder="Buscar veículo..." />
@@ -10,7 +11,6 @@
     </div>
 
     <div class="list-container">
-      <h2 class="list-title">Veículos Cadastrados</h2>
       <ul class="vehicles-list">
         @for (item of filterVehicles(); track $index) {
           <li class="vehicle-item">

@@ -8,50 +8,54 @@ import { CondominalServicesService } from '../../services/condominal-services.se
   selector: 'app-list-condominal-services',
   standalone: false,
   templateUrl: './list-condominal-services.component.html',
-  styleUrl: './list-condominal-services.component.css'
+  styleUrl: './list-condominal-services.component.scss',
 })
 export class ListCondominalServicesComponent implements OnInit {
-
   services: Array<CondominalService> = [];
   searchText: string = '';
 
-  constructor(private router: Router, private condominalServiceService: CondominalServicesService) { }
-  
+  constructor(
+    private router: Router,
+    private condominalServiceService: CondominalServicesService,
+  ) {}
+
   ngOnInit(): void {
     this.getAllCondominalServices();
   }
 
   filterServices() {
     return this.services.filter(service => {
-      return service.title.toLowerCase().includes(this.searchText.toLowerCase()) 
-          || service.description.toLowerCase().includes(this.searchText.toLowerCase())
-          || service.providerName.toLowerCase().includes(this.searchText.toLowerCase())
-          || service.cellphone.toLowerCase().includes(this.searchText.toLowerCase());
+      return (
+        service.title.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        service.description.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        service.providerName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        service.cellphone.toLowerCase().includes(this.searchText.toLowerCase())
+      );
     });
   }
 
-  goToCreateService(){
+  goToCreateService() {
     this.router.navigate([ROUTE_PATHS.createCondominalService]);
   }
 
-  goToEditService(id: string){
+  goToEditService(id: string) {
     this.router.navigate(['condominal-service/edit/', id]);
   }
 
-  getAllCondominalServices(){
+  getAllCondominalServices() {
     this.condominalServiceService.getAllCondominalServices().subscribe({
-      next: (response) => {
+      next: response => {
         this.services = response.data!;
       },
-      error: (error) => {
+      error: error => {
         console.error('Error fetching condominal services:', error);
-      }
+      },
     });
   }
 
-  deleteService(id: string){
+  deleteService(id: string) {
     this.condominalServiceService.deleteService(id).subscribe({
-      next: (response) => {
+      next: response => {
         if (response.success) {
           alert('Serviço excluído com sucesso!');
           this.getAllCondominalServices();
@@ -59,10 +63,9 @@ export class ListCondominalServicesComponent implements OnInit {
           console.error('Error deleting service:', response.message);
         }
       },
-      error: (error) => {
+      error: error => {
         console.error('Error deleting service:', error);
-      }
+      },
     });
   }
-
 }

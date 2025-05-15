@@ -14,7 +14,7 @@
         *ngIf="isVisible(item)"
         (click)="routeTo(item.route)"
         [title]="!isOpen ? item.label : ''"
-        [ngClass]="{ active: currentRoute.includes(item.route) }"
+        [ngClass]="{ active: currentRoute.includes(item.route.split('/')[0]) }"
       >
         <span class="material-symbols-outlined icon">{{ item.icon }}</span>
         <span class="label" *ngIf="isOpen">{{ item.label }}</span>

@@ -25,6 +25,7 @@ export class AppComponent implements OnDestroy {
   ) {
     this.routerSubscription = this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
       this.currentRoute = this.router.url;
+      console.log('Current route:', this.currentRoute);
       this.shouldShowSidebar = !this.hiddenRoutes.some(route => this.currentRoute.includes(route));
     });
 

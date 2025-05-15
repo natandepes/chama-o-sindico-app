@@ -1,35 +1,43 @@
 <main>
-  <div class="header">
-    <h1>Serviços</h1>
-    <div class="subtitle-bar"></div>
+  <h1 class="page-title">Serviços</h1>
+
+  <div class="content-container">
+    <div class="top-content">
+      <input [(ngModel)]="searchText" class="search-input" type="text" placeholder="Buscar serviço..." />
+
+      <button class="add-service-button" (click)="goToCreateService()">
+        <span class="material-symbols-outlined">add_circle</span>
+        Adicionar Serviço
+      </button>
+    </div>
+
+    <div class="list-container">
+      <ul class="services-list">
+        @for (service of filterServices(); track $index) {
+          <li class="service-item">
+            <div class="service">
+              <div class="info">
+                <h3 class="service-title">{{ service.title }}</h3>
+                <p>
+                  Descrição: <strong>{{ service.description }}</strong>
+                </p>
+                <p>
+                  Prestador: <strong>{{ service.providerName }}</strong>
+                </p>
+                <p>
+                  Contato: <strong>{{ service.cellphone }}</strong>
+                </p>
+              </div>
+            </div>
+            <div class="buttons">
+              <button [routerLink]="'/condominal-service/edit/' + service.id">Ver Detalhes</button>
+              <button class="delete-button" (click)="deleteService(service.id!)">Deletar</button>
+            </div>
+          </li>
+        } @empty {
+          <li class="no-services">Nenhum serviço encontrado.</li>
+        }
+      </ul>
+    </div>
   </div>
-
-  <div class="main-box">
-    <div class="content-container">
-      <button class="buttonCreateService" (click)="goToCreateService()">Novo Serviço</button>
-
-
-      <div class="service-search-bar">
-        <input
-          type="text"
-          [(ngModel)]="searchText"
-          placeholder="Pesquisar Serviços"
-          class="service-search-input"
-        >
-      </div>
-
-      <div *ngFor="let service of filterServices()" class="card">
-        <h3>{{service.title}}</h3>
-        <p>{{ service.description}}</p>
-        <p>Nome do Prestador: {{ service.providerName }}</p>
-        <p>Contato: {{ service.cellphone }}</p>
-
-        <div class="card-actions">
-          <button *ngIf="service.id" class="buttonViewService" [routerLink]="'/condominal-service/view/' + service.id">Ver detalhes</button>
-          <button *ngIf="service.id" class="buttonViewService" [routerLink]="'/condominal-service/edit/' + service.id">Editar</button>
-          <button class="delete-button" (click)="deleteService(service.id!)">Deletar</button>
-        </div>
-      </div>
-  </div>
-</div>
 </main>

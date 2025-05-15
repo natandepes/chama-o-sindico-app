@@ -1,4 +1,5 @@
 <main>
+  <h1 class="page-title">Reservas</h1>
   <div class="content-container">
     <div class="top-content">
       <input [(ngModel)]="searchText" class="search-input" type="text" placeholder="Buscar reservas..." />
@@ -9,7 +10,7 @@
     </div>
 
     <div class="list-container">
-      <h2 class="list-title">Próximas Reservas</h2>
+      <h2 class="list-title">Próximas</h2>
       <ul class="reservations-list">
         @for (item of filterNextReservations(); track $index) {
           <li class="reservation-item">
@@ -34,7 +35,7 @@
     </div>
 
     <div class="list-container">
-      <h2 class="list-title">Reservas Anteriores</h2>
+      <h2 class="list-title">Anteriores</h2>
       <ul class="reservations-list">
         @for (item of filterPreviousReservations(); track $index) {
           <li class="reservation-item">

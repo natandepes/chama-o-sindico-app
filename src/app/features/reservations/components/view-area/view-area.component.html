@@ -1,4 +1,5 @@
 <main>
+  <h1 class="page-title">Áreas</h1>
   <div class="content-container">
     <div class="top-content">
       <input [(ngModel)]="searchText" class="search-input" type="text" placeholder="Buscar área..." />
@@ -9,7 +10,6 @@
     </div>
 
     <div class="list-container">
-      <h2 class="list-title">Áreas Cadastradas</h2>
       <ul class="reservations-list">
         @for (item of filterAreas(); track $index) {
           <li class="reservation-item">
