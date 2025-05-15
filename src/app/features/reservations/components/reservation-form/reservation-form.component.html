@@ -15,6 +15,9 @@
           <p><strong>Descrição:</strong> {{ selectedArea.description }}</p>
           <p><strong>Capacidade:</strong> {{ selectedArea.capacity }} pessoas</p>
           <p>
+            <strong>Horário de Funcionamento:</strong>
+            {{ selectedArea.openTime }} - {{ selectedArea.closeTime }}
+          <p>
             <strong>Status da área:</strong>
             <span [ngClass]="{ 'text-green': selectedArea.status, 'text-red': !selectedArea.status }">
               {{ selectedArea.status ? 'Disponível' : 'Indisponível' }}

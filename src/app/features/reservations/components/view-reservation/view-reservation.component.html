@@ -17,11 +17,12 @@
               <h3 class="area-name">{{ item.areaName }}</h3>
               <p class="meta">Data: {{ extractDate(item.endDate) }}</p>
               <p class="meta">Intervalo: {{ extractTime(item.startDate) + ' - ' + extractTime(item.endDate) }}</p>
+              <p class="meta">Status: {{mapStatus(item.status)}}</p>
               <p *ngIf="this.userRole == UserRoleEnum.CondominalManager" class="meta">Reservado por: {{ item.createdByUserName }}</p>
             </div>
             <div class="buttons">
               <button class="details-button" [routerLink]="'/reservations/form/' + item.id">Ver detalhes</button>
-              <button class="delete-button" (click)="deleteAreaReservation(item.id!)">Deletar</button>
+              <button *ngIf="item.status == 1" class="delete-button" (click)="deleteAreaReservation(item.id!)">Deletar</button>
             </div>
           </li>
         }
@@ -45,7 +46,7 @@
             </div>
             <div class="buttons">
               <button class="details-button" [routerLink]="'/reservations/form/' + item.id">Ver detalhes</button>
-              <button class="delete-button" (click)="deleteAreaReservation(item.id!)">Deletar</button>
+              <button *ngIf="this.userRole == this.UserRoleEnum.CondominalManager" class="delete-button" (click)="deleteAreaReservation(item.id!)">Deletar</button>
             </div>
           </li>
         }
