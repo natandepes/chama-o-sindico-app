@@ -21,8 +21,11 @@ export class WarningService {
   public getAllWarnings(): Observable<ApiResponse<WarningModel[]>> {
     return this.http.get<ApiResponse<WarningModel[]>>(`${this.API_URL}/Warning/GetAllWarnings`);
   }
+<<<<<<< HEAD
 
   public deleteWarning(warningId: string): Observable<ApiResponse<string>> {
     return this.http.delete<ApiResponse<string>>(`${this.API_URL}/Warning/DeleteWarning/${warningId}`);
   }
+=======
+>>>>>>> f1ebdbf (creating view warnings and create warning component)
 }
