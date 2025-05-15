@@ -13,6 +13,7 @@ import { SidebarService } from './features/shared/services/sidebar.service';
 export class AppComponent implements OnDestroy {
   shouldShowSidebar = false;
   isSidebarOpen = true;
+  currentRoute: string = '';
   hiddenRoutes = [ROUTE_PATHS.login, ROUTE_PATHS.register, ROUTE_PATHS.home];
 
   private routerSubscription: Subscription;
@@ -23,7 +24,8 @@ export class AppComponent implements OnDestroy {
     private sidebarService: SidebarService,
   ) {
     this.routerSubscription = this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
-      this.shouldShowSidebar = !this.hiddenRoutes.some(route => this.router.url.includes(route));
+      this.currentRoute = this.router.url;
+      this.shouldShowSidebar = !this.hiddenRoutes.some(route => this.currentRoute.includes(route));
     });
 
     this.sidebarSubscription = this.sidebarService.isOpen$.subscribe(isOpen => (this.isSidebarOpen = isOpen));
