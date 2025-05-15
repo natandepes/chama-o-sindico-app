@@ -1,65 +1,51 @@
-<main class="warnings-container">
-  <div class="header">
-    <h1>Avisos</h1>
-    <button *ngIf="this.userRole == this.UserRoleEnum.CondominalManager" class="create-button" (click)="goToCreateWarning()">Criar Aviso</button>
+<main>
+  <div class="content-container">
+    <div class="top-content">
+      <h1 class="page-title">Avisos</h1>
+
+      <div class="top-actions">
+        <input [(ngModel)]="searchText" class="search-input" type="text" placeholder="Buscar aviso..." />
+
+        <button *ngIf="this.userRole == this.UserRoleEnum.CondominalManager" class="add-warning-button" (click)="goToCreateWarning()">
+          <span class="material-symbols-outlined">add_circle</span>
+          Criar Aviso
+        </button>
+      </div>
+    </div>
+
+    <div class="list-container">
+      <h2 class="list-title">Todos</h2>
+      <ul class="warnings-list" *ngIf="filteredAllWarnings().length > 0; else noAll">
+        <li class="warning-item" *ngFor="let warning of filteredAllWarnings()">
+          <div class="info">
+            <h3 class="warning-title">{{ warning.title }}</h3>
+            <p>{{ warning.description }}</p>
+            <p class="created-at">Criado em {{ warning.createdAt | date: 'dd/MM/yyyy, HH:mm' }}</p>
+          </div>
+          <div class="buttons" *ngIf="this.userRole == this.UserRoleEnum.CondominalManager">
+            <button class="delete-button" (click)="deleteWarning(warning.id!)">Remover Aviso</button>
+          </div>
+        </li>
+      </ul>
+      <ng-template #noAll>
+        <p class="no-warnings">Nenhum aviso geral encontrado.</p>
+      </ng-template>
+    </div>
+
+    <div class="list-container" *ngIf="this.userRole == this.UserRoleEnum.Resident">
+      <h2 class="list-title">Meus</h2>
+      <ul class="warnings-list" *ngIf="filteredUserWarnings().length > 0; else noMine">
+        <li class="warning-item" *ngFor="let warning of filteredUserWarnings()">
+          <div class="info">
+            <h3 class="warning-title">{{ warning.title }}</h3>
+            <p>{{ warning.description }}</p>
+            <p class="created-at">Criado em {{ warning.createdAt | date: 'dd/MM/yyyy, HH:mm' }}</p>
+          </div>
+        </li>
+      </ul>
+      <ng-template #noMine>
+        <p class="no-warnings">Nenhum aviso específico encontrado.</p>
+      </ng-template>
+    </div>
   </div>
-
-  <section class="warning-section">
-    <h2>Todos os avisos</h2>
-    <div *ngIf="allWarnings.length > 0; else noAll">
-      <div *ngFor="let warning of allWarnings" class="warning-card">
-        <h3>{{ warning.title }}</h3>
-        <p>{{ warning.description }}</p>
-
-        <p>Criado em {{ warning.createdAt | date: 'dd/MM/yyyy, HH:MM' }}</p>
-        <button *ngIf="this.userRole == this.UserRoleEnum.CondominalManager" (click)="deleteWarning(warning.id!)">Remover aviso</button>
-        <br />
-      </div>
-    </div>
-    <ng-template #noAll><p>Nenhum aviso geral encontrado.</p></ng-template>
-  </section>
-
-  <section *ngIf="this.userRole == this.UserRoleEnum.Resident" class="warning-section">
-    <h2>Meus avisos</h2>
-    <div *ngIf="userWarnings.length > 0; else noMine">
-      <div *ngFor="let warning of userWarnings" class="warning-card">
-        <h3>{{ warning.title }}</h3>
-        <p>{{ warning.description }}</p>
-        <p>Criado em {{ warning.createdAt | date: 'dd/MM/yyyy, HH:MM' }}</p>
-        <br />
-      </div>
-    </div>
-    <ng-template #noMine><p>Você não possui avisos específicos.</p></ng-template>
-  </section>
-</main>
-
-<main class="warnings-container">
-  <div class="header">
-    <h1>Avisos</h1>
-    <button *ngIf="this.userRole == this.UserRoleEnum.CondominalManager" class="create-button" (click)="goToCreateWarning()">Criar Aviso</button>
-  </div>
-
-  <section class="warning-section">
-    <h2>Todos os avisos</h2>
-    <div *ngIf="allWarnings.length > 0; else noAll">
-      <div *ngFor="let warning of allWarnings" class="warning-card">
-        <h3>{{ warning.title }}</h3>
-        <p>{{ warning.description }}</p>
-        <br />
-      </div>
-    </div>
-    <ng-template #noAll><p>Nenhum aviso geral encontrado.</p></ng-template>
-  </section>
-
-  <section *ngIf="this.userRole == this.UserRoleEnum.Resident" class="warning-section">
-    <h2>Meus avisos</h2>
-    <div *ngIf="userWarnings.length > 0; else noMine">
-      <div *ngFor="let warning of userWarnings" class="warning-card">
-        <h3>{{ warning.title }}</h3>
-        <p>{{ warning.description }}</p>
-        <br />
-      </div>
-    </div>
-    <ng-template #noMine><p>Você não possui avisos específicos.</p></ng-template>
-  </section>
 </main>
