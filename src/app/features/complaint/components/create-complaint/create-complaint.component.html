@@ -1,52 +1,56 @@
-<div class="headerProvisorio">
-  <p>Provisório</p>
-</div>
-<div class="container">
-  <form [formGroup]="complaintForm"  class="form">
-    <h1>Faça sua Denúncia</h1>
-    <h3 class="form-subtitle">Informações da Ocorrência</h3>
-      
-    <!-- Assunto -->
-    <div class="form-group">
-      <label for="title">Assunto:</label>
-      <input type="text" id="title" formControlName="title" placeholder="Ex: Vazamento no corredor" />
-    </div>
+<main>
+  <div class="header">
+    <h1>Nova Denúncia</h1>
+    <div class="subtitle-bar"></div>
+  </div>
+  <div class="main-box">
+    <div class="container">
+      <form [formGroup]="complaintForm" class="form">
+        <h1>Faça sua Denúncia</h1>
+        <h3 class="form-subtitle">Informações da Ocorrência</h3>
+        
+        <!-- Assunto -->
+        <div class="form-group">
+          <label for="title">Assunto:</label>
+          <input type="text" id="title" formControlName="title" placeholder="Ex: Vazamento no corredor" />
+        </div>
 
-    <!-- Data da Ocorrência -->
-    <div class="form-group">
-      <label for="createdAt">Data da Ocorrência:</label>
-      <input type="date" id="createdAt" formControlName="createdAt" />
-    </div>
+        <!-- Data da Ocorrência -->
+        <div class="form-group">
+          <label for="createdAt">Data da Ocorrência:</label>
+          <input type="date" id="createdAt" formControlName="createdAt" />
+        </div>
 
+        <!-- Descrição -->
+        <div class="form-group">
+          <label for="description">Descrição Detalhada:</label>
+          <textarea id="description" formControlName="description" 
+                    placeholder="Descreva o ocorrido com detalhes" class="form-textarea"></textarea>
+        </div>
 
-    <!-- Descrição -->
-    <div class="form-group">
-    <label for="description">Descrição Detalhada:</label>
-    <textarea id="description" formControlName="description" 
-              placeholder="Descreva o ocorrido com detalhes" class="form-textarea"></textarea>
-    </div>
-
-    <!-- Upload de Imagem -->
-    <div class="form-group">
-      <label>Imagem do Problema:</label>
-      <div class="image-upload-container">
-        <div class="fotoHolder" (drop)="onDrop($event)" (dragover)="onDragOver($event)"
-             [class.has-image]="urlImagem">
-          <p *ngIf="!urlImagem" class="upload-instructions">
-            Arraste e solte uma imagem aqui ou clique no botão abaixo
-          </p>
-          <div *ngIf="urlImagem" class="image-preview">
-            <img [src]="urlImagem" alt="Pré-visualização da imagem" />
+        <!-- Upload de Imagem -->
+        <div class="form-group">
+          <label>Imagem do Problema:</label>
+          <div class="image-upload-container">
+            <div class="fotoHolder" (drop)="onDrop($event)" (dragover)="onDragOver($event)"
+                [class.has-image]="urlImagem">
+              <p *ngIf="!urlImagem" class="upload-instructions">
+                Arraste e solte uma imagem aqui ou clique no botão abaixo
+              </p>
+              <div *ngIf="urlImagem" class="image-preview">
+                <img [src]="urlImagem" alt="Pré-visualização da imagem" />
+              </div>
+            </div>
+            <button type="button" class="add-image-button" (click)="openImagePicker()">
+              Selecionar Imagem
+            </button>
           </div>
         </div>
-        <button type="button" class="add-image-button" (click)="openImagePicker()">
-          Selecionar Imagem
+        
+        <button type="submit" class="submit-button" (click)="createComplaint()" >
+          Enviar Denúncia
         </button>
-      </div>
+      </form>
     </div>
-    
-    <button type="submit" class="submit-button" (click)="createComplaint()" >
-      Enviar Denúncia
-    </button>
-  </form>
-</div>
+  </div>
+</main>

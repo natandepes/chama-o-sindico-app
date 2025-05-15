@@ -15,6 +15,7 @@ import { ComplaintResponseModel } from '../../models/complaint-response.model';
 })
 export class ListComplaintsComponent implements OnInit {
   complaints: ComplaintResponseModel[] = [];
+  searchText: string = '';
   protected userRole: UserRole | null = null;
   protected readonly UserRoleEnum = UserRole;
   protected readonly ComplaintStatusEnum = ComplaintStatus;
@@ -101,4 +102,10 @@ export class ListComplaintsComponent implements OnInit {
     }
   }
 
+  filterComplaints(){
+    if(!this.searchText) return this.complaints;
+    return this.complaints.filter(c => 
+      c.title.toLocaleLowerCase().includes(this.searchText.toLocaleLowerCase())
+    );
+  }
 }

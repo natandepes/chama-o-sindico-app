@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ComplaintMock, ComplaintStatus, ComplaintStatusEnum } from '../../models/complaint.models';
 import { ComplaintService } from '../../services/complaint.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserRole } from '../../../authentication/models/user-roles.model';
 import { AuthService } from '../../../authentication/services/auth.service';
 import { ComplaintAnswerModel } from '../../models/complaint-answer.model';
 import { ComplaintFullResponseModel } from '../../models/complaint-full-response.model';
+import { ROUTE_PATHS } from '../../../../app.paths';
 
 @Component({
   selector: 'app-view-complaint',
@@ -32,7 +33,8 @@ export class ViewComplaintComponent implements OnInit {
     private complaintService: ComplaintService,
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.viewComplaintForm = this.formBuilder.group({
       title: [{ value: '', disabled: true }],
@@ -114,6 +116,10 @@ export class ViewComplaintComponent implements OnInit {
         }
       }
     });
+  }
+
+  protected goToComplaints() {
+    this.router.navigate([ROUTE_PATHS.listComplaints]);
   }
 
   private transformToAnswerModel(): ComplaintAnswerModel {
