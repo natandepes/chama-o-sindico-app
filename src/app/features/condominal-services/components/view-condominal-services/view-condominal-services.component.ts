@@ -72,6 +72,7 @@ export class ViewCondominalServiceComponent implements OnInit {
       this.condominalServicesService.createComment(comment).subscribe({
         next: (response) => {
           if (response.success) {
+            alert('Comentário adicionado com sucesso!');
             this.getComments(this.service.id!);
             this.newComment = '';
             this.isCommenting = false;
