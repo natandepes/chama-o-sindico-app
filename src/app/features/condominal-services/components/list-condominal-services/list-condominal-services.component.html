@@ -6,21 +6,28 @@
 
   <div class="main-box">
     <div class="content-container">
-      <div class="card-title" style="">
-        <button class="details-button" (click)="goToCreateService()">Novo Serviço</button>
+      <button class="buttonCreateService" (click)="goToCreateService()">Novo Serviço</button>
+
+
+      <div class="service-search-bar">
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          placeholder="Pesquisar Serviços"
+          class="service-search-input"
+        >
       </div>
 
-      <div *ngFor="let service of services" class="service-card">
-        <p>{{ service.title }}</p>
-        <h3>{{ service.description | slice: 0 : 30 }}{{ service.description.length > 30 ? '...' : '' }}</h3>
-        <p>
-          <!-- <span class="status-badge status-{{ service.status | lowercase }}">
-          {{ service.status }}
-        </span> -->
-        </p>
-        <button *ngIf="service.id" [routerLink]="'/condominal-service/view/' + service.id">Ver detalhes</button>
-        <button *ngIf="service.id" (click)="goToEditService(service.id)">Editar</button>
+      <div *ngFor="let service of filterServices()" class="card">
+        <h3>{{service.title}}</h3>
+        <p>{{ service.description}}</p>
+
+        <div class="card-actions">
+          <button *ngIf="service.id" class="buttonViewService" [routerLink]="'/condominal-service/view/' + service.id">Ver detalhes</button>
+          <button *ngIf="service.id" class="buttonViewService" [routerLink]="'/condominal-service/edit/' + service.id">Editar</button>
+          <button class="delete-button" (click)="deleteService(service.id!)">Deletar</button>
+        </div>
       </div>
-    </div>
   </div>
+</div>
 </main>

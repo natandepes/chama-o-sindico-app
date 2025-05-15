@@ -26,5 +26,9 @@ export class CondominalServicesService {
   getService(id: string): Observable<ApiResponse<CondominalService>> {
     return this.http.get<ApiResponse<CondominalService>>(`${this.baseUrl}/CondominalServices/GetServiceById/${id}`);
   }
+
+  deleteService(id: string): Observable<ApiResponse<string>> {
+    return this.http.delete<ApiResponse<string>>(`${this.baseUrl}/CondominalServices/DeleteService/${id}`);
+  }
 }
   

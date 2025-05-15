@@ -13,11 +13,21 @@ import { CondominalServicesService } from '../../services/condominal-services.se
 export class ListCondominalServicesComponent implements OnInit {
 
   services: Array<CondominalService> = [];
+  searchText: string = '';
 
   constructor(private router: Router, private condominalServiceService: CondominalServicesService) { }
   
   ngOnInit(): void {
     this.getAllCondominalServices();
+  }
+
+  filterServices() {
+    return this.services.filter(service => {
+      return service.title.toLowerCase().includes(this.searchText.toLowerCase()) 
+          || service.description.toLowerCase().includes(this.searchText.toLowerCase())
+          || service.providerName.toLowerCase().includes(this.searchText.toLowerCase())
+          || service.cellphone.toLowerCase().includes(this.searchText.toLowerCase());
+    });
   }
 
   goToCreateService(){
@@ -39,5 +49,19 @@ export class ListCondominalServicesComponent implements OnInit {
     });
   }
 
+  deleteService(id: string){
+    this.condominalServiceService.deleteService(id).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.services = this.services.filter(service => service.id !== id);
+        } else {
+          console.error('Error deleting service:', response.message);
+        }
+      },
+      error: (error) => {
+        console.error('Error deleting service:', error);
+      }
+    });
+  }
 
 }
