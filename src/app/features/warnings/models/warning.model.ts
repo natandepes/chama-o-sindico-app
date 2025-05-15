@@ -1,4 +1,5 @@
 export interface WarningModel {
+  id?: string;
   title: string;
   description: string;
   targetType: string;

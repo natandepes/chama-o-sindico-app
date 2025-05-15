@@ -45,6 +45,19 @@ export class ViewWarningsComponent implements OnInit {
     });
   }
 
+  protected deleteWarning(warningId: string) {
+    if (confirm("Tem certeza que deseja excluir este aviso?")) {
+      this.warningService.deleteWarning(warningId).subscribe((response) => {
+        if (response.success) {
+          alert("Aviso excluído com sucesso.");
+          this.getAllWarnings();
+        } else {
+          alert("Falha ao excluir o aviso, por favor, tente novamente.");
+        }
+      });
+    }
+  }
+
   protected goToCreateWarning() {
     this.router.navigate([ROUTE_PATHS.createWarning]);
   }
