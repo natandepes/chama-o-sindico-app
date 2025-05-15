@@ -56,4 +56,8 @@ export class SidebarComponent {
     if (!item.roles) return true;
     return item.roles.includes(this.userRole as UserRole);
   }
+
+  protected goToWarnings() {
+    this.router.navigate([ROUTE_PATHS.viewWarnings]);
+  }
 }

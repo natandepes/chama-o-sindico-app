@@ -1,0 +1,30 @@
+<main class="warnings-container">
+  <div class="header">
+    <h1>Avisos</h1>
+    <button *ngIf="this.userRole == this.UserRoleEnum.CondominalManager" class="create-button" (click)="goToCreateWarning()">Criar Aviso</button>
+  </div>
+
+  <section class="warning-section">
+    <h2>Todos os avisos</h2>
+    <div *ngIf="allWarnings.length > 0; else noAll">
+      <div *ngFor="let warning of allWarnings" class="warning-card">
+        <h3>{{ warning.title }}</h3>
+        <p>{{ warning.description }}</p>
+        <br>
+      </div>
+    </div>
+    <ng-template #noAll><p>Nenhum aviso geral encontrado.</p></ng-template>
+  </section>
+
+  <section *ngIf="this.userRole == this.UserRoleEnum.Resident" class="warning-section">
+    <h2>Meus avisos</h2>
+    <div *ngIf="userWarnings.length > 0; else noMine">
+      <div *ngFor="let warning of userWarnings" class="warning-card">
+        <h3>{{ warning.title }}</h3>
+        <p>{{ warning.description }}</p>
+        <br>
+      </div>
+    </div>
+    <ng-template #noMine><p>Você não possui avisos específicos.</p></ng-template>
+  </section>
+</main>
