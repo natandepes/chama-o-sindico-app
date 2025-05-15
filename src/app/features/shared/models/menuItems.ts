@@ -16,4 +16,6 @@ export const menuItems: MenuItem[] = [
   { icon: 'event', label: 'Reservas', route: ROUTE_PATHS.viewReservation }, // roles: [UserRole.CondominalManager]
   { icon: 'location_city', label: 'Áreas', route: ROUTE_PATHS.viewArea }, // roles: [UserRole.Resident]
   { icon: 'directions_car', label: 'Veículos', route: ROUTE_PATHS.viewVehicle }, // roles: [UserRole.CondominalManager]
+  { icon: 'people', label: 'Moradores', route: ROUTE_PATHS.listResidents }, // roles: [UserRole.CondominalManager]
+  { icon: 'notifications', label: 'Avisos', route: ROUTE_PATHS.viewWarnings },
 ];
