@@ -46,7 +46,7 @@
         <p class="no-comments-message">Ainda não há nenhum comentário.</p>
       </ng-template>
 
-      <button class="add-comment-button" *ngIf="!isCommenting" (click)="addComment()" aria-label="Adicionar comentário">Adicionar Comentário</button>
+      <button class="add-comment-button" *ngIf="!isCommenting && this.userRole == this.UserRoleEnum.Resident" (click)="addComment()" aria-label="Adicionar comentário">Adicionar Comentário</button>
 
       <div class="comment-area" *ngIf="isCommenting">
         <textarea
