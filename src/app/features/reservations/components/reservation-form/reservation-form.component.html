@@ -1,5 +1,10 @@
 <main>
   <div class="content-container">
+    <button class="back-button" (click)="goBack()">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Voltar
+    </button>
+
     <form [formGroup]="formulario">
       <div class="form-group">
         <label>Selecione a Área <span class="required">*</span></label>
@@ -17,6 +22,8 @@
           <p>
             <strong>Horário de Funcionamento:</strong>
             {{ selectedArea.openTime }} - {{ selectedArea.closeTime }}
+          </p>
+
           <p>
             <strong>Status da área:</strong>
             <span [ngClass]="{ 'text-green': selectedArea.status, 'text-red': !selectedArea.status }">
@@ -47,7 +54,14 @@
 
       <div *ngIf="readOnlyMode && formulario.get('status')?.value" class="form-group status-inline">
         <label>Status:</label>
-        <span class="status-badge">{{ mapStatus(formulario.get('status')?.value) }}</span>
+        <span
+          [ngClass]="{
+            'status-aguardando': mapStatus(formulario.get('status')?.value) === 'Aguardando Aprovação',
+            'status-aprovada': mapStatus(formulario.get('status')?.value) === 'Aprovada',
+            'status-rejeitada': mapStatus(formulario.get('status')?.value) === 'Rejeitada',
+          }"
+          >{{ mapStatus(formulario.get('status')?.value) }}</span
+        >
       </div>
     </form>
 

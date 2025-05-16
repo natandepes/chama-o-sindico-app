@@ -20,15 +20,15 @@ import { LoaderService } from '../../../shared/services/loader.service';
 export class ReservationFormComponent implements OnInit {
   formulario!: FormGroup;
   protected areaReservationAnswerForm!: FormGroup;
-  
+
   areaReservations!: AreaReservationFullModel;
   areas: Area[] = [];
-  
+
   userId!: string;
   areaReservationId!: string;
-  
+
   protected readOnlyMode = false;
-  
+
   protected areaReservationStatusEnum = AreaReservationStatusEnum;
   protected areaReservationStatus!: AreaReservationStatusEnum;
 
@@ -44,7 +44,7 @@ export class ReservationFormComponent implements OnInit {
     private authService: AuthService,
     private loader: LoaderService,
   ) {}
-  
+
   ngOnInit() {
     this.getAreas();
     this.userId = this.authService.getUserId() || '';
@@ -60,9 +60,13 @@ export class ReservationFormComponent implements OnInit {
     }
   }
 
+  goBack(): void {
+    this.router.navigate([ROUTE_PATHS.viewReservation]);
+  }
+
   getAreaReservation(id: string) {
     this.areaReservationService.getAreaReservation(id).subscribe({
-      next: (data) => {
+      next: data => {
         if (data.success && data.data) {
           this.areaReservations = data.data!;
           this.getFormValues();
@@ -72,16 +76,16 @@ export class ReservationFormComponent implements OnInit {
     });
   }
 
-  getAreas(){
+  getAreas() {
     this.loader.show();
     this.areaReservationService.getAreas().subscribe({
-      next: (response) => {
+      next: response => {
         if (response.success && response.data) {
           this.areas = response.data;
           this.loader.hide();
         }
-      }
-    })
+      },
+    });
   }
 
   calculateLengthTime(type: string): string {
@@ -108,7 +112,7 @@ export class ReservationFormComponent implements OnInit {
     });
   }
 
-  getFormValues(){
+  getFormValues() {
     this.formulario.get('areaId')?.setValue(this.areaReservations.areaId);
     this.formulario.get('status')?.setValue(this.areaReservations.status);
     this.formulario.get('date')?.setValue(this.extractDate(this.areaReservations.endDate));
@@ -130,7 +134,7 @@ export class ReservationFormComponent implements OnInit {
 
   private combineDateAndTime(date: Date, time: string): Date {
     const [hours, minutes] = time.split(':').map(Number);
-    
+
     const dt = new Date(date);
     dt.setHours(hours, minutes, 0, 0);
     return dt;
@@ -138,7 +142,7 @@ export class ReservationFormComponent implements OnInit {
 
   saveAreaReservation() {
     if (!this.selectedArea?.status) {
-      alert("Área não disponível para reserva!");
+      alert('Área não disponível para reserva!');
       return;
     }
 
@@ -158,7 +162,7 @@ export class ReservationFormComponent implements OnInit {
     const startTime = new Date(this.combineDateAndTime(this.formulario.value.date, this.formulario.value.startTime));
     const endTime = new Date(this.combineDateAndTime(this.formulario.value.date, this.formulario.value.endTime));
     const duration = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60); // in hours
-    
+
     if (duration < 1) {
       alert('A reserva deve ter duração mínima de 1 hora!');
       return;
@@ -175,7 +179,7 @@ export class ReservationFormComponent implements OnInit {
       return;
     }
 
-    if(this.formulario.valid){
+    if (this.formulario.valid) {
       if (confirm('Você tem certeza que deseja reservar esta área? Ela não poderá ser editada depois!')) {
         this.loader.show();
         const reservationData: AreaReservation = {
@@ -186,27 +190,24 @@ export class ReservationFormComponent implements OnInit {
           endDate: this.combineDateAndTime(this.formulario.value.date, this.formulario.value.endTime),
           status: this.areaReservationStatusEnum.Pending,
         };
-    
+
         if (this.areaReservationId) {
           reservationData.id = this.areaReservationId;
         }
-    
-        this.areaReservationService.saveAreaReservation(reservationData).subscribe(
-          {
-            next: (response) => {
-              if (response.success) {
-                this.loader.hide();
-                this.router.navigate([ROUTE_PATHS.viewReservation]);
-              } else {
-                this.loader.hide();
-                alert('Erro ao salvar a reserva. Por favor, tente novamente.');
-              }
+
+        this.areaReservationService.saveAreaReservation(reservationData).subscribe({
+          next: response => {
+            if (response.success) {
+              this.loader.hide();
+              this.router.navigate([ROUTE_PATHS.viewReservation]);
+            } else {
+              this.loader.hide();
+              alert('Erro ao salvar a reserva. Por favor, tente novamente.');
             }
-          }
-        );
+          },
+        });
       }
-    }
-    else {
+    } else {
       alert('Preencha todos os campos obrigatórios!');
     }
   }
@@ -216,7 +217,7 @@ export class ReservationFormComponent implements OnInit {
       let newAnswer = this.transformToAnswerModel();
 
       this.areaReservationService.addAnswerToAreaReservation(newAnswer).subscribe({
-        next: (response) => {
+        next: response => {
           if (response.success) {
             alert('Resposta adicionada com sucesso!');
             this.areaReservationAnswerForm.reset();
@@ -224,22 +225,22 @@ export class ReservationFormComponent implements OnInit {
           } else {
             alert('Erro ao adicionar resposta. Por favor, tente novamente.');
           }
-        }
+        },
       });
     }
   }
 
   protected changeStatus(status: AreaReservationStatusEnum) {
     this.areaReservationService.changeAreaReservationStatus(this.areaReservationId, status).subscribe({
-      next: (response) => {
+      next: response => {
         if (response.success) {
           alert('Status alterado com sucesso!');
           this.getAreaReservation(this.areaReservationId);
         } else {
           alert('Erro ao alterar o status. Por favor, tente novamente.');
         }
-      }
-    })
+      },
+    });
   }
 
   get selectedArea(): Area | undefined {
@@ -249,10 +250,14 @@ export class ReservationFormComponent implements OnInit {
 
   protected mapStatus(status: number): string {
     switch (status) {
-      case 1: return 'Aguardando Aprovação';
-      case 2: return 'Aprovada';
-      case 3: return 'Rejeitada';
-      default: return 'Desconhecido';
+      case 1:
+        return 'Aguardando Aprovação';
+      case 2:
+        return 'Aprovada';
+      case 3:
+        return 'Rejeitada';
+      default:
+        return 'Desconhecido';
     }
   }
 
@@ -263,8 +268,8 @@ export class ReservationFormComponent implements OnInit {
       areaReservationId: this.areaReservationId,
       answer: this.areaReservationAnswerForm.get('answer')?.value,
       answeredByUserId: this.userId,
-      answeredAt: new Date()
-    }
+      answeredAt: new Date(),
+    };
 
     return model;
   }

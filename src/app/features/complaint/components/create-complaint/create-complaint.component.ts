@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { ComplaintMock, ComplaintStatus } from '../../models/complaint.models';
 import { ComplaintService } from '../../services/complaint.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,72 +10,65 @@ import { ROUTE_PATHS } from '../../../../app.paths';
   templateUrl: './create-complaint.component.html',
   styleUrl: './create-complaint.component.scss',
   standalone: false,
+  encapsulation: ViewEncapsulation.None,
 })
-
-
 export class CreateComplaintComponent {
   protected complaintForm: FormGroup;
-  private complaintModel!: ComplaintMock
+  private complaintModel!: ComplaintMock;
 
   closedAt!: Date;
   userId: string | null = '';
   closedByUserId: string = '';
   urlImagem: string | ArrayBuffer | null = '';
-  isMobile: boolean = false;
-  
 
   constructor(
     private complaintService: ComplaintService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
   ) {
-    this.complaintForm = this.formBuilder.group(
-      {
-        title: ['', Validators.required],
-        description:['', Validators.required],
-        createdAt: ['', Validators.required],
-      })
+    this.complaintForm = this.formBuilder.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      createdAt: ['', Validators.required],
+      imageUrl: [''],
+      imageType: [''],
+    });
   }
 
-
-  ngOnInit()
-  {
+  ngOnInit() {
     this.userId = localStorage.getItem('userId');
   }
 
   createComplaint(): void {
-    if(this.complaintForm.valid)
-    {
+    if (this.complaintForm.valid) {
       if (confirm('Você tem certeza que deseja criar a denúncia? Ela não poderá ser editada depois!')) {
         this.complaintModel = this.transformToComplaintModel();
 
         this.complaintService.createComplaint(this.complaintModel).subscribe({
-          next: (response) => {
+          next: response => {
             if (response.success) {
               alert('Reclamação criada com sucesso!');
               this.complaintForm.reset();
               this.router.navigate([ROUTE_PATHS.listComplaints]);
             }
-          }
-        })
+          },
+        });
       }
-    }
-    else{
-      alert('Preencha os campos obrigatórios corretamente')
+    } else {
+      alert('Preencha os campos obrigatórios corretamente');
     }
   }
 
-  openImagePicker(): void {
-    const input: HTMLInputElement = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = (event: Event) => {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (file) {
-        this.handleFile(file);
-      }
-    };
-    input.click();
+  openImgSelector(fileInput: HTMLInputElement): void {
+    fileInput.click();
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.handleFile(file);
+    }
   }
 
   onDrop(event: DragEvent): void {
@@ -95,27 +88,38 @@ export class CreateComplaintComponent {
       const reader = new FileReader();
       reader.onload = e => {
         this.urlImagem = e.target?.result || null;
+
+        this.complaintForm.patchValue({
+          imageUrl: this.urlImagem,
+          imageType: file.type,
+        });
       };
       reader.readAsDataURL(file);
     } else {
-      alert('Please, select a valid image.');
+      alert('Por favor, selecione uma imagem válida.');
     }
   }
 
-  private transformToComplaintModel(): ComplaintMock 
-  {
-    let model: ComplaintMock;
-    
-    model = 
-    {
+  private transformToComplaintModel(): ComplaintMock {
+    return {
       title: this.complaintForm.get('title')?.value,
       description: this.complaintForm.get('description')?.value,
-      imageUrl: this.urlImagem,
+      imageUrl: this.complaintForm.get('imageUrl')?.value,
       createdAt: this.complaintForm.get('createdAt')?.value,
-      createdByUserId : this.userId
+      createdByUserId: this.userId,
+      imageType: this.complaintForm.get('imageType')?.value,
+    };
+  }
 
-    }
-    
-    return model;
+  removeImage(): void {
+    this.urlImagem = '';
+    this.complaintForm.patchValue({
+      imageUrl: '',
+      imageType: '',
+    });
+  }
+
+  goBack(): void {
+    this.router.navigate([ROUTE_PATHS.listComplaints]);
   }
 }

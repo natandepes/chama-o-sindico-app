@@ -15,6 +15,7 @@ export interface ComplaintMock {
   title: string;
   description: string;
   imageUrl: string | ArrayBuffer | null;
+  imageType: string;
   status?: ComplaintStatus;
   createdAt: Date;
   closedAt?: Date | null;

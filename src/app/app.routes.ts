@@ -18,7 +18,7 @@ import { ViewVehiclesComponent } from './features/vehicles/components/view-vehic
 import { FormVehiclesComponent } from './features/vehicles/components/form-vehicles/form-vehicles.component';
 import { PersonalInfoComponent } from './features/personal-info/components/personal-info/personal-info.component';
 import { ResidentListComponent } from './features/personal-info/components/resident-list/resident-list.component';
-import { ViewComplaintComponent } from './features/complaint/components/edit-complaint/view-complaint.component';
+import { ViewComplaintComponent } from './features/complaint/components/view-complaint/view-complaint.component';
 import { ListCondominalServicesComponent } from './features/condominal-services/components/list-condominal-services/list-condominal-services.component';
 import { CreateWarningComponent } from './features/warnings/components/create-warning/create-warning.component';
 import { ViewWarningsComponent } from './features/warnings/components/view-warnings/view-warnings.component';
