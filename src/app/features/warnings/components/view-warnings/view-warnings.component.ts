@@ -5,6 +5,7 @@ import { AuthService } from '../../../authentication/services/auth.service';
 import { WarningService } from '../../services/warning.service';
 import { ROUTE_PATHS } from '../../../../app.paths';
 import { Router } from '@angular/router';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-view-warnings',
@@ -25,6 +26,7 @@ export class ViewWarningsComponent implements OnInit {
     private warningService: WarningService,
     private authService: AuthService,
     private router: Router,
+    private loader: LoaderService
   ) {}
 
   ngOnInit(): void {
@@ -35,12 +37,15 @@ export class ViewWarningsComponent implements OnInit {
   }
 
   private getAllWarnings() {
+    this.loader.show();
     this.warningService.getAllWarnings().subscribe(response => {
       if (response.success && response.data) {
         const all = response.data;
         this.allWarnings = all.filter(warning => warning.targetType === 'all');
         this.userWarnings = all.filter(warning => warning.residentUserId === this.userId);
+        this.loader.hide();
       } else {
+        this.loader.hide();
         alert('Falha ao carregar os avisos, por favor, tente novamente.');
       }
     });
@@ -48,11 +53,13 @@ export class ViewWarningsComponent implements OnInit {
 
   protected deleteWarning(warningId: string) {
     if (confirm('Tem certeza que deseja excluir este aviso?')) {
+      this.loader.show();
       this.warningService.deleteWarning(warningId).subscribe(response => {
         if (response.success) {
-          alert('Aviso excluído com sucesso.');
+          this.loader.hide();
           this.getAllWarnings();
         } else {
+          this.loader.hide();
           alert('Falha ao excluir o aviso, por favor, tente novamente.');
         }
       });

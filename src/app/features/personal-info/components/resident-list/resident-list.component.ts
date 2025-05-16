@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ViewPersonalInfoModel } from '../../models/view-personal-info.model';
 import { ResidentService } from '../../services/resident.service';
 import { AuthService } from '../../../authentication/services/auth.service';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-resident-list',
@@ -15,7 +16,8 @@ export class ResidentListComponent {
 
   constructor(
     private residentService: ResidentService,
-    private authService: AuthService
+    private authService: AuthService,
+    private loader: LoaderService
   ) {}
 
   ngOnInit() {
@@ -23,10 +25,16 @@ export class ResidentListComponent {
   }
 
   protected loadResidents() {
+    this.loader.show();
     this.residentService.getAllResidents().subscribe({
       next: (response) => {
         if (response.success) {
           this.residentsList = response.data ?? [] as ViewPersonalInfoModel[];
+          this.loader.hide();
+        }
+        else {
+          this.loader.hide();
+          alert("Um erro ocorreu ao buscar os moradores. Tente novamente mais tarde.");
         }
       }
     });
@@ -34,12 +42,14 @@ export class ResidentListComponent {
 
   protected deleteResident(userId: string) {
     if (confirm("Tem certeza que deseja excluir este morador?")) {
+      this.loader.show();
       this.authService.deleteUser(userId).subscribe({
         next: (response) => {
           if (response.success) {
-            alert("Morador excluído com sucesso!");
+            this.loader.hide();
             this.loadResidents();
           } else {
+            this.loader.hide();
             alert("Erro ao excluir morador. Por favor, tente novamente.");
           }
         }

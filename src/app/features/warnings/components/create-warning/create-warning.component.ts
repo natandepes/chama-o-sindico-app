@@ -6,6 +6,7 @@ import { ViewPersonalInfoModel } from '../../../personal-info/models/view-person
 import { WarningService } from '../../services/warning.service';
 import { WarningModel } from '../../models/warning.model';
 import { ROUTE_PATHS } from '../../../../app.paths';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-create-warning',
@@ -21,7 +22,8 @@ export class CreateWarningComponent implements OnInit {
     private fb: FormBuilder,
     private warningService: WarningService,
     private residentService: ResidentService,
-    private router: Router
+    private router: Router,
+    private loader: LoaderService
   ) {}
 
   ngOnInit() {
@@ -39,11 +41,14 @@ export class CreateWarningComponent implements OnInit {
   }
 
   private loadResidents() {
+    this.loader.show();
     this.residentService.getAllResidents().subscribe({
       next: (response) => {
         if (response.success && response.data) {
           this.residents = response.data;
+          this.loader.hide();
         } else {
+          this.loader.hide();
           alert("Falha ao carregar os residentes, por favor, tente novamente.");
         }
       }
@@ -76,15 +81,18 @@ export class CreateWarningComponent implements OnInit {
 
   onSubmit(): void {
     if (this.warningForm.valid) {
+      this.loader.show();
+
       let warningModel = this.transformToWarningModel();
 
       this.warningService.createWarning(warningModel).subscribe({
         next: (response) => {
           if (response.success) {
-            alert("Aviso criado com sucesso!");
+            this.loader.hide();
             this.warningForm.reset();
             this.router.navigate([ROUTE_PATHS.viewWarnings]);
           } else {
+            this.loader.hide();
             alert("Falha ao criar o aviso, por favor, tente novamente.");
           }
         }

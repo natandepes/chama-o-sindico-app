@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ROUTE_PATHS } from '../../../../app.paths';
 import { CondominalService } from '../../models/condominal-service.model';
 import { CondominalServicesService } from '../../services/condominal-services.service';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-list-condominal-services',
@@ -17,6 +18,7 @@ export class ListCondominalServicesComponent implements OnInit {
   constructor(
     private router: Router,
     private condominalServiceService: CondominalServicesService,
+    private loader: LoaderService
   ) {}
 
   ngOnInit(): void {
@@ -43,29 +45,36 @@ export class ListCondominalServicesComponent implements OnInit {
   }
 
   getAllCondominalServices() {
+    this.loader.show();
     this.condominalServiceService.getAllCondominalServices().subscribe({
       next: response => {
         this.services = response.data!;
+        this.loader.hide();
       },
       error: error => {
-        console.error('Error fetching condominal services:', error);
+        this.loader.hide();
+        alert('Erro ao buscar os serviços. Tente novamente mais tarde.');
       },
     });
   }
 
   deleteService(id: string) {
+    if (!confirm('Tem certeza que deseja excluir este serviço?')) {
+      return;
+    }
+
+    this.loader.show();
+
     this.condominalServiceService.deleteService(id).subscribe({
       next: response => {
         if (response.success) {
-          alert('Serviço excluído com sucesso!');
+          this.loader.hide();
           this.getAllCondominalServices();
         } else {
-          console.error('Error deleting service:', response.message);
+          this.loader.hide();
+          alert('Erro ao excluir o serviço. Tente novamente mais tarde.');
         }
-      },
-      error: error => {
-        console.error('Error deleting service:', error);
-      },
+      }
     });
   }
 }

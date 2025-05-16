@@ -4,6 +4,7 @@ import { CondominalService } from '../../models/condominal-service.model';
 import { CondominalServicesService } from '../../services/condominal-services.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ROUTE_PATHS } from '../../../../app.paths';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-create-service',
@@ -23,6 +24,7 @@ export class CreateCondominalServiceComponent implements OnInit {
     private condominalServicesService: CondominalServicesService,
     private router: Router,
     private route: ActivatedRoute,
+    private loader: LoaderService
   ) {
     // Inicializa o FormBuilder
     this.serviceForm = this.fb.group({
@@ -38,6 +40,7 @@ export class CreateCondominalServiceComponent implements OnInit {
   ngOnInit(): void {
     this.serviceId = this.route.snapshot.paramMap.get('id')!;
     if (this.serviceId) {
+      this.loader.show();
       this.condominalServicesService.getService(this.serviceId).subscribe({
         next: response => {
           if (response.success) {
@@ -51,13 +54,12 @@ export class CreateCondominalServiceComponent implements OnInit {
             });
 
             this.previewImg = response.data?.providerPhotoUrl!;
+            this.loader.hide();
           } else {
-            console.error('Error fetching service:', response.message);
+            this.loader.hide();
+            alert('Erro ao buscar o serviço. Tente novamente mais tarde.');
           }
-        },
-        error: error => {
-          console.error('Error fetching service:', error);
-        },
+        }
       });
     }
   }
@@ -126,20 +128,20 @@ export class CreateCondominalServiceComponent implements OnInit {
       condominalService.id = this.serviceId;
     }
 
+    this.loader.show();
+
     this.condominalServicesService.saveService(condominalService).subscribe({
       next: response => {
         if (response.success) {
-          console.log('Service saved successfully:', response.data);
           this.serviceForm.reset();
           this.removeImg();
+          this.loader.hide();
           this.router.navigate(['condominal-service/view/' + response.data]);
         } else {
-          console.error('Error saving service:', response.message);
+          this.loader.hide();
+          alert('Erro ao salvar o serviço. Tente novamente mais tarde.');
         }
-      },
-      error: error => {
-        console.error('Error saving service:', error);
-      },
+      }
     });
   }
 

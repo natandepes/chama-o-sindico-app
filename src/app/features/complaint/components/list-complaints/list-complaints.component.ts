@@ -6,6 +6,7 @@ import { AuthService } from '../../../authentication/services/auth.service';
 import { UserRole } from '../../../authentication/models/user-roles.model';
 import { ROUTE_PATHS } from '../../../../app.paths';
 import { ComplaintResponseModel } from '../../models/complaint-response.model';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-list-complaints',
@@ -23,7 +24,8 @@ export class ListComplaintsComponent implements OnInit {
   constructor(
     private complaintService: ComplaintService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private loader: LoaderService
   ) {}
 
   ngOnInit() {
@@ -36,12 +38,11 @@ export class ListComplaintsComponent implements OnInit {
 
     if(this.userRole == this.UserRoleEnum.CondominalManager)
     {
-
+      this.loader.show();
       this.complaintService.getAllComplaints().subscribe({
         next: (response) => 
         {
           if (response.success && response.data) {
-            console.log(response.data);
             this.complaints = response.data!.map((c: any) => 
               ({
                 complaintId: c.complaintId,
@@ -51,12 +52,15 @@ export class ListComplaintsComponent implements OnInit {
                 createdAt: new Date(c.createdAt),
                 createdByUserName: c.createdByUserName
               }))
+
+            this.loader.hide();
           }
         }
       });
     }
     else
     {
+      this.loader.show();
       this.complaintService.getAllComplaintsByUserId().subscribe({
         next: (response: any) => 
         {
@@ -70,6 +74,8 @@ export class ListComplaintsComponent implements OnInit {
                 createdAt: new Date(c.createdAt),
                 createdByUserName: c.createdByUserName
               }))
+
+            this.loader.hide();
           }
         }
       });
@@ -93,10 +99,12 @@ export class ListComplaintsComponent implements OnInit {
 
   deleteComplaint(id: string, idCreator: string | null) {
     if (confirm('Tem certeza que deseja deletar esta denúncia?')) {
+      this.loader.show();
       this.complaintService.deleteComplaint(id).subscribe({
         next: () => {
           this.complaints = this.complaints.filter(c => c.complaintId !== id);
-          alert('Denúncia removida com sucesso');
+          this.loader.hide();
+          this.loadComplaints();
         }
       });
     }

@@ -8,6 +8,7 @@ import { AuthService } from '../../../authentication/services/auth.service';
 import { ComplaintAnswerModel } from '../../models/complaint-answer.model';
 import { ComplaintFullResponseModel } from '../../models/complaint-full-response.model';
 import { ROUTE_PATHS } from '../../../../app.paths';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-view-complaint',
@@ -35,6 +36,7 @@ export class ViewComplaintComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private loader: LoaderService,
   ) {
     this.viewComplaintForm = this.formBuilder.group({
       title: [{ value: '', disabled: true }],
@@ -55,6 +57,7 @@ export class ViewComplaintComponent implements OnInit {
   }
 
   loadComplaint(id: string) {
+    this.loader.show();
     this.complaintService.getComplaintById(id).subscribe({
       next: response => {
         if (response.success && response.data) {
@@ -74,6 +77,8 @@ export class ViewComplaintComponent implements OnInit {
 
           this.viewComplaintForm.patchValue(this.complaintModel);
           this.viewComplaintForm.get('status')?.setValue(this.mapStatus((response.data.status as unknown as number) ?? 0));
+
+          this.loader.hide();
         }
       },
     });
@@ -94,6 +99,7 @@ export class ViewComplaintComponent implements OnInit {
 
   protected addAnswer() {
     if (this.complaintAnswerForm.valid) {
+      this.loader.show();
       let newAnser = this.transformToAnswerModel();
 
       this.complaintService.addAnswerToComplaint(newAnser).subscribe({
@@ -101,8 +107,14 @@ export class ViewComplaintComponent implements OnInit {
           if (response.success) {
             alert('Resposta adicionada com sucesso!');
             this.complaintAnswerForm.reset();
+            this.loader.hide();
             this.loadComplaint(this.complaintId);
           }
+        },
+        error: err => {
+          this.loader.hide();
+          console.error('Erro ao adicionar resposta:', err);
+          alert('Erro ao adicionar resposta. Tente novamente mais tarde.');
         },
       });
     }

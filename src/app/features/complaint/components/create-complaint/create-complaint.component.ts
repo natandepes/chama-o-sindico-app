@@ -4,6 +4,7 @@ import { ComplaintService } from '../../services/complaint.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ROUTE_PATHS } from '../../../../app.paths';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-create-complaint',
@@ -25,6 +26,7 @@ export class CreateComplaintComponent {
     private complaintService: ComplaintService,
     private formBuilder: FormBuilder,
     private router: Router,
+    private loader: LoaderService,
   ) {
     this.complaintForm = this.formBuilder.group({
       title: ['', Validators.required],
@@ -42,15 +44,21 @@ export class CreateComplaintComponent {
   createComplaint(): void {
     if (this.complaintForm.valid) {
       if (confirm('Você tem certeza que deseja criar a denúncia? Ela não poderá ser editada depois!')) {
+        this.loader.show();
         this.complaintModel = this.transformToComplaintModel();
 
         this.complaintService.createComplaint(this.complaintModel).subscribe({
           next: response => {
             if (response.success) {
-              alert('Reclamação criada com sucesso!');
               this.complaintForm.reset();
+              this.loader.hide();
               this.router.navigate([ROUTE_PATHS.listComplaints]);
             }
+          },
+          error: err => {
+            this.loader.hide();
+            console.error('Erro ao criar a denúncia:', err);
+            alert('Erro ao criar a denúncia. Tente novamente mais tarde.');
           },
         });
       }
