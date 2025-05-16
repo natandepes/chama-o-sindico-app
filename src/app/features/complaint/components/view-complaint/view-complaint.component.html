@@ -8,7 +8,7 @@
     <form [formGroup]="viewComplaintForm" class="form">
       <h1 style="font-size: 1.4rem; color: #334155">Detalhes da Ocorrência</h1>
 
-      <!-- Campos da denúncia -->
+      <!-- Campos da ocorrência -->
       <div class="form-group">
         <label>Assunto</label>
         <p class="field-view">{{ viewComplaintForm.value.title }}</p>
@@ -26,7 +26,7 @@
 
       <div class="form-group" *ngIf="complaintModel?.imageUrl">
         <label>Imagem do Problema</label>
-        <img [src]="complaintModel.imageUrl" alt="Imagem da denúncia" style="max-width: 100%; border-radius: 8px" />
+        <img [src]="complaintModel.imageUrl" alt="Imagem da ocorrência" style="max-width: 100%; border-radius: 8px" />
       </div>
 
       <div class="form-group">

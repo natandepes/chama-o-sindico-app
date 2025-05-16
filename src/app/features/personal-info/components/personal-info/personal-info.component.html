@@ -1,5 +1,4 @@
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
 <main>
   <div class="content-container">
@@ -9,7 +8,6 @@
     </button>
 
     <form [formGroup]="personalInfoForm" (ngSubmit)="onSubmit()" novalidate>
-
       <div class="form-group">
         <label for="name">Nome completo:</label>
         <input type="text" id="name" formControlName="name" placeholder="Ex: João da Silva" class="input-field" />
@@ -50,12 +48,8 @@
         <input type="number" id="salary" formControlName="salary" class="input-field" />
       </div>
 
-      <button type="submit" class="submit-button" [disabled]="!personalInfoForm.valid">
-        Editar
-      </button>
-      <button *ngIf="this.userRole == UserRoleEnum.Resident" type="button" class="submit-button delete-button" (click)="deleteResident()">
-        Excluir Conta
-      </button>
+      <button type="submit" class="submit-button" [disabled]="!personalInfoForm.valid">Editar</button>
+      <button *ngIf="this.userRole == UserRoleEnum.Resident" type="button" class="submit-button delete-button" (click)="deleteResident()">Excluir Conta</button>
     </form>
   </div>
 </main>

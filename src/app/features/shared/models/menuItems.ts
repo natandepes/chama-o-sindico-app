@@ -10,7 +10,7 @@ export interface MenuItem {
 
 export const menuItems: MenuItem[] = [
   { icon: 'home', label: 'Home', route: ROUTE_PATHS.home },
-  { icon: 'campaign', label: 'Denúncias', route: ROUTE_PATHS.listComplaints },
+  { icon: 'campaign', label: 'Ocorrências', route: ROUTE_PATHS.listComplaints },
   { icon: 'engineering', label: 'Serviços', route: ROUTE_PATHS.listCondominalService },
   { icon: 'chat', label: 'Contato do Síndico', route: ROUTE_PATHS.contactInfo, roles: [UserRole.Resident] },
   { icon: 'event', label: 'Reservas', route: ROUTE_PATHS.viewReservation },

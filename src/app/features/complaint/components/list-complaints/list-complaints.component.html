@@ -1,12 +1,12 @@
 <main>
-  <h1 class="page-title">Denúncias</h1>
+  <h1 class="page-title">Ocorrências</h1>
 
   <div class="content-container">
     <div class="top-content">
-      <input [(ngModel)]="searchText" class="search-input" type="text" placeholder="Buscar denúncia..." />
+      <input [(ngModel)]="searchText" class="search-input" type="text" placeholder="Buscar ocorrência..." />
       <button *ngIf="this.userRole == this.UserRoleEnum.Resident" class="create-button" (click)="goToCreateComplaint()">
         <span class="material-symbols-outlined">add_circle</span>
-        Nova Denúncia
+        Nova Ocorrência
       </button>
     </div>
 
@@ -38,12 +38,18 @@
             </div>
             <div class="buttons">
               <button class="details-button" *ngIf="complaint.complaintId" [routerLink]="'/complaints/view/' + complaint.complaintId">Ver Detalhes</button>
-              <button *ngIf="complaint.status == this.ComplaintStatusEnum.Pending" class="delete-button" (click)="deleteComplaint(complaint.complaintId, complaint.createdByUserName)">Deletar</button>
+              <button
+                *ngIf="complaint.status == this.ComplaintStatusEnum.Pending"
+                class="delete-button"
+                (click)="deleteComplaint(complaint.complaintId, complaint.createdByUserName)"
+              >
+                Deletar
+              </button>
             </div>
           </li>
         }
       </ul>
-      <p *ngIf="filterComplaints().length === 0" class="empty-message">Nenhuma denúncia encontrada.</p>
+      <p *ngIf="filterComplaints().length === 0" class="empty-message">Nenhuma ocorrência encontrada.</p>
     </div>
   </div>
 </main>

@@ -44,7 +44,7 @@ export class CreateComplaintComponent {
 
   createComplaint(): void {
     if (this.complaintForm.valid) {
-      if (confirm('Você tem certeza que deseja criar a denúncia? Ela não poderá ser editada depois!')) {
+      if (confirm('Você tem certeza que deseja criar a ocorrência? Ela não poderá ser editada depois!')) {
         this.loader.show();
         this.loader.show();
         this.complaintModel = this.transformToComplaintModel();
@@ -60,8 +60,8 @@ export class CreateComplaintComponent {
           },
           error: err => {
             this.loader.hide();
-            console.error('Erro ao criar a denúncia:', err);
-            alert('Erro ao criar a denúncia. Tente novamente mais tarde.');
+            console.error('Erro ao criar a ocorrência:', err);
+            alert('Erro ao criar a ocorrência. Tente novamente mais tarde.');
           },
         });
       }
