@@ -4,7 +4,7 @@
   <div class="content-container">
     <div class="top-content">
       <input [(ngModel)]="searchText" class="search-input" type="text" placeholder="Buscar denúncia..." />
-      <button class="create-button" (click)="goToCreateComplaint()">
+      <button *ngIf="this.userRole == this.UserRoleEnum.Resident" class="create-button" (click)="goToCreateComplaint()">
         <span class="material-symbols-outlined">add_circle</span>
         Nova Denúncia
       </button>
