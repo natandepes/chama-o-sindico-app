@@ -77,10 +77,10 @@ export class ViewCondominalServiceComponent implements OnInit {
       this.condominalServicesService.createComment(comment).subscribe({
         next: response => {
           if (response.success) {
-            this.loader.hide();
             this.getComments(this.service!.id!);
             this.newComment = '';
             this.isCommenting = false;
+            this.loader.hide();
           } else {
             this.loader.hide();
             alert('Erro ao criar o comentário. Tente novamente mais tarde.');

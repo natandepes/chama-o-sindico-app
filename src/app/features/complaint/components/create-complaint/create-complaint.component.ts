@@ -21,6 +21,7 @@ export class CreateComplaintComponent {
   userId: string | null = '';
   closedByUserId: string = '';
   urlImagem: string | ArrayBuffer | null = '';
+  protected maxDate: string = new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString().split('T')[0];
 
   constructor(
     private complaintService: ComplaintService,

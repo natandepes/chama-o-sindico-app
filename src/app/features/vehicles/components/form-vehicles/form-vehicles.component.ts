@@ -11,76 +11,109 @@ import { LoaderService } from '../../../shared/services/loader.service';
   styleUrl: './form-vehicles.component.css'
 })
 export class FormVehiclesComponent implements OnInit {
+  formulario!: FormGroup;
+  vehicleId!: string;
+  selectedImg: File | null = null;
+  previewImg: string | null = null;
 
-    formulario!: FormGroup
-    vehicleId!: string;
+  constructor(
+    private vehiclesService: VehiclesService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private loader: LoaderService
+  ) {
+    this.formulario = new FormGroup({
+      model: new FormControl('', Validators.required),
+      vehicleType: new FormControl('', Validators.required),
+      licensePlate: new FormControl('', Validators.required),
+      vehicleImage: new FormControl('', Validators.required),
+      imageType: new FormControl('', Validators.required),
+      carSpace: new FormControl(null, Validators.required),
+    });
+  }
 
-    constructor(private vehiclesService: VehiclesService, private route: ActivatedRoute, private router: Router, private loader: LoaderService) {   
-      this.formulario = new FormGroup({
-        model: new FormControl('', Validators.required),
-        vehicleType: new FormControl('', Validators.required),
-        licensePlate: new FormControl('', Validators.required),
-        vehicleImage: new FormControl('', Validators.required),
-        imageType: new FormControl('', Validators.required),
-        carSpace: new FormControl(null, Validators.required),
+  ngOnInit(): void {
+    this.vehicleId = this.route.snapshot.paramMap.get('id')!;
+    if (this.vehicleId) {
+      this.getVehicleById();
+    }
+  }
+
+  openImgSelector(fileInput: HTMLInputElement): void {
+    fileInput.click();
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    if (event.dataTransfer?.files?.[0]) {
+      this.processImg(event.dataTransfer.files[0]);
+    }
+  }
+
+  onFileSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      this.processImg(file);
+    }
+  }
+
+  processImg(file: File): void {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewImg = reader.result as string;
+      this.selectedImg = file;
+      this.formulario.patchValue({
+        vehicleImage: this.previewImg,
+        imageType: file.type,
       });
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removeImg(): void {
+    this.selectedImg = null;
+    this.previewImg = null;
+    this.formulario.patchValue({ vehicleImage: '', imageType: '' });
+  }
+
+  saveVehicle(): void {
+    if (this.vehicleId) {
+      this.formulario.value.id = this.vehicleId;
     }
 
-    ngOnInit(): void {
-      this.vehicleId = this.route.snapshot.paramMap.get('id')!;
-
-      if(this.vehicleId){
-        this.getVehicleById();
-      }
-    }
-
-    saveVehicle() {
-      if(this.vehicleId){
-        this.formulario.value.id = this.vehicleId;
-      }
-
-      if(this.formulario.valid){
-        this.loader.show();
-
-        this.vehiclesService.saveVehicle(this.formulario.value).subscribe((response) => {
-          if (response.success) {
-            this.loader.hide();
-            this.formulario.reset();
-            this.router.navigate(['/vehicles/view']);
-          } else {
-            this.loader.hide();
-            alert('Erro ao criar veículo. Por favor, tente novamente mais tarde.');
-          }
-        });
-      }
-      else {
-        alert('Preencha todos os campos obrigatórios!');
-      }
-    }
-
-    onFileSelected(evt: Event) {
-      const input = evt.target as HTMLInputElement;
-      if (!input.files?.length) return;
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        // reader.result será algo como "data:image/png;base64,iVBORw0KG..."
-        this.formulario.patchValue({ vehicleImage: reader.result as string, imageType: file.type });
-      };
-      reader.readAsDataURL(file);
-    }
-
-    getVehicleById() {
+    if (this.formulario.valid) {
       this.loader.show();
-      this.vehiclesService.getVehicleById(this.vehicleId).subscribe((response) => {
+      this.vehiclesService.saveVehicle(this.formulario.value).subscribe((response) => {
+        this.loader.hide();
         if (response.success) {
-          const vehicle = response.data!;
-          vehicle.vehicleType = vehicle.vehicleType.toLowerCase();
-          this.formulario.patchValue(vehicle);
-          this.loader.hide();
+          this.formulario.reset();
+          this.removeImg();
+          this.router.navigate(['/vehicles/view']);
         } else {
-          alert("Erro ao carregar os dados do veículo. Por favor, tente novamente mais tarde.");
+          alert('Erro ao criar veículo. Por favor, tente novamente mais tarde.');
         }
       });
+    } else {
+      alert('Preencha todos os campos obrigatórios!');
     }
+  }
+
+  getVehicleById(): void {
+    this.loader.show();
+    this.vehiclesService.getVehicleById(this.vehicleId).subscribe((response) => {
+      this.loader.hide();
+      if (response.success) {
+        const vehicle = response.data!;
+        vehicle.vehicleType = vehicle.vehicleType.toLowerCase();
+        this.previewImg = vehicle.vehicleImage;
+        this.formulario.patchValue(vehicle);
+      } else {
+        alert("Erro ao carregar os dados do veículo. Por favor, tente novamente mais tarde.");
+      }
+    });
+  }
 }

@@ -3,6 +3,7 @@ import { PersonalInfoComponent } from "./components/personal-info/personal-info.
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { ResidentListComponent } from "./components/resident-list/resident-list.component";
+import { RouterLink } from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { ResidentListComponent } from "./components/resident-list/resident-list.
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
   ],
   exports: [
     PersonalInfoComponent,

@@ -32,7 +32,7 @@ export class ReservationFormComponent implements OnInit {
   protected areaReservationStatusEnum = AreaReservationStatusEnum;
   protected areaReservationStatus!: AreaReservationStatusEnum;
 
-  protected minDate: string = new Date().toISOString().split('T')[0];
+  protected minDate: string = new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString().split('T')[0];
 
   protected userRole: UserRole | null = null;
   protected readonly UserRoleEnum = UserRole;

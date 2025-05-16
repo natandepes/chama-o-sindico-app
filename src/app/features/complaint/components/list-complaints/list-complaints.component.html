@@ -38,7 +38,7 @@
             </div>
             <div class="buttons">
               <button class="details-button" *ngIf="complaint.complaintId" [routerLink]="'/complaints/view/' + complaint.complaintId">Ver Detalhes</button>
-              <button class="delete-button" (click)="deleteComplaint(complaint.complaintId, complaint.createdByUserName)">Deletar</button>
+              <button *ngIf="complaint.status == this.ComplaintStatusEnum.Pending" class="delete-button" (click)="deleteComplaint(complaint.complaintId, complaint.createdByUserName)">Deletar</button>
             </div>
           </li>
         }

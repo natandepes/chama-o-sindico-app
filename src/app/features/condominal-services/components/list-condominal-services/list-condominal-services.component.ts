@@ -4,6 +4,8 @@ import { ROUTE_PATHS } from '../../../../app.paths';
 import { CondominalService } from '../../models/condominal-service.model';
 import { CondominalServicesService } from '../../services/condominal-services.service';
 import { LoaderService } from '../../../shared/services/loader.service';
+import { AuthService } from '../../../authentication/services/auth.service';
+import { UserRole } from '../../../authentication/models/user-roles.model';
 
 @Component({
   selector: 'app-list-condominal-services',
@@ -14,14 +16,18 @@ import { LoaderService } from '../../../shared/services/loader.service';
 export class ListCondominalServicesComponent implements OnInit {
   services: Array<CondominalService> = [];
   searchText: string = '';
+  protected userRole: UserRole | null = null;
+  protected readonly UserRoleEnum = UserRole;
 
   constructor(
     private router: Router,
     private condominalServiceService: CondominalServicesService,
-    private loader: LoaderService
+    private loader: LoaderService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.userRole = this.authService.getUserRole();
     this.getAllCondominalServices();
   }
 

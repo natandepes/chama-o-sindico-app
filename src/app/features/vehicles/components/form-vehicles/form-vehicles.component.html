@@ -14,25 +14,39 @@
           <option value="moto">Moto</option>
         </select>
       </div>
+
       <div class="form-group">
         <label>Modelo <span class="required">*</span></label>
         <input formControlName="model" type="text" placeholder="Modelo do Veículo" class="input-field" />
       </div>
+
       <div class="form-group">
         <label>Placa <span class="required">*</span></label>
         <input formControlName="licensePlate" type="text" placeholder="Placa do Veículo" class="input-field" />
       </div>
+
       <div class="form-group">
         <label>Número da Vaga <span class="required">*</span></label>
         <input formControlName="carSpace" type="number" placeholder="Número da Vaga" min="1" max="500" class="input-field" />
       </div>
+
       <div class="form-group">
         <label>Foto do Veículo <span class="required">*</span></label>
-        <input #fileInput (change)="onFileSelected($event)" type="file" accept="image/*" class="file-input input-field" />
-      </div>
-      <div class="form-group" *ngIf="formulario.get('vehicleImage')?.value">
-        <label>Pré-visualização da Imagem:</label>
-        <img [src]="formulario.get('vehicleImage')?.value" alt="Imagem do Veículo" style="max-width: 300px;" />
+        <div class="upload-box" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+          <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none" />
+
+          <ng-container *ngIf="!previewImg">
+            <button type="button" class="add-img" (click)="openImgSelector(fileInput)">Buscar imagem</button>
+            <p>Ou arraste a imagem aqui</p>
+          </ng-container>
+
+          <ng-container *ngIf="previewImg">
+            <button type="button" class="remove-img" (click)="removeImg()" aria-label="Remover imagem">
+              <span class="material-symbols-outlined" style="color: red; font-size: 24px">delete</span>
+            </button>
+            <img [src]="previewImg" alt="Preview" style="max-width: 350px; object-fit: cover" />
+          </ng-container>
+        </div>
       </div>
     </form>
 
