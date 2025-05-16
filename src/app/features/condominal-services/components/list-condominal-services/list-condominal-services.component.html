@@ -30,7 +30,8 @@
               </div>
             </div>
             <div class="buttons">
-              <button [routerLink]="'/condominal-service/edit/' + service.id">Ver Detalhes</button>
+              <button [routerLink]="'/condominal-service/view/' + service.id">Ver Detalhes</button>
+              <button class="edit-button" [routerLink]="'/condominal-service/edit/' + service.id">Editar</button>
               <button class="delete-button" (click)="deleteService(service.id!)">Deletar</button>
             </div>
           </li>

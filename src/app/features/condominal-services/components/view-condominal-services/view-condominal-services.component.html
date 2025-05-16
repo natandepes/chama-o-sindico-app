@@ -1,46 +1,67 @@
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-
-<div class="container">
-  <header class="header">
-    <div class="icons">
-      <button class="menu-icon">☰</button>
-    </div>
-    <h1 class="title">Serviço</h1>
-    <button class="icon-button" (click)="toEdit()">
-      <span class="material-icons">edit</span>
+<main>
+  <div class="content-container">
+    <button class="back-button" (click)="goBack()">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Voltar
     </button>
-  </header>
 
-  <div class="conteudo" *ngIf="service; else carregando">
-    <div class="service-image">
-      <img [src]="service.providerPhotoUrl" alt="Imagem do serviço" class="preview-image" />
+    <div class="view-group">
+      <label>Nome do Serviço</label>
+      <p class="view-field">{{ service?.title }}</p>
     </div>
 
-    <h2 class="service-name">{{ service.title }}</h2>
-
-    <label>Nome: </label>
-    <p>{{ service.providerName }}</p>
-
-    <label>Contato:</label>
-    <p>{{ service.cellphone }}</p>
-
-    <label>Descrição:</label>
-    <p>{{ service.description }}</p>
-    <label>Comentários:</label>
-    <div *ngFor="let item of comments;">
-      <p>{{ item.comment }}</p>
-      <p>Por: {{ item.commentByUserName }}</p>
-      <p>Em: {{ item.createdAt | date: 'dd/MM/yyyy' }}</p>
+    <div class="view-group">
+      <label>Nome do Prestador</label>
+      <p class="view-field">{{ service?.providerName }}</p>
     </div>
-    <button (click)="addComment()">Adicionar Comentário</button>
-    <div class="coment-area" *ngIf="isCommenting">
-      <textarea [(ngModel)]="newComment" placeholder="Digite seu comentário aqui..."></textarea>
-      <button (click)="submitComment()">Enviar</button>
-      <button (click)="cancelComment()">Cancelar</button>
+
+    <div class="view-group">
+      <label>Telefone de Contato</label>
+      <p class="view-field">{{ service?.cellphone }}</p>
+    </div>
+
+    <div class="view-group">
+      <label>Descrição</label>
+      <p class="view-field">{{ service?.description }}</p>
+    </div>
+
+    <div class="view-group" *ngIf="service?.providerPhotoUrl">
+      <label>Foto do Serviço</label>
+      <div class="upload-box" style="padding: 0; border: none; background: transparent">
+        <img [src]="service?.providerPhotoUrl" alt="Imagem do serviço" style="max-width: 100%; border-radius: 8px; object-fit: cover" />
+      </div>
+    </div>
+
+    <div class="view-group">
+      <label>Comentários</label>
+
+      <ng-container *ngIf="comments && comments.length > 0; else noComments">
+        <div class="comment" *ngFor="let item of comments">
+          <p class="comment-text">{{ item.comment }}</p>
+          <p class="comment-meta">Por: {{ item.commentByUserName }} — {{ item.createdAt | date: 'dd/MM/yyyy' }}</p>
+        </div>
+      </ng-container>
+
+      <ng-template #noComments>
+        <p class="no-comments-message">Ainda não há nenhum comentário.</p>
+      </ng-template>
+
+      <button class="add-comment-button" *ngIf="!isCommenting" (click)="addComment()" aria-label="Adicionar comentário">Adicionar Comentário</button>
+
+      <div class="comment-area" *ngIf="isCommenting">
+        <textarea
+          [(ngModel)]="newComment"
+          placeholder="Digite seu comentário aqui..."
+          rows="4"
+          class="comment-textarea"
+          aria-label="Novo comentário"
+        ></textarea>
+
+        <div class="comment-actions">
+          <button class="submit-button" (click)="submitComment()">Enviar</button>
+          <button class="cancel-button" (click)="cancelComment()">Cancelar</button>
+        </div>
+      </div>
     </div>
   </div>
-  <ng-template #carregando>
-    <p>Carregando serviço...</p>
-  </ng-template>
-</div>
+</main>
