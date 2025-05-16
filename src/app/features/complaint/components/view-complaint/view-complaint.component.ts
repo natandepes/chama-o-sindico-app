@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ComplaintMock, ComplaintStatus, ComplaintStatusEnum } from '../../models/complaint.models';
+import { ComplaintStatusEnum } from '../../models/complaint.models';
 import { ComplaintService } from '../../services/complaint.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserRole } from '../../../authentication/models/user-roles.model';
@@ -80,6 +80,11 @@ export class ViewComplaintComponent implements OnInit {
 
           this.loader.hide();
         }
+      },
+      error: err => {
+        this.loader.hide();
+        console.error('Erro ao buscar a reclamação:', err);
+        alert('Erro ao buscar a reclamação. Tente novamente mais tarde.');
       },
     });
   }

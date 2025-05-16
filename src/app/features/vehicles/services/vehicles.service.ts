@@ -5,13 +5,12 @@ import { ApiResponse } from '../../../core/shared/api-response.model';
 import { Vehicle } from '../models/vehicles.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VehiclesService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  private readonly baseUrl = 'https://localhost:7020/api';
+  private readonly baseUrl = 'http://localhost:5158/api';
 
   public getAllVehicles(): Observable<ApiResponse<Vehicle[]>> {
     return this.http.get<ApiResponse<Vehicle[]>>(`${this.baseUrl}/Vehicle/GetAllVehicles`);

@@ -10,11 +10,9 @@ import { ServiceComment } from '../models/service-comment.model';
   providedIn: 'root',
 })
 export class CondominalServicesService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient){}
-
-  private readonly baseUrl = 'https://localhost:7020/api';
-
+  private readonly baseUrl = 'http://localhost:5158/api';
 
   saveService(service: CondominalService): Observable<ApiResponse<string>> {
     return this.http.post<ApiResponse<string>>(`${this.baseUrl}/CondominalServices/SaveService`, service);
@@ -40,4 +38,3 @@ export class CondominalServicesService {
     return this.http.get<ApiResponse<ServiceComment[]>>(`${this.baseUrl}/CondominalServices/GetServiceComments/${serviceId}`);
   }
 }
-  

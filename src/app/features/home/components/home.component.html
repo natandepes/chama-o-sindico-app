@@ -6,17 +6,12 @@
 
   <div class="main-box">
     <div class="content-container">
-      <ng-container *ngFor="let item of menuItems">
-        <div 
-          class="card"
-          *ngIf="isVisible(item)" 
-          (click)="routeTo(item.route)"
-          >
+      <ng-container *ngFor="let item of cards">
+        <div class="card" *ngIf="isVisible(item)" (click)="routeTo(item.route)">
           <span class="material-symbols-outlined icon">{{ item.icon }}</span>
           <span class="label">{{ item.label }}</span>
         </div>
       </ng-container>
-      
     </div>
   </div>
 

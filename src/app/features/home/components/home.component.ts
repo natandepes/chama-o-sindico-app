@@ -16,7 +16,6 @@ export class HomeComponent {
   protected userRole: UserRole | null = null;
   protected readonly UserRoleEnum = UserRole;
   protected readonly ROUTE_PATHS = ROUTE_PATHS;
-  protected menuItems: MenuItem[] = menuItems;
 
   constructor(
     private readonly router: Router,

@@ -14,7 +14,7 @@ import { AreaReservationFullModel } from '../models/area-reservation-full.model'
 export class ReservationService {
   constructor(private http: HttpClient) {}
 
-  private readonly baseUrl = 'https://localhost:7020/api';
+  private readonly baseUrl = 'http://localhost:5158/api';
 
   public getAreas(): Observable<ApiResponse<Area[]>> {
     return this.http.get<ApiResponse<Area[]>>(`${this.baseUrl}/Area/GetAllAreas`);
@@ -39,7 +39,7 @@ export class ReservationService {
   public getAreaReservation(id: string): Observable<ApiResponse<AreaReservationFullModel>> {
     return this.http.get<ApiResponse<AreaReservationFullModel>>(`${this.baseUrl}/Area/GetAreaReservationById/${id}`);
   }
-  
+
   public getUserAreaReservations(): Observable<ApiResponse<AreaReservationResponse[]>> {
     return this.http.get<ApiResponse<AreaReservationResponse[]>>(`${this.baseUrl}/Area/GetAllAreaReservationsByUser`);
   }
@@ -59,5 +59,4 @@ export class ReservationService {
   public changeAreaReservationStatus(areaReservationId: string, status: number): Observable<ApiResponse<string>> {
     return this.http.post<ApiResponse<string>>(`${this.baseUrl}/Area/ChangeAreaReservationStatus/`, { areaReservationId, status });
   }
-
 }

@@ -1,18 +1,16 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { ApiResponse } from "../../../core/shared/api-response.model";
-import { ViewPersonalInfoModel } from "../models/view-personal-info.model";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ApiResponse } from '../../../core/shared/api-response.model';
+import { ViewPersonalInfoModel } from '../models/view-personal-info.model';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ResidentService {
-  private readonly API_URL = "https://localhost:7020/api";
+  private readonly API_URL = 'http://localhost:5158/api';
 
-  constructor(
-    private http: HttpClient
-  ) {}
+  constructor(private http: HttpClient) {}
 
   public getResidentInfo(): Observable<ApiResponse<ViewPersonalInfoModel>> {
     return this.http.get<ApiResponse<ViewPersonalInfoModel>>(`${this.API_URL}/Resident/GetResidentDetails`);

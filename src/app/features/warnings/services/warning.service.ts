@@ -8,7 +8,7 @@ import { ApiResponse } from '../../../core/shared/api-response.model';
   providedIn: 'root',
 })
 export class WarningService {
-  private readonly API_URL = 'https://localhost:7020/api';
+  private readonly API_URL = 'http://localhost:5158/api';
 
   constructor(private http: HttpClient) {}
 
