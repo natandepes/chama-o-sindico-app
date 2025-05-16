@@ -5,6 +5,7 @@ import { ResidentService } from '../../services/resident.service';
 import { AuthService } from '../../../authentication/services/auth.service';
 import { UserRole } from '../../../authentication/models/user-roles.model';
 import { CondominalManagerService } from '../../services/condominal-manager.service';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-personal-info',
@@ -22,7 +23,8 @@ export class PersonalInfoComponent implements OnInit {
     private fb: FormBuilder,
     private residentService: ResidentService,
     private condominalManagerService: CondominalManagerService,
-    private authService: AuthService
+    private authService: AuthService,
+    private loader: LoaderService
   ) {
     this.personalInfoForm = this.fb.group({
       name: ['', Validators.required],
@@ -68,25 +70,29 @@ export class PersonalInfoComponent implements OnInit {
         this.viewPersonalInfoModel = this.tranformToViewPersonalInfoModel();
 
         if (this.userRole == this.UserRoleEnum.CondominalManager) {
+          this.loader.show();
           this.condominalManagerService.updateCondominalManagerInfo(this.viewPersonalInfoModel).subscribe({
             next: (response) => {
               if (response.success) {
-                alert(response.message);
                 this.personalInfoForm.reset();
                 this.loadPersonalInfo();
+                this.loader.hide();
               } else {
+                this.loader.hide();
                 alert('Ocorreu um erro ao atualizar as informações pessoais. Tente novamente mais tarde.');
               }
             }
           });
         } else {
+          this.loader.show();
           this.residentService.updateResidentInfo(this.viewPersonalInfoModel).subscribe({
             next: (response) => {
               if (response.success) {
-                alert(response.message);
                 this.personalInfoForm.reset();
                 this.loadPersonalInfo();
+                this.loader.hide();
               } else {
+                this.loader.hide();
                 alert('Ocorreu um erro ao atualizar as informações pessoais. Tente novamente mais tarde.');
               }
             }
@@ -99,17 +105,25 @@ export class PersonalInfoComponent implements OnInit {
   }
 
   protected deleteResident(): void {
+    if (!confirm('Tem certeza que deseja excluir este usuário?')) {
+      return;
+    }
+
+    this.loader.show();
+
     this.authService.deleteUser(this.personalInfoForm.get('userId')?.value).subscribe({
       next: (response) => {
         if (response.success) {
-          alert(response.message);
+          this.loader.hide();
           this.personalInfoForm.reset();
           this.authService.logout();
         } else {
+          this.loader.hide();
           alert('Ocorreu um erro ao excluir o usuário. Tente novamente mais tarde.');
         }
       },
       error: () => {
+        this.loader.hide();
         alert('Ocorreu um erro ao excluir o usuário. Tente novamente mais tarde.');
       }
     });
@@ -117,28 +131,36 @@ export class PersonalInfoComponent implements OnInit {
 
   private loadPersonalInfo(): void {
     if (this.userRole == this.UserRoleEnum.CondominalManager) {
+      this.loader.show();
       this.condominalManagerService.getCondominalManagerInfo().subscribe({
         next: (response) => {
           if (response.success && response.data) {
             this.personalInfoForm.patchValue(response.data);
+            this.loader.hide();
           } else {
+            this.loader.hide();
             alert('Ocorreu um erro ao carregar as informações pessoais. Tente novamente mais tarde.');
           }
         },
         error: () => {
+          this.loader.hide();
           alert('Ocorreu um erro ao carregar as informações pessoais. Tente novamente mais tarde.');
         }
       })
     } else {
+      this.loader.show();
       this.residentService.getResidentInfo().subscribe({
         next: (response) => {
           if (response.success && response.data) {
             this.personalInfoForm.patchValue(response.data);
+            this.loader.hide();
           } else {
+            this.loader.hide();
             alert('Ocorreu um erro ao carregar as informações pessoais. Tente novamente mais tarde.');
           }
         },
         error: () => {
+          this.loader.hide();
           alert('Ocorreu um erro ao carregar as informações pessoais. Tente novamente mais tarde.');
         }
       });

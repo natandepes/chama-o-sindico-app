@@ -4,6 +4,7 @@ import { CondominalServicesService } from '../../services/condominal-services.se
 import { CondominalService } from '../../models/condominal-service.model';
 import { ServiceComment } from '../../models/service-comment.model';
 import { ROUTE_PATHS } from '../../../../app.paths';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-view-condominal-services',
@@ -23,38 +24,38 @@ export class ViewCondominalServiceComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public condominalServicesService: CondominalServicesService,
+    private loader: LoaderService,
   ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
+      this.loader.show();
       this.condominalServicesService.getService(id).subscribe({
         next: response => {
           if (response.success) {
             this.service = response.data!;
             this.getComments(this.service.id!);
+            this.loader.hide();
           } else {
-            console.error('Error fetching service:', response.message);
+            this.loader.hide();
+            alert('Erro ao buscar o serviço. Tente novamente mais tarde.');
           }
-        },
-        error: error => {
-          console.error('Error fetching service:', error);
         },
       });
     }
   }
 
   getComments(serviceId: string) {
+    this.loader.show();
     this.condominalServicesService.getServiceComments(serviceId).subscribe({
       next: response => {
         if (response.success) {
           this.comments = response.data!;
         } else {
-          console.error('Error fetching comments:', response.message);
+          this.loader.hide();
+          alert('Erro ao buscar os comentários. Tente novamente mais tarde.');
         }
-      },
-      error: error => {
-        console.error('Error fetching comments:', error);
       },
     });
   }
@@ -71,19 +72,19 @@ export class ViewCondominalServiceComponent implements OnInit {
         createdAt: new Date(),
       };
 
+      this.loader.show();
+
       this.condominalServicesService.createComment(comment).subscribe({
         next: response => {
           if (response.success) {
-            alert('Comentário adicionado com sucesso!');
+            this.loader.hide();
             this.getComments(this.service!.id!);
             this.newComment = '';
             this.isCommenting = false;
           } else {
-            console.error('Error creating comment:', response.message);
+            this.loader.hide();
+            alert('Erro ao criar o comentário. Tente novamente mais tarde.');
           }
-        },
-        error: error => {
-          console.error('Error creating comment:', error);
         },
       });
     }
