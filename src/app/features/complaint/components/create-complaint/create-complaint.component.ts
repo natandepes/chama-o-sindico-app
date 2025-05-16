@@ -45,12 +45,14 @@ export class CreateComplaintComponent {
     if (this.complaintForm.valid) {
       if (confirm('Você tem certeza que deseja criar a denúncia? Ela não poderá ser editada depois!')) {
         this.loader.show();
+        this.loader.show();
         this.complaintModel = this.transformToComplaintModel();
 
         this.complaintService.createComplaint(this.complaintModel).subscribe({
           next: response => {
             if (response.success) {
               this.complaintForm.reset();
+              this.loader.hide();
               this.loader.hide();
               this.router.navigate([ROUTE_PATHS.listComplaints]);
             }

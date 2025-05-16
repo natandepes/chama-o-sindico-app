@@ -24,12 +24,12 @@ export class ViewCondominalServiceComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public condominalServicesService: CondominalServicesService,
-    private loader: LoaderService
+    private loader: LoaderService,
   ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) { 
+    if (id) {
       this.loader.show();
       this.condominalServicesService.getService(id).subscribe({
         next: response => {
@@ -41,7 +41,7 @@ export class ViewCondominalServiceComponent implements OnInit {
             this.loader.hide();
             alert('Erro ao buscar o serviço. Tente novamente mais tarde.');
           }
-        }
+        },
       });
     }
   }
@@ -56,7 +56,7 @@ export class ViewCondominalServiceComponent implements OnInit {
           this.loader.hide();
           alert('Erro ao buscar os comentários. Tente novamente mais tarde.');
         }
-      }
+      },
     });
   }
 
@@ -85,7 +85,7 @@ export class ViewCondominalServiceComponent implements OnInit {
             this.loader.hide();
             alert('Erro ao criar o comentário. Tente novamente mais tarde.');
           }
-        }
+        },
       });
     }
   }
