@@ -4,7 +4,7 @@ import { CreateComplaintComponent } from './components/create-complaint/create-c
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListComplaintsComponent } from './components/list-complaints/list-complaints.component';
 import { RouterModule } from '@angular/router';
-import { ViewComplaintComponent } from './components/edit-complaint/view-complaint.component';
+import { ViewComplaintComponent } from './components/view-complaint/view-complaint.component';
 
 @NgModule({
   declarations: [CreateComplaintComponent, ListComplaintsComponent, ViewComplaintComponent],

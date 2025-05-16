@@ -1,39 +1,49 @@
 <main>
-  <div class="header">
-    <h1>Denúncias</h1>
-    <div class="subtitle-bar"></div>
-  </div>
+  <h1 class="page-title">Denúncias</h1>
 
-  <div class="main-box">
-    <div class="content-container">
-      <button class="buttonCreateComplaint" (click)="goToCreateComplaint()">Nova Denúncia</button>
+  <div class="content-container">
+    <div class="top-content">
+      <input [(ngModel)]="searchText" class="search-input" type="text" placeholder="Buscar denúncia..." />
+      <button class="create-button" (click)="goToCreateComplaint()">
+        <span class="material-symbols-outlined">add_circle</span>
+        Nova Denúncia
+      </button>
+    </div>
 
-      <div class="complaint-search-bar">
-        <input type="text" [(ngModel)]="searchText" placeholder="Pesquisar Denúncias" class="complaint-search-input" />
-      </div>
-
-      <div *ngFor="let complaint of filterComplaints()" class="card">
-        <h3>{{ complaint.title }}</h3>
-        <p>{{ complaint.description }}</p>
-
-        <p>
-          <strong>Status:</strong>
-          <span
-            [ngClass]="{
-              'status-pendente': complaint.status === 'Pendente',
-              'status-em-andamento': complaint.status === 'Em progresso',
-              'status-resolvida': complaint.status === 'Resolvida',
-            }"
-            >{{ complaint.status }}</span
-          >
-        </p>
-        <p><strong>Data:</strong> {{ complaint.createdAt | date: 'dd/MM/yyyy' }}</p>
-        <p><strong>Criado por:</strong> {{ complaint.createdByUserName }}</p>
-        <div class="card-actions">
-          <button *ngIf="complaint.complaintId" class="buttonViewComplaint" [routerLink]="'/complaints/view/' + complaint.complaintId">Ver detalhes</button>
-          <button class="delete-button" (click)="deleteComplaint(complaint.complaintId, complaint.createdByUserName)">Deletar</button>
-        </div>
-      </div>
+    <div class="list-container">
+      <ul class="reservations-list">
+        @for (complaint of filterComplaints(); track $index) {
+          <li class="reservation-item">
+            <div class="info">
+              <h3 class="area-name">{{ complaint.title }}</h3>
+              <p class="description">{{ complaint.description }}</p>
+              <p class="meta">
+                Status:
+                <span
+                  class="status"
+                  [ngClass]="{
+                    'status-pendente': complaint.status === 'Pendente',
+                    'status-em-andamento': complaint.status === 'Em progresso',
+                    'status-resolvida': complaint.status === 'Resolvida',
+                  }"
+                  >{{ complaint.status }}</span
+                >
+              </p>
+              <p class="meta">
+                Data: <strong>{{ complaint.createdAt | date: 'dd/MM/yyyy' }}</strong>
+              </p>
+              <p class="meta">
+                Criado por: <strong>{{ complaint.createdByUserName }}</strong>
+              </p>
+            </div>
+            <div class="buttons">
+              <button class="details-button" *ngIf="complaint.complaintId" [routerLink]="'/complaints/view/' + complaint.complaintId">Ver Detalhes</button>
+              <button class="delete-button" (click)="deleteComplaint(complaint.complaintId, complaint.createdByUserName)">Deletar</button>
+            </div>
+          </li>
+        }
+      </ul>
+      <p *ngIf="filterComplaints().length === 0" class="empty-message">Nenhuma denúncia encontrada.</p>
     </div>
   </div>
 </main>

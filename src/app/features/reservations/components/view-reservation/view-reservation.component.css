@@ -194,3 +194,16 @@ main {
   display: inline-block;
   margin-top: 0.25rem;
 }
+
+.status-aguardando {
+  color: #facc15; /* amarelo */
+  font-weight: 600;
+}
+.status-rejeitada {
+  color: #dc2626; /* vermelho */
+  font-weight: 600;
+}
+.status-aprovada {
+  color: #22c55e; /* verde */
+  font-weight: 600;
+}
