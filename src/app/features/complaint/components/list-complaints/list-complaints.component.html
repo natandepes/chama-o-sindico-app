@@ -10,9 +10,10 @@
       </button>
     </div>
 
-    <div class="list-container">
+    <div class="list-container" *ngIf="this.userRole == this.UserRoleEnum.Resident">
+      <h2 class="list-title">Minhas</h2>
       <ul class="reservations-list">
-        @for (complaint of filterComplaints(); track $index) {
+        @for (complaint of filterUserComplaints(); track $index) {
           <li class="reservation-item">
             <div class="info">
               <h3 class="area-name">{{ complaint.title }}</h3>
@@ -39,9 +40,9 @@
             <div class="buttons">
               <button class="details-button" *ngIf="complaint.complaintId" [routerLink]="'/complaints/view/' + complaint.complaintId">Ver Detalhes</button>
               <button
-                *ngIf="complaint.status == this.ComplaintStatusEnum.Pending"
+                *ngIf="complaint.status == this.ComplaintStatusEnum.Pending" 
                 class="delete-button"
-                (click)="deleteComplaint(complaint.complaintId, complaint.createdByUserName)"
+                (click)="deleteComplaint(complaint.complaintId)"
               >
                 Deletar
               </button>
@@ -49,7 +50,50 @@
           </li>
         }
       </ul>
-      <p *ngIf="filterComplaints().length === 0" class="empty-message">Nenhuma ocorrência encontrada.</p>
+      <p *ngIf="filterUserComplaints().length === 0" class="empty-message">Nenhuma ocorrência encontrada.</p>
+    </div>
+
+    <div class="list-container">
+      <h2 class="list-title">Todas</h2>
+      <ul class="reservations-list">
+        @for (complaint of filterAllComplaints(); track $index) {
+          <li class="reservation-item">
+            <div class="info">
+              <h3 class="area-name">{{ complaint.title }}</h3>
+              <p class="description">{{ complaint.description }}</p>
+              <p class="meta">
+                Status:
+                <span
+                  class="status"
+                  [ngClass]="{
+                    'status-pendente': complaint.status === 'Pendente',
+                    'status-em-andamento': complaint.status === 'Em progresso',
+                    'status-resolvida': complaint.status === 'Resolvida',
+                  }"
+                  >{{ complaint.status }}</span
+                >
+              </p>
+              <p class="meta">
+                Data: <strong>{{ complaint.createdAt | date: 'dd/MM/yyyy' }}</strong>
+              </p>
+              <p class="meta">
+                Criado por: <strong>{{ complaint.createdByUserName }}</strong>
+              </p>
+            </div>
+            <div class="buttons">
+              <button class="details-button" *ngIf="complaint.complaintId" [routerLink]="'/complaints/view/' + complaint.complaintId">Ver Detalhes</button>
+              <button
+                *ngIf="complaint.status == this.ComplaintStatusEnum.Pending && this.userRole == this.UserRoleEnum.CondominalManager" 
+                class="delete-button"
+                (click)="deleteComplaint(complaint.complaintId)"
+              >
+                Deletar
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+      <p *ngIf="filterAllComplaints().length === 0" class="empty-message">Nenhuma ocorrência encontrada.</p>
     </div>
   </div>
 </main>

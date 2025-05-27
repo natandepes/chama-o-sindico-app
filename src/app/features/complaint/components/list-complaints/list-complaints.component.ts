@@ -15,7 +15,8 @@ import { LoaderService } from '../../../shared/services/loader.service';
   standalone: false,
 })
 export class ListComplaintsComponent implements OnInit {
-  complaints: ComplaintResponseModel[] = [];
+  userComplaints: ComplaintResponseModel[] = [];
+  allComplaints: ComplaintResponseModel[] = [];
   searchText: string = '';
   protected userRole: UserRole | null = null;
   protected readonly UserRoleEnum = UserRole;
@@ -35,43 +36,41 @@ export class ListComplaintsComponent implements OnInit {
   }
 
   loadComplaints() {
-    if (this.userRole == this.UserRoleEnum.CondominalManager) {
-      this.loader.show();
-      this.complaintService.getAllComplaints().subscribe({
-        next: response => {
-          if (response.success && response.data) {
-            this.complaints = response.data!.map((c: any) => ({
+    this.loader.show();
+    
+    this.complaintService.getAllComplaints().subscribe({
+      next: response => {
+        if (response.success && response.data) {
+            this.allComplaints = response.data!.map((c: any) => ({
               complaintId: c.complaintId,
               title: c.title,
               description: c.description,
               status: this.mapStatus(c.status),
               createdAt: new Date(c.createdAt),
               createdByUserName: c.createdByUserName,
-            }));
+            })).filter((c: ComplaintResponseModel) => 
+              c.createdByUserName !== this.authService.getUserName()
+            );
+        }
+      },
+    });
 
-            this.loader.hide();
-          }
-        },
-      });
-    } else {
-      this.loader.show();
-      this.complaintService.getAllComplaintsByUserId().subscribe({
-        next: (response: any) => {
-          if (response.success && response.data) {
-            this.complaints = response.data!.map((c: any) => ({
-              complaintId: c.complaintId,
-              title: c.title,
-              description: c.description,
-              status: this.mapStatus(c.status),
-              createdAt: new Date(c.createdAt),
-              createdByUserName: c.createdByUserName,
-            }));
+    this.complaintService.getAllComplaintsByUserId().subscribe({
+      next: (response: any) => {
+        if (response.success && response.data) {
+          this.userComplaints = response.data!.map((c: any) => ({
+            complaintId: c.complaintId,
+            title: c.title,
+            description: c.description,
+            status: this.mapStatus(c.status),
+            createdAt: new Date(c.createdAt),
+            createdByUserName: c.createdByUserName,
+          }));
+        }
+      },
+    });
 
-            this.loader.hide();
-          }
-        },
-      });
-    }
+    this.loader.hide();
   }
 
   mapStatus(statusNumber: number): ComplaintStatus {
@@ -91,12 +90,12 @@ export class ListComplaintsComponent implements OnInit {
     this.router.navigate([ROUTE_PATHS.createComplaint]);
   }
 
-  deleteComplaint(id: string, idCreator: string | null) {
+  deleteComplaint(id: string) {
     if (confirm('Tem certeza que deseja deletar esta ocorrência?')) {
       this.loader.show();
       this.complaintService.deleteComplaint(id).subscribe({
         next: () => {
-          this.complaints = this.complaints.filter(c => c.complaintId !== id);
+          // this.complaints = this.complaints.filter(c => c.complaintId !== id);
           this.loader.hide();
           this.loadComplaints();
         },
@@ -104,8 +103,13 @@ export class ListComplaintsComponent implements OnInit {
     }
   }
 
-  filterComplaints() {
-    if (!this.searchText) return this.complaints;
-    return this.complaints.filter(c => c.title.toLocaleLowerCase().includes(this.searchText.toLocaleLowerCase()));
+  filterUserComplaints() {
+    if (!this.searchText) return this.userComplaints;
+    return this.userComplaints.filter(c => c.title.toLocaleLowerCase().includes(this.searchText.toLocaleLowerCase()));
+  }
+
+  filterAllComplaints() {
+    if (!this.searchText) return this.allComplaints;
+    return this.allComplaints.filter(c => c.title.toLocaleLowerCase().includes(this.searchText.toLocaleLowerCase()));
   }
 }

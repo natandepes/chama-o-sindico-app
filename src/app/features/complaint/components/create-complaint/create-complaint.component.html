@@ -22,7 +22,7 @@
       </div>
 
       <div class="form-group">
-        <label>Imagem do Problema</label>
+        <label>Imagem do Problema <span class="required">*</span></label>
         <div class="upload-box" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
           <input #imageInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none" />
 
