@@ -3,6 +3,8 @@ import { VehiclesService } from '../../services/vehicles.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoaderService } from '../../../shared/services/loader.service';
+import { UserRole } from '../../../authentication/models/user-roles.model';
+import { AuthService } from '../../../authentication/services/auth.service';
 
 @Component({
   selector: 'app-form-vehicles',
@@ -15,12 +17,15 @@ export class FormVehiclesComponent implements OnInit {
   vehicleId!: string;
   selectedImg: File | null = null;
   previewImg: string | null = null;
+  protected userRole: UserRole | null = null;
+  protected readonly UserRoleEnum = UserRole;
 
   constructor(
     private vehiclesService: VehiclesService,
     private route: ActivatedRoute,
     private router: Router,
-    private loader: LoaderService
+    private loader: LoaderService,
+  private authService: AuthService
   ) {
     this.formulario = new FormGroup({
       model: new FormControl('', Validators.required),
@@ -29,10 +34,12 @@ export class FormVehiclesComponent implements OnInit {
       vehicleImage: new FormControl('', Validators.required),
       imageType: new FormControl('', Validators.required),
       carSpace: new FormControl(null, Validators.required),
+      createdByUserId: new FormControl('')
     });
   }
 
   ngOnInit(): void {
+    this.userRole = this.authService.getUserRole();
     this.vehicleId = this.route.snapshot.paramMap.get('id')!;
     if (this.vehicleId) {
       this.getVehicleById();
